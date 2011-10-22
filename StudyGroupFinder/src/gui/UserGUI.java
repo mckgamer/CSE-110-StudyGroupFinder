@@ -13,12 +13,22 @@ import javax.swing.JPanel;
 
 import database.GroupData;
 
+/** UserGUI is a JPanel that manages everything that a user can do. */
 public class UserGUI extends JPanel implements ActionListener {
 
+	/** The current JPanel that this UserGUI is displaying on the left. */
 	private JPanel left;
+	
+	/** The current JPanel that this UserGUI is displaying on the right. */
 	private JPanel right;
+	
+	/** The {@link GUIFrame} that is displaying this UserGUI */
 	private GUIFrame parent;
 	
+	/** Constructs this UserGUI object using the {@link GUIFrame} that will display it.
+	 * 
+	 * @param parent the {@link GUIFrame} that will display this UserGUI.
+	 */
 	public UserGUI(GUIFrame parent) {
 		this.parent = parent;
 		JMenuBar menubar = new JMenuBar();

@@ -1,44 +1,43 @@
-import java.awt.Dimension;
-
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import database.Database;
-import database.GroupData;
 import database.MapDatabase;
-import database.VectorDatabase;
 import domainlogic.StudyGroupSystem;
 import gui.GUIFrame;
-import gui.GroupProfile;
 
-
+/** The main holding class for StudyGroupFinder. This initializes an instance of the program. */
 public class Start extends JPanel {
 
+	/** The {@link MapDatabase} to use for the program. */
 	final static MapDatabase database = new MapDatabase();
+	
+	/** The {@link StudyGroupSystem} to use for the program. */
 	final static StudyGroupSystem system = new StudyGroupSystem(database);
+	
+	/** The {@link GUIFrame} to use for the program. */
 	final static GUIFrame gui = new GUIFrame(system);
 	
+	//TODO don't think this is necessary
 	Start() {
-	
 	}
 	
+	/** Called by main. Calls all of the logic of the program */
 	private static void createAndShowGUI() {
 		
-        gui.setContentPane(new Start());
+        //gui.setContentPane(new Start());
         
+		// Call the GUIFrame and make it run the program
         gui.runProgram();
         
         //Display the window.
         gui.pack();
         gui.setVisible(true);
 	}
-	/**
-	 * @param args
-	 */
+	
+	/** The main method for the Study Group Finder. Calls the needed methods to run the program.
+	 * 
+	 * @param args 
+	 */ //TODO for args we could maybe allow -debug to be an argument that enables logging or something.
 	public static void main(String[] args) {
-		
-    	//StudyGroupSystem sGSystem = new StudyGroupSystem();
-    	//Database database = new VectorDatabase();
     	
     	System.out.println("It compiles now!");
     	
