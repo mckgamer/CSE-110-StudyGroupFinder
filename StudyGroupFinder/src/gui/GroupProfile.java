@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -18,33 +20,47 @@ public class GroupProfile extends JPanel {
 	
 	public GroupProfile(GroupData gd) {
 		name = new JLabel(gd.getName());
-		course = new JLabel(gd.getCourse());
-		description = new JLabel("We like to study " + gd.getCourse());
+		name.setFont(new Font("Dialog", Font.BOLD, 24));
+		course = new JLabel("Course: " + gd.getCourse());
+		description = new JLabel("<html>We like to study " + gd.getCourse() +". We are a really cool group and we<br> hope you join us.</html>");
+		description.setFont(new Font("Dialog", Font.PLAIN, 12));
 		
         setLayout(new GridLayout(4,1));
+        //add(new JLabel("1"));
         
         JPanel namePan = new JPanel();
         namePan.setLayout(new GridLayout(1,2));
         namePan.add(name);
-        namePan.add(new JLabel("School: UCSD"));
+        namePan.add(course);
         
         add(namePan);
   
+        
         add(description);
         
+        
         JPanel submembPan = new JPanel();
-        submembPan.setLayout(new GridLayout(2,2));
-        submembPan.add(new JLabel("Course"));
-        submembPan.add(new JLabel("Members"));
-        add(course);
-        Object[] members = {"Melissa Grant", "Tom Johnson", "Steve Lopkins"};
-        submembPan.add(new JScrollPane(new JList(members)));
+        submembPan.setLayout(new GridLayout(2,2,5,0));
+        JLabel mem = new JLabel("Members");
+        mem.setFont(new Font("Dialog", Font.BOLD, 14));
+        submembPan.add(mem);
+        JLabel meet = new JLabel("Meetings");
+        meet.setFont(new Font("Dialog", Font.BOLD, 14));
+        submembPan.add(meet);
+        Object[] members = {"Melissa Grant", "Tom Johnson", "Steve Lopkins", "Steve Lopkins", "Steve Lopkins", "Steve Lopkins", "Steve Lopkins"};
+        JScrollPane membersList = new JScrollPane(new JList(members));
+        membersList.setPreferredSize(new Dimension(40,50));
+        submembPan.add(membersList);
+        JLabel meets = new JLabel("We meet every 2 days.");
+        meets.setFont(new Font("Dialog", Font.PLAIN, 12));
+        submembPan.add(meets);
+        
         
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
         meetControlPanel.setLayout(new GridLayout(2,2));
-        meetControlPanel.add(new JLabel("Meetings"));
+        meetControlPanel.add(new JLabel("ModButtons here?"));
         meetControlPanel.add(new JLabel());
         meetControlPanel.add(new JLabel());
         
