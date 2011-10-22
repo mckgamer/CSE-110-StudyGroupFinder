@@ -38,10 +38,10 @@ public class UserData implements Data {
 	
 	@Override //TODO
 	public boolean validate() {
-		if (uname != null && pw != null && modof != null) {
-			return true;
+		if (uname.isEmpty() || pw.isEmpty()) { // Will need to check for modOfGroup when it is finalized
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	@Override

@@ -13,18 +13,27 @@ import domainlogic.User.Logged;
 
 
 public class StudyGroupSystemTest {
+	
 	@Test
-	public void testLogInUser() {
+	public void testIfUserExists() {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
-		Logged status = sgs.login("Bob", "pw");
+		Logged status = sgs.login("Mike", "pw");
 		assertNotNull(status);
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
-		/*assertNotNull(temp);
-		assertTrue(temp.getStatus() == Logged.USER);
-		assertEquals(temp.getUserData().getUName(), "Mike");
-		assertEquals(temp.getUserData().getPW(), "pw");
-		*/
+
+	}
+	
+	@Test
+	public void testAddUser() {
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		Status stat = new Status();
+		stat = sgs.createUser(3, "Roberto", "pw", "0~");
+		System.out.println(stat.getStatus());
+		assertEquals(stat.getStatus(), StatusType.SUCCESS);
+		Logged status = sgs.login("Roberto", "pw");
+		assertTrue( status == Logged.USER);
 	}
 }

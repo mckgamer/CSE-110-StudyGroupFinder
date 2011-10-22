@@ -1,10 +1,10 @@
 package database;
-
+import domainlogic.Status;
+import domainlogic.StatusType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import domainlogic.Status;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
@@ -88,8 +88,10 @@ public class MapDatabase implements Database {
 
 	@Override
 	public Status addUser(UserData ud) {
+		Status tempStatus = new Status(StatusType.PROGRAMERROR);
 		users.put(users.size()+1, addData(ud.getUName(), ud.getPW(), "getModOf()"));
-		return null;
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
 	}
 
 	@Override
