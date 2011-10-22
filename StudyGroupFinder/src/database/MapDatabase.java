@@ -75,7 +75,7 @@ public class MapDatabase implements Database {
 	public User login(String uname, String pw) {
 		// TODO This is really bad but will work for now
 		User user = new User(Logged.LOGGEDOFF, null);
-		for(int i=1; i<users.size();i++) {
+		for(int i=1; i<=users.size();i++) {
 			if (users.get(i).get(0) == uname && users.get(i).get(1) == pw) {
 				user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2)));
 				user.setStatus(Logged.USER);
