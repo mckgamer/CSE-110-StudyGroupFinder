@@ -29,7 +29,7 @@ public class UserData implements Data {
 	 * @param pw the password of the user.
 	 * @param mod a String of group IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
 	 */
-	public UserData(int id, String uname, String pw, String mod) {
+	public UserData(int id, String uname, String pw, String mod) {   // I think we will need to have user id generated instead of having it as a parameter. -Bob F 10/22
 		this.id = id;
 		this.uname = uname;
 		this.pw = pw;
