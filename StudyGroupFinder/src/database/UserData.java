@@ -2,12 +2,39 @@ package database;
 
 import java.util.ArrayList;
 
+/** The UserData object is associated with all users in the Database. A database will parse
+ * the data it has and create a UserData object.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UserData implements Data {
-
-	int id;
-	String uname;
-	String pw;
-	ArrayList<Integer> modof;
+	
+	/** The ID of this UserData */
+	private int id;
+	
+	/** The username of this UserData */
+	private String uname;
+	
+	/** The password of this UserData */
+	private String pw;
+	
+	/** The list of modof of this UserData */
+	private ArrayList<Integer> modof;
+	
+	/** Constructs a UserData object using all it needs
+	 * 
+	 * @param id the id of the User, null if not a user yet.
+	 * @param uname the username of the user.
+	 * @param pw the password of the user.
+	 * @param mod a String of group IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
+	 */
+	public UserData(int id, String uname, String pw, String mod) {
+		this.id = id;
+		this.uname = uname;
+		this.pw = pw;
+		//TODO mod list init
+	}
 	
 	@Override //TODO
 	public boolean validate() {
@@ -22,14 +49,26 @@ public class UserData implements Data {
 		return id;
 	}
 	
+	/** Return the username String associated with this UserData.
+	 * 
+	 * @return the username String associated with this UserData.
+	 */
 	public String getUName() {
 		return uname;
 	}
 	
+	/** Return the password String associated with this UserData.
+	 * 
+	 * @return the password String associated with this UserData.
+	 */
 	public String getPW() {
 		return pw;
 	}
 	
+	/** Return the ArrayList of type Integer that represent the groups that this user is mod of.
+	 * 
+	 * @return the ArrayList of type Integer that represent the groups that this user is mod of.
+	 */ //TODO This maybe should parse it back into a string
 	public ArrayList<Integer> getModOf() {
 		return modof;
 	}
