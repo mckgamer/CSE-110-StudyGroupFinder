@@ -17,6 +17,7 @@ public class StudyGroupSystem {
 	public StudyGroupSystem(MapDatabase mapData){
 		this.database = mapData;
 	}
+	
 	/**
 	 * Login Method
 	 * @param userName
@@ -25,9 +26,11 @@ public class StudyGroupSystem {
 	 */
 	public Logged login(String userName, String pw){
 		//call database
+		
 		this.sgfUser = database.login(userName, pw);
-		return sgfUser.status;
+		return sgfUser.getStatus();
 	}
+	
 	/**
 	 * Checks to see if user is logged in
 	 * @return
