@@ -1,5 +1,6 @@
 package database;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -13,6 +14,8 @@ public class MapDatabase implements Database {
 	private Map<Integer, Vector<String>> groups;
 	
 	public MapDatabase() {
+		users = new HashMap<Integer, Vector<String>>();
+		groups = new HashMap<Integer, Vector<String>>();
 		populateUsers();
 		populateGroups();
 	}
@@ -74,8 +77,9 @@ public class MapDatabase implements Database {
 		User user = new User(Logged.LOGGEDOFF, null);
 		for(int i=1; i<users.size();i++) {
 			if (users.get(i).get(0) == uname && users.get(i).get(1) == pw) {
-				user.setUserData(new UserData(i,users.get(i).get(1),users.get(i).get(2),users.get(i).get(3)));
+				user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2)));
 				user.setStatus(Logged.USER);
+				return user;
 			}
 		}
 		user.setStatus(Logged.INVALID);

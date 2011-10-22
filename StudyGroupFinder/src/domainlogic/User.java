@@ -44,6 +44,14 @@ public class User {
 	public void setUserData(UserData ud) {
 		user = ud;
 	}
+	
+	/** Returns the {@link UserData} of this User.
+	 * 
+	 * @return the {@link UserData} of this User.
+	 */
+	public UserData getUserData() {
+		return user;
+	}
 
 	/** Sets the {@link Logged} status of this User.
 	 * 
