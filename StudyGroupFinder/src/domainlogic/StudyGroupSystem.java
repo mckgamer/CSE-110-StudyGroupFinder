@@ -114,8 +114,4 @@ public class StudyGroupSystem {
 		
 	}
 	
-	void removeUserFromGroup(){
-		
-	}
-	
 }

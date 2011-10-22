@@ -10,7 +10,7 @@ public class GroupData implements Data {
 	ArrayList<Integer> mods;
 	
 	
-	GroupData(int id, String name, String course, String mods) {
+	public GroupData(int id, String name, String course, String mods) {
 		this.id = id;
 		this.name = name;
 		this.course = course;

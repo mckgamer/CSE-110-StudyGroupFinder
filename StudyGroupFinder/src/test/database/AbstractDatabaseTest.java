@@ -7,7 +7,7 @@ import org.junit.Test;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
-
+/** When You test a database implementation, you need to extend this */
 public abstract class AbstractDatabaseTest {
 	
 	protected Database database;
