@@ -5,22 +5,32 @@ import database.UserData;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
+
+/**
+ * StudyGroupSystem class is the domain logic class for the Study Group System.
+ * The gui of the system calls methods within this class to carry out user
+ * functions. The class iterfaces with the database. A database
+ * of MapDatabase type needs to be passed into the class.
+ * @author Robert Filiczkowski
+ * Date Created 10/21/2011
+ *
+ */
 public class StudyGroupSystem {
 	
 	//Class Variables
 	private MapDatabase database = new MapDatabase();
 	private User sgfUser;
 	
-	/**Class Constructor that takes a MapDatabase as a parameter
-	 * 
+	/**
+	 * Class Constructor that takes a MapDatabase as a parameter
 	 * @param mapData
 	 */
 	public StudyGroupSystem(MapDatabase mapData){
 		this.database = mapData;
 	}
 	
-	/**Login Method
-	 * 
+	/**
+	 * Login Method
 	 * @param userName
 	 * @param pw
 	 * @return Logged Enumerator Type
@@ -33,8 +43,8 @@ public class StudyGroupSystem {
 		return sgfUser.getStatus();
 	}
 	
-	/**Checks to see if user is logged in
-	 * 
+	/**
+	 * Checks to see if user is logged in
 	 * @return Boolean True or False
 	 */
 	public boolean isLogged(){
@@ -47,8 +57,8 @@ public class StudyGroupSystem {
 			return false;
 	}
 	
-	/**Creates a new user into database
-	 * 
+	/**
+	 * Creates a new user into database
 	 * @param id
 	 * @param userName
 	 * @param pw
@@ -66,4 +76,46 @@ public class StudyGroupSystem {
 		
 		return tempStatus;
 	}
+	
+	
+	// These are list of methods identified from The subsystem interaction diagrams
+	// They will need to be implemented at some point. Not all methods will be included
+	// in phase 1 of this project.
+	
+	void logoff(){
+		
+	}
+	
+	void updateUserProfile(){
+		
+	}
+	
+	void createNewGroup(){
+		
+	}
+	
+	void getGroup(){
+		
+	}
+	
+	void addUserToGroup(){
+		
+	}
+	
+	void updateGroupData(){
+		
+	}
+	
+	void removeUserFromGroup(){
+		
+	}
+	
+	void deleteGroup(){
+		
+	}
+	
+	void removeUserFromGroup(){
+		
+	}
+	
 }
