@@ -82,8 +82,11 @@ public class StudyGroupSystem {
 	// They will need to be implemented at some point. Not all methods will be included
 	// in phase 1 of this project.
 	
-	void logoff(){
-		
+	/** Logs the user out of the program by calling the User logoff method. */
+	public void logoff(){
+		if (sgfUser != null) {
+			sgfUser.logoff();
+		}
 	}
 	
 	void updateUserProfile(){

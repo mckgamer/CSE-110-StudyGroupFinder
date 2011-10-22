@@ -31,12 +31,13 @@ public class GUIFrame extends JFrame {
 			LogInDialog ld = new LogInDialog(this);
 	        ld.setVisible(true);
 	        if (ld.getStatus() == Logged.USER) {
-				gui = new UserGUI();
+				gui = new UserGUI(this);
 			} else if (ld.getStatus() == Logged.ADMIN) {
 				//gui = new AdminGUI();
 			}
 		}
 		setContentPane(gui);
+		this.setVisible(true);
 	}
 	
 	public StudyGroupSystem getSGS() {
