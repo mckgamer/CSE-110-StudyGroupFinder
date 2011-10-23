@@ -9,7 +9,10 @@ import javax.swing.JPanel;
 import domainlogic.StudyGroupSystem;
 import domainlogic.User.Logged;
 
-/** This is the main GUI class of the program, is a JFrame and controls most of the running of the program */
+/** This is the main GUI class of the program, is a JFrame and controls most of the running of the program.
+ * 
+ * @author Michael Kirby
+ */
 public class GUIFrame extends JFrame {
 	
 	/** The {@link StudyGroupSystem} associated with this GUIFrame. */

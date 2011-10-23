@@ -4,6 +4,11 @@ import database.Data;
 import database.GroupData;
 import database.UserData;
 
+/** This Event is created when a user wants to update a group profile.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UpdateGroupProfileEvent implements Event {
 	
 	/** The {@link GroupData} object that this Event will use to complete its task. */

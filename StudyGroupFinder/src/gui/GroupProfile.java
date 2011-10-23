@@ -19,6 +19,10 @@ public class GroupProfile extends JPanel {
 	private JLabel course;
 	private JLabel description;
 	
+	/** Constructs this GroupProfile JPanel using a GroupData object.
+	 * 
+	 * @param gd the GroupData object to use for this Profile.
+	 */
 	public GroupProfile(GroupData gd) {
 		name = new JLabel(gd.getName());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));

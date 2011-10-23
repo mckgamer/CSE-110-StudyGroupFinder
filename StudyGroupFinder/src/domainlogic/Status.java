@@ -3,19 +3,21 @@ package domainlogic;
 /** Holds a StatusType, as well as a message useful for GUI */
 public class Status {
 	
-	//Class Variables
-	private String message;
-	
-	
 	/** Message associated with this Status */
-	
+	private String message;
 	
 	/** Current state of this Status */
 	private StatusType status = StatusType.UNSUBMITTED;
+	
+	/** Creates a default status with StatusType.UNSUBMITTED */
 	public Status() {
 		status = StatusType.UNSUBMITTED;
 	}
 	
+	/** Creates a status of the type specified.
+	 * 
+	 * @param stat the StatusType to set this to.
+	 */
 	public Status(StatusType stat) {
 		status = stat;
 	}
