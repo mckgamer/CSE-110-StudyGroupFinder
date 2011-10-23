@@ -28,7 +28,10 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 	/** The {@link CreateStudyGroupEvent} used by this NewGroupDialog */
 	CreateStudyGroupEvent event;
 	
+	/** The JTextField for the groups name. */
 	JTextField nameField;
+	
+	/** The JTextField for the course the group studies. */
 	JTextField courseField;
 	
 	/** Constructs this NewGroupDialog object using the {@link GUIFrame} that will display it.

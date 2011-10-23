@@ -27,9 +27,13 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	/** The {@link UpdateUserProfileEvent} used by this UpdateUserDialog */
 	UpdateUserProfileEvent event;
 	
+	/** The JTextField for the username. */
 	JTextField unameField;
+	
+	/** The JTextField for the password */
 	JTextField pwField;
 	
+	/** Since this is an update, this is the UserData as it was originally for prepopulating. */
 	UserData prepop;
 	
 	/** Constructs this UpdateUserDialog object using the {@link GUIFrame} that will display it.

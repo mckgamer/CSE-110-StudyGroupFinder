@@ -16,7 +16,11 @@ import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 
-/** UserGUI is a JPanel that manages everything that a user can do. */
+/** UserGUI is a JPanel that manages everything that a user can do.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UserGUI extends JPanel {
 
 	/** The current JPanel that this UserGUI is displaying on the left. */
@@ -56,12 +60,15 @@ public class UserGUI extends JPanel {
 		add(right);
 	}
 	
+	/** Set the right JPanel of the UserGUI and refresh the Panel. 
+	 * 
+	 * @param panel the panel to put on the right of this UserGUI.
+	 */
 	public void setRight(JPanel panel) {
 		remove(right);
 		right = panel;
 		add(right);
 		getRootPane().revalidate();
-		
 	}
 
 }

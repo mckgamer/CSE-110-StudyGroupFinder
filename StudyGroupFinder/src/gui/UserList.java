@@ -6,6 +6,11 @@ import javax.swing.JList;
 
 import database.UserData;
 
+/** UserList is a JList that can display numerous UserData by interfacing with the SGS.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UserList extends JList {
 
 	/** The parent {@link GUIFrame} of this JList */

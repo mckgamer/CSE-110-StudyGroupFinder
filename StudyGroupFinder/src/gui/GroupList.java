@@ -14,6 +14,11 @@ import javax.swing.event.ListSelectionListener;
 import database.GroupData;
 import database.UserData;
 
+/** GroupList is a JList that can display numerous GroupData by interfacing with the SGS.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class GroupList extends JList {
 	
 	/** The parent {@link GUIFrame} of this JList */
@@ -57,6 +62,10 @@ public class GroupList extends JList {
 		addListSelectionListener(ug);
 	}
 	
+	/** Returns the {@link GroupData} object for the item currently selected in this GroupList.
+	 * 
+	 * @return the {@link GroupData} object for the item currently selected in this GroupList.
+	 */
 	public GroupData getSelectedData() {
 		int temp = this.getSelectedIndex();
 		if (temp >= 0) {

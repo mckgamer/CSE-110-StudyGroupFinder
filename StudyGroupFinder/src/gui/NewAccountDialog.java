@@ -27,10 +27,13 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 	/** The {@link GUIFrame} of the program. */
 	GUIFrame parent;
 	
-	/** The {@link CreateUserEvent} associated with this Dialog */
+	/** The {@link CreateUserEvent} associated with this Dialog. */
 	CreateUserEvent event;
 	
+	/** The JTextField for the username. */
 	JTextField unameField;
+	
+	/** The JTextField for the password. */
 	JTextField pwField;
 	
 	/** Constructs this NewAccountDialog using its GUIFrame parent
