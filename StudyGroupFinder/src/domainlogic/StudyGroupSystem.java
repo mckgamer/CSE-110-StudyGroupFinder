@@ -115,6 +115,17 @@ public class StudyGroupSystem {
 		}
 		tempStatus.setStatus(StatusType.UNSUCCESSFUL);
 		return tempStatus;
+	/
+	/** Logs the user out of the program by calling the User logoff method. */
+	public void logoff(){
+		if (sgfUser != null) {
+			sgfUser.logoff();
+		}
+	}** Logs the user out of the program by calling the User logoff method. */
+	public void logoff(){
+		if (sgfUser != null) {
+			sgfUser.logoff();
+		}
 	}
 	
 	

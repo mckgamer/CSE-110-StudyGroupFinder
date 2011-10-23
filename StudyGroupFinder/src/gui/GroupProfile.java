@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 
 import database.GroupData;
 
+/** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
 public class GroupProfile extends JPanel {
 	
 	private JLabel name;
