@@ -36,8 +36,8 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		event.validate();
 		event.execute();
 		Status result = event.getStatus();
-		StatusDialog sd = new StatusDialog(result);
-		
+		StatusDialog sd = new StatusDialog(result, parent);
+		setVisible(false);
 		
 	}
 

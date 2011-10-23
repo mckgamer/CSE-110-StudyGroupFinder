@@ -62,7 +62,9 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		if (result.getStatus() == StatusType.SUCCESS) {
 			System.out.println("Worked");
 		}
-		StatusDialog sd = new StatusDialog(result);
+		StatusDialog sd = new StatusDialog(result, parent);
+		sd.setVisible(true);
+		setVisible(false);
 	}
 
 }
