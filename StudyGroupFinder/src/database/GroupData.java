@@ -18,10 +18,10 @@ public class GroupData implements Data {
 		mods = new ArrayList<Integer>();
 		users = new ArrayList<Integer>();
 		for(String i: modst.split("~")) {
-			mods.add(Integer.getInteger(i));
+			mods.add(Integer.parseInt(i));
 		}
 		for(String i: userst.split("~")) {
-			users.add(Integer.getInteger(i));
+			users.add(Integer.parseInt(i));
 		}
 	}
 	

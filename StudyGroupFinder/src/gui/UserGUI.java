@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -45,6 +46,7 @@ public class UserGUI extends JPanel {
 		//Initialize the left and right JPanels for this GUI
 		left = new JPanel();
 		left.add(new JLabel("Current and Suggested Groups Here"));
+		left.add(new JList(parent.getSGS().getLoggedUser().getModOf().toArray()));
 		right = new GroupProfile(new GroupData(1, "The Group", "CSE 110", "1~", "2~"));
 		
 		//Apply this GUI's left and right JPanels

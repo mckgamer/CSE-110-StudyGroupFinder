@@ -33,7 +33,10 @@ public class UserData implements Data {
 		this.id = id;
 		this.uname = uname;
 		this.pw = pw;
-		//TODO mod list init
+		modof = new ArrayList<Integer>();
+		for(String i: mod.split("~")) {
+			modof.add(Integer.parseInt(i));
+		}
 	}
 	
 	@Override //TODO
