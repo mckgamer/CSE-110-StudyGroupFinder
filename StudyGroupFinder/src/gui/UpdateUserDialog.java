@@ -7,6 +7,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import database.UserData;
 import domainlogic.CreateUserEvent;
@@ -25,6 +27,11 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	/** The {@link UpdateUserProfileEvent} used by this UpdateUserDialog */
 	UpdateUserProfileEvent event;
 	
+	JTextField unameField;
+	JTextField pwField;
+	
+	UserData prepop;
+	
 	/** Constructs this UpdateUserDialog object using the {@link GUIFrame} that will display it.
 	 * 
 	 * @param parent the {@link GUIFrame} that will display this UpdateUserDialog.
@@ -42,9 +49,38 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		
 		event = new UpdateUserProfileEvent(parent.getSGS());
 		
-		JButton temp = new JButton("Push");
-		temp.addActionListener(this);
-		add(temp);
+		unameField = new JTextField(10);
+		pwField = new JTextField(10);
+
+		prepop = parent.getSGS().getLoggedUser();
+		unameField.setText(prepop.getUName());
+		pwField.setText(prepop.getPW());
+		
+		//Create an array of the text and components to be displayed.
+		String msgString1 = "Username: ";
+		String msgString2 = "Password: ";
+		Object[] array = {msgString1, unameField, msgString2, pwField};
+
+		//Create an array specifying the number of dialog buttons
+		//and their text.
+		JButton submit = new JButton("Submit");
+		submit.setActionCommand("submit");
+		JButton cancel = new JButton("Cancel");
+		cancel.setActionCommand("cancel");
+		submit.addActionListener(this);
+		cancel.addActionListener(this);
+		Object[] options = {submit, cancel};
+
+		//Create the JOptionPane.
+		JOptionPane optionPane = new JOptionPane(array,
+		      JOptionPane.QUESTION_MESSAGE,
+		      JOptionPane.YES_NO_OPTION,
+		      null,
+		      options,
+		      options[0]);
+		
+		//Make this dialog display it.
+		setContentPane(optionPane);
 	}
 	
 	@Override
@@ -54,17 +90,20 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		UserData temp = parent.getSGS().getLoggedUser();
-		event.setData(new UserData(temp.getId(),"Doug",temp.getPW(), "1~2~"));
-		event.validate();
-		event.execute();
-		Status result = event.getStatus();
-		if (result.getStatus() == StatusType.SUCCESS) {
-			System.out.println("Worked");
+		if ("submit".equals(e.getActionCommand())) { //TODO this needs to update the User object for the session
+			event.setData(new UserData(prepop.getId(),unameField.getText(),pwField.getText(), "1~2~"));
+			event.validate();
+			event.execute();
+			Status result = event.getStatus();
+			if (result.getStatus() == StatusType.SUCCESS) {
+				System.out.println("Worked");
+			}
+			StatusDialog sd = new StatusDialog(result, parent);
+			sd.setVisible(true);
+			setVisible(false);
+		} else if ("cancel".equals(e.getActionCommand())) {
+			setVisible(false);
 		}
-		StatusDialog sd = new StatusDialog(result, parent);
-		sd.setVisible(true);
-		setVisible(false);
 	}
 
 }
