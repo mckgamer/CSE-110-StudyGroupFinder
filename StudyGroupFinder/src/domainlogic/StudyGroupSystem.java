@@ -65,10 +65,10 @@ public class StudyGroupSystem {
 	 * @param mod
 	 * @return A Status object 
 	 */
-	public Status createUser(int id, String userName, String pw, String mod){
+	public Status createUser(UserData u){
 		Status tempStatus = new Status();
 		// Create user data object to send to the database
-		UserData uData = new UserData(id, userName, pw, mod);
+		UserData uData = u;
 		
 		//call to database to add user
 		if(uData.validate())
@@ -83,18 +83,15 @@ public class StudyGroupSystem {
 	 * @param pw User Password
 	 * @return Status, if sucessful Status = StatusType.SUCCESSFUL, else it will return UNSUCCESSFUL
 	 */
-	public Status updateUserProfile(String uName, String pw){
+	public Status updateUserProfile(UserData u){
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		
-		//Catch empty strings
-		if(uName.isEmpty() || pw.isEmpty())
-			return tempStatus;
-		//Update User Data
 		if(isLogged()){
 			// create updated userData Object
-			UserData tempUD = new UserData(sgfUser.user.getId(), uName, pw, "modOf()");
+			UserData tempUD = sgfUser.getUserData();
+			UserData udToPass = new UserData(tempUD.getId(), u.getUName(), u.getPW(), "getModOf()");
 			// create Status object to return to GUI
-			tempStatus = database.updateUser(tempUD);
+			tempStatus = database.updateUser(udToPass);
 			return tempStatus;
 		}
 		else

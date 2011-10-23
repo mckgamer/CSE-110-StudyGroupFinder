@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import database.MapDatabase;
+import database.UserData;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
@@ -43,7 +44,8 @@ public class StudyGroupSystemTest {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
 		Status stat = new Status();
-		stat = sgs.createUser(3, "Roberto", "pw", "0~");
+		UserData u = new UserData(1, "Roberto", "pw", "modof()");
+		stat = sgs.createUser(u);
 		System.out.println(stat.getStatus());
 		assertEquals(stat.getStatus(), StatusType.SUCCESS);
 		Logged status = sgs.login("Roberto", "pw");
@@ -60,7 +62,8 @@ public class StudyGroupSystemTest {
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
 		//login
-		stat = sgs.updateUserProfile("Roberto", "HEY");
+		UserData u = new UserData(1, "Roberto", "pw", "modof()"); 
+		stat = sgs.updateUserProfile(u);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		//login
 		status = sgs.login("Bob", "pw");
