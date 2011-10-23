@@ -2,6 +2,8 @@ package database;
 
 import java.util.ArrayList;
 
+import util.StringParser;
+
 public class GroupData implements Data {
 	
 	int id;
@@ -15,14 +17,8 @@ public class GroupData implements Data {
 		this.id = id;
 		this.name = name;
 		this.course = course;
-		mods = new ArrayList<Integer>();
-		users = new ArrayList<Integer>();
-		for(String i: modst.split("~")) {
-			mods.add(Integer.parseInt(i));
-		}
-		for(String i: userst.split("~")) {
-			users.add(Integer.parseInt(i));
-		}
+		mods = StringParser.parseString(modst);
+		users = StringParser.parseString(userst);
 	}
 	
 	@Override //TODO

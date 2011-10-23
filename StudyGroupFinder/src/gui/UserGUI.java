@@ -11,6 +11,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 
@@ -41,20 +43,25 @@ public class UserGUI extends JPanel {
         
         //Set the size and layout of the Panel
 		setSize(500,400);
-		setLayout(new GridLayout(1,2));
+		setLayout(new GridLayout(1,2,15,0));
 		
 		//Initialize the left and right JPanels for this GUI
-		left = new JPanel();
-		left.add(new JLabel("Current and Suggested Groups Here"));
-		JList myGroups = new JList(parent.getSGS().getLoggedUser().getUserOf().toArray());
-		left.add(myGroups);
+		left = new UserGroupsPanel(parent, this);
 		
-		right = new GroupProfile(parent.getSGS().getGroup(1));
+		right = new JPanel();
 		//right = new JPanel();
 		
 		//Apply this GUI's left and right JPanels
 		add(left);
 		add(right);
+	}
+	
+	public void setRight(JPanel panel) {
+		remove(right);
+		right = panel;
+		add(right);
+		getRootPane().revalidate();
+		
 	}
 
 }

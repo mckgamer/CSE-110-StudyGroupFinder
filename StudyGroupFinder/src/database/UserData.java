@@ -2,6 +2,8 @@ package database;
 
 import java.util.ArrayList;
 
+import util.StringParser;
+
 /** The UserData object is associated with all users in the Database. A database will parse
  * the data it has and create a UserData object.
  * 
@@ -36,18 +38,8 @@ public class UserData implements Data {
 		this.id = id;
 		this.uname = uname;
 		this.pw = pw;
-		modof = new ArrayList<Integer>();
-		if (mod.length() > 1) {
-			for(String i: mod.split("~")) {
-				modof.add(Integer.parseInt(i));
-			}
-		}
-		userof = new ArrayList<Integer>();
-		if (mod.length() > 1) {
-			for(String i: mod.split("~")) { //TODO change to user parameter
-				userof.add(Integer.parseInt(i));
-			}
-		}
+		modof = StringParser.parseString(mod);
+		userof = StringParser.parseString(mod); //TODO change to user parameter
 	}
 	
 	@Override //TODO
