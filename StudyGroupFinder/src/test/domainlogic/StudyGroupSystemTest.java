@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import database.GroupData;
 import database.MapDatabase;
 import database.UserData;
 import domainlogic.User;
@@ -67,9 +68,33 @@ public class StudyGroupSystemTest {
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		//login
 		status = sgs.login("Bob", "pw");
-		assertTrue( status != Logged.USER);
-		
-		
+		assertTrue( status != Logged.USER);	
+	}
+	
+	@Test
+	public void createGroup() {
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		GroupData gd = new GroupData(1, "KickAss Group", "CSE 110","~2", "");
+		Status stat;
+		stat = sgs.createNewGroup(gd);
+		assertTrue(stat.getStatus() == StatusType.SUCCESS);
+		GroupData gd2 = sgs.getGroup(3);
+		System.out.println(gd2.getId());
+		System.out.println(gd2.getName());
+		System.out.println(gd2.getCourse());
 		
 	}
+	
+	@Test
+	public void getGroup() {
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		GroupData gd = sgs.getGroup(2);
+		System.out.println(gd.getId());
+		System.out.println(gd.getName());
+		System.out.println(gd.getCourse());
+		
+	}
+	
 }

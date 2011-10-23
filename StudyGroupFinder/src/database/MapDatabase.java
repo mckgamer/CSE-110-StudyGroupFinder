@@ -25,6 +25,7 @@ public class MapDatabase implements Database {
 	
 	/* Helper Method to Populate Dummy User database */
 	private void populateUsers() {
+		// User Name	//PW	//Moderator of group	// user ID
 		//ID uname Password   List of groups to which the user is mod, unique user id
 		int uniqueId = getUniqueUserId();
 		String userIdString = Integer.toString(uniqueId);
@@ -38,9 +39,14 @@ public class MapDatabase implements Database {
 	
 	/* Helper Method to Populate Dummy Groups database */
 	private void populateGroups() {
-		//ID  //Name  //Class studied  //List of mods
-		groups.put(getUniqueGroupId(), addData("The Group","CSE 110","1~"));
-		groups.put(getUniqueGroupId(), addData("Bobs Group","CSE 101","2~"));
+		//ID  //Name  //Class studied  //List of mod users // List of Users // Group ID
+		int uniqueGroupId = getUniqueGroupId();
+		String groupIdString = Integer.toString(uniqueGroupId);
+		groups.put(uniqueGroupId, addData("The Group","CSE 110","1~", "1~", groupIdString));
+		
+		uniqueGroupId = getUniqueGroupId();
+		groupIdString = Integer.toString(uniqueGroupId);
+		groups.put(uniqueGroupId, addData("Bobs Group","CSE 101","1~", "1~", groupIdString));
 	}
 	
 	/* Helper Method For Populating database */
@@ -62,17 +68,30 @@ public class MapDatabase implements Database {
 		this.groupIdCounter += 1;
 		return groupIdCounter;
 	}
-	@Override
+	
+	/**
+	 * Adds a group to the database
+	 * @return Status Object
+	 */
 	public Status addGroup(GroupData gd) {
-		groups.put(getUniqueGroupId(), addData(gd.getName(), gd.getCourse(), "getMods()"));
-		return null;
+		Status tempStatus = new Status();
+		//Generate unique Group ID and convert it to a string
+		int uniqueGroupId = getUniqueGroupId();
+		String groupIdString = Integer.toString(uniqueGroupId);
+		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), "1~","1~", groupIdString));
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
 	}
 
-	@Override
+	/**
+	 * Gets Group Data from Database
+	 * @param group id
+	 * @return GroupData Object
+	 */
 	public GroupData getGroup(int id) {
 		if (groups.containsKey(id)) {
 			Vector<String> temp = groups.get(id);
-			GroupData found = new GroupData(id, temp.get(0), temp.get(1), temp.get(2));
+			GroupData found = new GroupData(id, temp.get(0), temp.get(1), temp.get(2), temp.get(3));
 			return found;
 		}
 		return null;
@@ -90,7 +109,12 @@ public class MapDatabase implements Database {
 		return null;
 	}
 
-	@Override
+	/**
+	 * User Login
+	 * @param String User Name
+	 * @param String Password
+	 * @return User Object
+	 */
 	public User login(String uname, String pw) {
 		// TODO This is really bad but will work for now
 		User user = new User(Logged.LOGGEDOFF, null);
@@ -105,7 +129,11 @@ public class MapDatabase implements Database {
 		return user;
 	}
 
-	@Override
+	/**
+	 * Add User to Databalse
+	 * @param UserData Object
+	 * @return Status Object
+	 */
 	public Status addUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		int uniqueID = getUniqueUserId();
@@ -115,7 +143,11 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 
-	@Override
+	/**
+	 * Update user in database
+	 * @param UserData Object
+	 * @return Status Object
+	 */
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		String idString = Integer.toString(ud.getId());
@@ -126,6 +158,11 @@ public class MapDatabase implements Database {
 
 	@Override
 	public void closeConnection() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	private void arrayListToString() {
 		// TODO Auto-generated method stub
 
 	}

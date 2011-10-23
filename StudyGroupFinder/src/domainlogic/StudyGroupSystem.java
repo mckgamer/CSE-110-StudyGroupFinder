@@ -1,5 +1,6 @@
 package domainlogic;
 
+import database.GroupData;
 import database.MapDatabase;
 import database.UserData;
 import domainlogic.User;
@@ -59,10 +60,7 @@ public class StudyGroupSystem {
 	
 	/**
 	 * Creates a new user into database
-	 * @param id
-	 * @param userName
-	 * @param pw
-	 * @param mod
+	 * @param UserData Object
 	 * @return A Status object 
 	 */
 	public Status createUser(UserData u){
@@ -121,19 +119,34 @@ public class StudyGroupSystem {
 	// They will need to be implemented at some point. Not all methods will be included
 	// in phase 1 of this project.
 	
-	
+	/**
+	 * Gets User Data For logged In User
+	 * @return UserData Object
+	 */
 	public UserData getLoggedUser(){
 		return sgfUser.getUserData();
 	}
 	
 	
-	
-	void createNewGroup(){
+	/**
+	 * Create a new group with data passed by Gui
+	 * @param gd
+	 * @return Status Objects
+	 */
+	public Status createNewGroup(GroupData gd){
+		Status tempStatus = new Status();
+		tempStatus = database.addGroup(gd);
+		return tempStatus;
 		
 	}
-	
-	void getGroup(){
-		
+	/**
+	 * Gets Group Data from ID
+	 * @param id
+	 * @return GroupData Object
+	 */
+	public GroupData getGroup(int id){
+		GroupData tempData = database.getGroup(id);
+		return tempData;
 	}
 	
 	void addUserToGroup(){
