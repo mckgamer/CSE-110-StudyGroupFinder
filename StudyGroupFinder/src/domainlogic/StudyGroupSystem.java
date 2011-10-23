@@ -106,7 +106,7 @@ public class StudyGroupSystem {
 	 * Changes the status of logged in user to LOGGEDOFF
 	 * @return Status object for the gui to evaluate
 	 */
-	public Status logoff(){
+/*	public Status logoff(){
 		Status tempStatus = new Status();
 		if(isLogged()){
 			sgfUser.setStatus(Logged.LOGGEDOFF);
@@ -115,17 +115,13 @@ public class StudyGroupSystem {
 		}
 		tempStatus.setStatus(StatusType.UNSUCCESSFUL);
 		return tempStatus;
-	/
+	/*
 	/** Logs the user out of the program by calling the User logoff method. */
 	public void logoff(){
 		if (sgfUser != null) {
 			sgfUser.logoff();
 		}
-	}** Logs the user out of the program by calling the User logoff method. */
-	public void logoff(){
-		if (sgfUser != null) {
-			sgfUser.logoff();
-		}
+	
 	}
 	
 	
