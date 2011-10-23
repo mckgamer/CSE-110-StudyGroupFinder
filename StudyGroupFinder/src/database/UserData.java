@@ -37,12 +37,16 @@ public class UserData implements Data {
 		this.uname = uname;
 		this.pw = pw;
 		modof = new ArrayList<Integer>();
-		for(String i: mod.split("~")) {
-			modof.add(Integer.parseInt(i));
+		if (mod.length() > 1) {
+			for(String i: mod.split("~")) {
+				modof.add(Integer.parseInt(i));
+			}
 		}
 		userof = new ArrayList<Integer>();
-		for(String i: mod.split("~")) { //TODO change to user parameter
-			userof.add(Integer.parseInt(i));
+		if (mod.length() > 1) {
+			for(String i: mod.split("~")) { //TODO change to user parameter
+				userof.add(Integer.parseInt(i));
+			}
 		}
 	}
 	
@@ -81,6 +85,14 @@ public class UserData implements Data {
 	 */ //TODO This maybe should parse it back into a string
 	public ArrayList<Integer> getModOf() {
 		return modof;
+	}
+	
+	/** Return the ArrayList of type Integer that represent the groups that this user is user of.
+	 * 
+	 * @return the ArrayList of type Integer that represent the groups that this user is user of.
+	 */ //TODO This maybe should parse it back into a string
+	public ArrayList<Integer> getUserOf() {
+		return userof;
 	}
 
 }
