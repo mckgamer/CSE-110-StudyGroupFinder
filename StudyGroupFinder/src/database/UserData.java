@@ -22,6 +22,9 @@ public class UserData implements Data {
 	/** The list of modof of this UserData */
 	private ArrayList<Integer> modof;
 	
+	/** The list of userof of this UserData */
+	private ArrayList<Integer> userof;
+	
 	/** Constructs a UserData object using all it needs
 	 * 
 	 * @param id the id of the User, null if not a user yet.
@@ -36,6 +39,10 @@ public class UserData implements Data {
 		modof = new ArrayList<Integer>();
 		for(String i: mod.split("~")) {
 			modof.add(Integer.parseInt(i));
+		}
+		userof = new ArrayList<Integer>();
+		for(String i: mod.split("~")) { //TODO change to user parameter
+			userof.add(Integer.parseInt(i));
 		}
 	}
 	

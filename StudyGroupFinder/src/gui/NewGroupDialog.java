@@ -91,6 +91,7 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 			event.validate();
 			event.execute();
 			Status result = event.getStatus();
+			//TODO: parent.getSGS().refreshLoggedUser();
 			if (result.getStatus() == StatusType.SUCCESS) {
 				System.out.println("Worked");
 			}

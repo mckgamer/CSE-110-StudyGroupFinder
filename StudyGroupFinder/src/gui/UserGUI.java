@@ -47,7 +47,8 @@ public class UserGUI extends JPanel {
 		left = new JPanel();
 		left.add(new JLabel("Current and Suggested Groups Here"));
 		left.add(new JList(parent.getSGS().getLoggedUser().getModOf().toArray()));
-		right = new GroupProfile(new GroupData(1, "The Group", "CSE 110", "1~", "2~"));
+		
+		right = new GroupProfile(parent.getSGS().getGroup(1));
 		
 		//Apply this GUI's left and right JPanels
 		add(left);
