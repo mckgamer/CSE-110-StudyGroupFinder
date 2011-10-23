@@ -42,6 +42,8 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		this.parent = parent;
 		setTitle("Create New Account");
 		setSize(400,300);
+		setLocationRelativeTo(null);
+		
 		event = new CreateUserEvent(parent.getSGS());
 		
 		unameField = new JTextField(10);

@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -28,6 +29,7 @@ private JOptionPane optionPane;
 
 private String btnString1 = "Login";
 private String btnString2 = "Exit";
+private JButton createAcct = new JButton("Create Account");
 
 private GUIFrame gframe;
 
@@ -51,7 +53,7 @@ super(gframe, true);
 this.gframe = gframe;
 
 setTitle("Login");
- this.setSize(300,200);
+ this.setSize(400,200);
  setLocationRelativeTo(null);
 textField = new JTextField(10);
 textField2 = new JTextField(10);
@@ -63,7 +65,10 @@ Object[] array = {msgString1, textField, msgString2, textField2};
 
 //Create an array specifying the number of dialog buttons
 //and their text.
-Object[] options = {btnString1, btnString2};
+Object[] options = {btnString1, btnString2, createAcct};
+
+createAcct.setActionCommand("createAcct");
+createAcct.addActionListener(this);
 
 //Create the JOptionPane.
 optionPane = new JOptionPane(array,
@@ -107,7 +112,12 @@ optionPane.addPropertyChangeListener(this);
 
 /** This method handles events for the text field. */
 public void actionPerformed(ActionEvent e) {
-optionPane.setValue(btnString1);
+	if ("createAcct".equals(e.getActionCommand())) {
+		NewAccountDialog nad = new NewAccountDialog(gframe);
+		nad.setVisible(true);
+	} else {
+		optionPane.setValue(btnString1);
+	}
 }
 
 /** This method reacts to state changes in the option pane. */
