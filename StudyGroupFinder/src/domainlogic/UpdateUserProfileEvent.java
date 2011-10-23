@@ -3,6 +3,11 @@ package domainlogic;
 import database.Data;
 import database.UserData;
 
+/** This event is created by a {@link UpdateUserDialog}.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UpdateUserProfileEvent implements Event {
 
 	/** The {@link UserData} object that this Event will use to complete its task. */

@@ -1,6 +1,10 @@
 package domainlogic;
 
-/** Holds a StatusType, as well as a message useful for GUI */
+/** Holds a StatusType, as well as a message useful for GUI 
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class Status {
 	
 	/** Message associated with this Status */

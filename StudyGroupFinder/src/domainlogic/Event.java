@@ -2,6 +2,11 @@ package domainlogic;
 
 import database.Data;
 
+/** Events are created by the GUI to carry out whatever their task may be. They essentially interface
+ * between the StudyGroupSystem and GUI.
+ * @author Michael Kirby
+ *
+ */
 public interface Event {
 	
 	/** Carries out event and updates Status Variable */
