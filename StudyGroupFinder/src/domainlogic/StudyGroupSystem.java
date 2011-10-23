@@ -121,7 +121,7 @@ public class StudyGroupSystem {
 		if (sgfUser != null) {
 			sgfUser.logoff();
 		}
-	
+	  
 	}
 	
 	
