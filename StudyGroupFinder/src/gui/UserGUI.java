@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import database.GroupData;
 
 /** UserGUI is a JPanel that manages everything that a user can do. */
-public class UserGUI extends JPanel implements ActionListener {
+public class UserGUI extends JPanel {
 
 	/** The current JPanel that this UserGUI is displaying on the left. */
 	private JPanel left;
@@ -30,49 +30,26 @@ public class UserGUI extends JPanel implements ActionListener {
 	 * @param parent the {@link GUIFrame} that will display this UserGUI.
 	 */
 	public UserGUI(GUIFrame parent) {
+		
+		//Give this GUI a reference to its GUIFrame parent
 		this.parent = parent;
-		JMenuBar menubar = new JMenuBar();
-        JMenu menu = new JMenu("Study Group");
-        JMenuItem menuItem = new JMenuItem("New Study Group");
-        menuItem.setEnabled(false);
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Check For Invites");
-        menuItem.setEnabled(false);
-        menu.add(menuItem);
-        menubar.add(menu);
-        
-        menu = new JMenu("My Account");
-        menuItem = new JMenuItem("My Profile");
-        menuItem.setEnabled(false);
-        menu.add(menuItem);
-        menu.addSeparator();
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Log Off");
-        menuItem.addActionListener(this);
-        menu.add(menuItem);
-        menubar.add(menu);
-        
-        menu = new JMenu("Help");
-        menuItem = new JMenuItem("About StudyGroupFinder");
-        menu.add(menuItem);
-        menubar.add(menu);
-        
-        
+		
+		//Set the menubar of the GUIFrame to a UserMenu
+		UserMenu menubar = new UserMenu(parent);
         parent.setJMenuBar(menubar);
         
-        
+        //Set the size and layout of the Panel
 		setSize(500,400);
 		setLayout(new GridLayout(1,2));
-		add(new JLabel("Current and Suggested Groups Here"));
-		add(new GroupProfile(new GroupData(1, "The Group", "CSE 110", "1~")));
+		
+		//Initialize the left and right JPanels for this GUI
+		left = new JPanel();
+		left.add(new JLabel("Current and Suggested Groups Here"));
+		right = new GroupProfile(new GroupData(1, "The Group", "CSE 110", "1~"));
+		
+		//Apply this GUI's left and right JPanels
+		add(left);
+		add(right);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		parent.getSGS().logoff();
-		if (parent.getSGS().isLogged() == false) {
-			parent.setVisible(false);
-			parent.runProgram();
-		}
-	}
 }

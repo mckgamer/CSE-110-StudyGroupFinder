@@ -52,6 +52,7 @@ this.gframe = gframe;
 
 setTitle("Login");
  this.setSize(300,200);
+ setLocationRelativeTo(null);
 textField = new JTextField(10);
 textField2 = new JTextField(10);
 

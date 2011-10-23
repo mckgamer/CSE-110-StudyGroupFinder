@@ -19,5 +19,11 @@ public interface Event {
 	 * @return this Events {@link Data} object
 	 */
 	Data getData();
+	
+	/** Sets the data object of this Event.
+	 * 
+	 * @param data the Data object to set to.
+	 */
+	void setData(Data data);
 
 }

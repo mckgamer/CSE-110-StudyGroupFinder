@@ -26,6 +26,7 @@ public class GUIFrame extends JFrame {
 		this.sgs = sgs;
 		setTitle("Study Group Finder 0.1");
         setMinimumSize(new Dimension(740,500));
+        setLocationRelativeTo(null);
 
         gui = new JPanel();
 	}
