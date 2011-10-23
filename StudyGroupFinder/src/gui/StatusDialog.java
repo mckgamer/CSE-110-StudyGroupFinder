@@ -1,7 +1,12 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import domainlogic.Status;
 import domainlogic.StatusType;
@@ -11,7 +16,7 @@ import domainlogic.StatusType;
  * @author Michael Kirby
  *
  */
-public class StatusDialog extends JDialog {
+public class StatusDialog extends JDialog implements ActionListener {
 
 	/** The {@link Status} object associated with this StatusDialog. */
 	private Status status;
@@ -29,15 +34,32 @@ public class StatusDialog extends JDialog {
 		this.parent = parent;
 		this.status = status;
 		setTitle("Result");
-		setSize(200,100);
+		setSize(250,150);
 		setLocationRelativeTo(null);
+		String message;
 		
 		if (status.getStatus() == StatusType.SUCCESS) {
-			add(new JLabel("Success! " + status.getMessage()));
+			message = "Success! " + status.getMessage();
 		} else if (status.getStatus() == StatusType.INVALID){
-			add(new JLabel("Invalid data entered! " + status.getMessage()));
+			message = "Invalid data entered! " + status.getMessage();
 		} else {
-			add(new JLabel("Failure! " + status.getMessage()));
+			message = "Failure! " + status.getMessage();
 		}
+		
+		//Create the JOptionPane.
+		JButton ok = new JButton("Ok");
+		ok.addActionListener(this);
+		Object options[] = {ok};
+		JOptionPane optionPane = new JOptionPane(message,
+		      JOptionPane.INFORMATION_MESSAGE,
+		      JOptionPane.DEFAULT_OPTION, null, options);
+		
+		//Make this dialog display it.
+		setContentPane(optionPane);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		setVisible(false);
 	}
 }
