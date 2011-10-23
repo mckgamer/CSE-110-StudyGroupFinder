@@ -1,5 +1,6 @@
 package domainlogic;
 
+import database.GroupData;
 import database.MapDatabase;
 import database.UserData;
 import domainlogic.User;
@@ -128,12 +129,16 @@ public class StudyGroupSystem {
 	
 	
 	
-	void createNewGroup(){
+	public Status createNewGroup(GroupData gd){
+		Status tempStatus = new Status();
+		tempStatus = database.addGroup(gd);
+		return tempStatus;
 		
 	}
 	
-	void getGroup(){
-		
+	public GroupData getGroup(int id){
+		GroupData tempData = database.getGroup(id);
+		return tempData;
 	}
 	
 	void addUserToGroup(){
