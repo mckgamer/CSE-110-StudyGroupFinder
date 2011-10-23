@@ -79,13 +79,12 @@ public class StudyGroupSystem {
 	
 	/**
 	 * This function updates user data if the user is logged in
-	 * @param uName User Name
-	 * @param pw User Password
+	 * @param UserObject
 	 * @return Status, if sucessful Status = StatusType.SUCCESSFUL, else it will return UNSUCCESSFUL
 	 */
 	public Status updateUserProfile(UserData u){
-		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		
+		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		if(isLogged()){
 			tempStatus = database.updateUser(u);
 			return tempStatus;
@@ -122,6 +121,10 @@ public class StudyGroupSystem {
 	// They will need to be implemented at some point. Not all methods will be included
 	// in phase 1 of this project.
 	
+	
+	public UserData getLoggedUser(){
+		return sgfUser.getUserData();
+	}
 	
 	
 	
