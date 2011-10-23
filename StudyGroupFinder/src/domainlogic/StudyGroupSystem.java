@@ -87,11 +87,7 @@ public class StudyGroupSystem {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		
 		if(isLogged()){
-			// create updated userData Object
-			UserData tempUD = sgfUser.getUserData();
-			UserData udToPass = new UserData(tempUD.getId(), u.getUName(), u.getPW(), "getModOf()");
-			// create Status object to return to GUI
-			tempStatus = database.updateUser(udToPass);
+			tempStatus = database.updateUser(u);
 			return tempStatus;
 		}
 		else

@@ -62,7 +62,7 @@ public class StudyGroupSystemTest {
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
 		//login
-		UserData u = new UserData(1, "Roberto", "pw", "modof()"); 
+		UserData u = new UserData(2, "Roberto", "pw", "modof()"); 
 		stat = sgs.updateUserProfile(u);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		//login
