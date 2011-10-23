@@ -12,26 +12,35 @@ public class MapDatabase implements Database {
 
 	private Map<Integer, Vector<String>> users;
 	private Map<Integer, Vector<String>> groups;
+	private int userIdCounter;
+	private int groupIdCounter;
 	
 	public MapDatabase() {
 		users = new HashMap<Integer, Vector<String>>();
 		groups = new HashMap<Integer, Vector<String>>();
+		userIdCounter =0;
 		populateUsers();
 		populateGroups();
 	}
 	
 	/* Helper Method to Populate Dummy User database */
 	private void populateUsers() {
-		//ID uname Password   List of groups to which the user is mod
-		users.put(1, addData("Mike","pw","1~"));
-		users.put(2, addData("Bob","pw","2~"));
+		//ID uname Password   List of groups to which the user is mod, unique user id
+		int uniqueId = getUniqueUserId();
+		String userIdString = Integer.toString(uniqueId);
+		users.put(uniqueId, addData("Mike","pw","1~",userIdString));
+		
+		uniqueId = getUniqueUserId();
+		userIdString = Integer.toString(uniqueId);
+		users.put(uniqueId, addData("Bob","pw","2~", userIdString));
 	}
+	
 	
 	/* Helper Method to Populate Dummy Groups database */
 	private void populateGroups() {
 		//ID  //Name  //Class studied  //List of mods
-		groups.put(1, addData("The Group","CSE 110","1~"));
-		groups.put(1, addData("Bobs Group","CSE 101","2~"));
+		groups.put(getUniqueGroupId(), addData("The Group","CSE 110","1~"));
+		groups.put(getUniqueGroupId(), addData("Bobs Group","CSE 101","2~"));
 	}
 	
 	/* Helper Method For Populating database */
@@ -42,10 +51,20 @@ public class MapDatabase implements Database {
 		}
 		return temp;
 	}
+	/* Create a unique user id for key of hash map*/
+	private int getUniqueUserId(){
+		this.userIdCounter += 1;
+		return userIdCounter;
+	}
 	
+	/* Create a unique group id for key of hash map*/
+	private int getUniqueGroupId(){
+		this.groupIdCounter += 1;
+		return groupIdCounter;
+	}
 	@Override
 	public Status addGroup(GroupData gd) {
-		groups.put(groups.size()+1, addData(gd.getName(), gd.getCourse(), "getMods()"));
+		groups.put(getUniqueGroupId(), addData(gd.getName(), gd.getCourse(), "getMods()"));
 		return null;
 	}
 
@@ -88,16 +107,21 @@ public class MapDatabase implements Database {
 
 	@Override
 	public Status addUser(UserData ud) {
-		Status tempStatus = new Status(StatusType.PROGRAMERROR);
-		users.put(users.size()+1, addData(ud.getUName(), ud.getPW(), "getModOf()"));
+		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
+		int uniqueID = getUniqueUserId();
+		String uniqueStringID = Integer.toString(uniqueID);
+		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "getModOf()", uniqueStringID));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
 
 	@Override
 	public Status updateUser(UserData ud) {
-		// TODO Auto-generated method stub
-		return null;
+		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
+		String idString = Integer.toString(ud.getId());
+		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(), "ModOf()", idString));
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
 	}
 
 	@Override

@@ -15,13 +15,26 @@ import domainlogic.User.Logged;
 public class StudyGroupSystemTest {
 	
 	@Test
-	public void testIfUserExists() {
+	public void testLogin() {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
-		Logged status = sgs.login("Mike", "pw");
+		Logged status = sgs.login("Bob", "pw");
 		assertNotNull(status);
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
+
+	}
+	
+	@Test
+	public void testLoginNullStrings() {
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		String uName="";
+		String pw="";
+		Logged status = sgs.login(uName, pw);
+		assertNotNull(status);
+		assertTrue( status == Logged.INVALID);
+		assertTrue(!sgs.isLogged());
 
 	}
 	
@@ -35,5 +48,25 @@ public class StudyGroupSystemTest {
 		assertEquals(stat.getStatus(), StatusType.SUCCESS);
 		Logged status = sgs.login("Roberto", "pw");
 		assertTrue( status == Logged.USER);
+	}
+	
+	@Test
+	public void testUpdateProfile(){
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		Status stat;
+		Logged status = sgs.login("Bob", "pw");
+		assertNotNull(status);
+		assertTrue( status == Logged.USER);
+		assertTrue(sgs.isLogged());
+		//login
+		stat = sgs.updateUserProfile("Roberto", "HEY");
+		assertTrue(stat.getStatus() == StatusType.SUCCESS);
+		//login
+		status = sgs.login("Bob", "pw");
+		assertTrue( status != Logged.USER);
+		
+		
+		
 	}
 }

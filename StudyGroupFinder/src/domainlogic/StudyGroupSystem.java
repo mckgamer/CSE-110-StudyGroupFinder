@@ -77,18 +77,53 @@ public class StudyGroupSystem {
 		return tempStatus;
 	}
 	
+	/**
+	 * This function updates user data if the user is logged in
+	 * @param uName User Name
+	 * @param pw User Password
+	 * @return Status, if sucessful Status = StatusType.SUCCESSFUL, else it will return UNSUCCESSFUL
+	 */
+	public Status updateUserProfile(String uName, String pw){
+		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
+		
+		//Catch empty strings
+		if(uName.isEmpty() || pw.isEmpty())
+			return tempStatus;
+		//Update User Data
+		if(isLogged()){
+			// create updated userData Object
+			UserData tempUD = new UserData(sgfUser.user.getId(), uName, pw, "modOf()");
+			// create Status object to return to GUI
+			tempStatus = database.updateUser(tempUD);
+			return tempStatus;
+		}
+		else
+			// Return program error if user is not logged in.
+			return tempStatus;
+	}
+	
+	/**
+	 * Changes the status of logged in user to LOGGEDOFF
+	 * @return Status object for the gui to evaluate
+	 */
+	public Status logoff(){
+		Status tempStatus = new Status();
+		if(isLogged()){
+			sgfUser.setStatus(Logged.LOGGEDOFF);
+			tempStatus.setStatus(StatusType.SUCCESS);
+			return tempStatus;
+		}
+		tempStatus.setStatus(StatusType.UNSUCCESSFUL);
+		return tempStatus;
+	}
+	
 	
 	// These are list of methods identified from The subsystem interaction diagrams
 	// They will need to be implemented at some point. Not all methods will be included
 	// in phase 1 of this project.
 	
-	void logoff(){
-		
-	}
 	
-	void updateUserProfile(){
-		
-	}
+	
 	
 	void createNewGroup(){
 		
