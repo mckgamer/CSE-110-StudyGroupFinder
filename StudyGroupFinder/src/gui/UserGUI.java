@@ -34,7 +34,8 @@ public class UserGUI extends JPanel implements ActionListener {
 		JMenuBar menubar = new JMenuBar();
         JMenu menu = new JMenu("Study Group");
         JMenuItem menuItem = new JMenuItem("New Study Group");
-        menuItem.setEnabled(false);
+        menuItem.setActionCommand("New Group");
+        menuItem.addActionListener(this);
         menu.add(menuItem);
         menuItem = new JMenuItem("Check For Invites");
         menuItem.setEnabled(false);
@@ -48,6 +49,7 @@ public class UserGUI extends JPanel implements ActionListener {
         menu.addSeparator();
         menu.add(menuItem);
         menuItem = new JMenuItem("Log Off");
+        menuItem.setActionCommand("Log Off");
         menuItem.addActionListener(this);
         menu.add(menuItem);
         menubar.add(menu);
@@ -69,10 +71,15 @@ public class UserGUI extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		parent.getSGS().logoff();
-		if (parent.getSGS().isLogged() == false) {
-			parent.setVisible(false);
-			parent.runProgram();
+		if ("Log Off".equals(e.getActionCommand())) {
+			parent.getSGS().logoff();
+			if (parent.getSGS().isLogged() == false) {
+				parent.setVisible(false);
+				parent.runProgram();
+			}
+		} else if("New Group".equals(e.getActionCommand())) {
+			NewGroupDialog ngd = new NewGroupDialog(parent);
+	        ngd.setVisible(true);
 		}
 	}
 }

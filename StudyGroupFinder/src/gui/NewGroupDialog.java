@@ -1,5 +1,29 @@
 package gui;
 
-public class NewGroupDialog {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JDialog;
+
+public class NewGroupDialog extends JDialog implements ActionListener, PropertyChangeListener {
+
+	GUIFrame parent;
+	
+	public NewGroupDialog(GUIFrame parent) {
+		this.parent = parent;
+		setTitle("New Study Group");
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+	}
 
 }
