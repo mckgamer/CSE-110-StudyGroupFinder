@@ -68,7 +68,11 @@ public class MapDatabase implements Database {
 		this.groupIdCounter += 1;
 		return groupIdCounter;
 	}
-	@Override
+	
+	/**
+	 * Adds a group to the database
+	 * @return Status Object
+	 */
 	public Status addGroup(GroupData gd) {
 		Status tempStatus = new Status();
 		//Generate unique Group ID and convert it to a string
@@ -79,7 +83,11 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 
-	@Override
+	/**
+	 * Gets Group Data from Database
+	 * @param group id
+	 * @return GroupData Object
+	 */
 	public GroupData getGroup(int id) {
 		if (groups.containsKey(id)) {
 			Vector<String> temp = groups.get(id);
@@ -101,7 +109,12 @@ public class MapDatabase implements Database {
 		return null;
 	}
 
-	@Override
+	/**
+	 * User Login
+	 * @param String User Name
+	 * @param String Password
+	 * @return User Object
+	 */
 	public User login(String uname, String pw) {
 		// TODO This is really bad but will work for now
 		User user = new User(Logged.LOGGEDOFF, null);
@@ -116,7 +129,11 @@ public class MapDatabase implements Database {
 		return user;
 	}
 
-	@Override
+	/**
+	 * Add User to Databalse
+	 * @param UserData Object
+	 * @return Status Object
+	 */
 	public Status addUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		int uniqueID = getUniqueUserId();
@@ -126,7 +143,11 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 
-	@Override
+	/**
+	 * Update user in database
+	 * @param UserData Object
+	 * @return Status Object
+	 */
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		String idString = Integer.toString(ud.getId());
