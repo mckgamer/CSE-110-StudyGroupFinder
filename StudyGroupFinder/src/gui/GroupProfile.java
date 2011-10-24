@@ -64,14 +64,14 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         JLabel meet = new JLabel("Meetings");
         meet.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(meet);
+        
+        UserList userList = new UserList(parent, this, gd.getMods().toArray()); //TODO Users Also
         /*
-        UserList userList = new UserList(parent, this, gd.getUsers().toArray());
-        */
         ArrayList<Integer> temp = gd.getUsers();
         temp.addAll(gd.getMods());
         Object[] members = temp.toArray();
-        JScrollPane membersList = new JScrollPane(new JList(members));
-       // JScrollPane membersList = new JScrollPane(userList);
+        JScrollPane membersList = new JScrollPane(new JList(members));*/
+        JScrollPane membersList = new JScrollPane(userList);
         membersList.setPreferredSize(new Dimension(40,50));
         submembPan.add(membersList);
         JLabel meets = new JLabel("We meet every 2 days.");

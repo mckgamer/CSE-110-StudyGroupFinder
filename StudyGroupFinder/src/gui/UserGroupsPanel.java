@@ -27,7 +27,7 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		setLayout(new GridLayout(4,1));
 		
 		add(new JLabel("Current Groups"));
-		GroupList myGroups = new GroupList(parent, this, parent.getSGS().getLoggedUser().getUserOf().toArray());
+		GroupList myGroups = new GroupList(parent, this, parent.getSGS().getLoggedUser().getModOf().toArray()); //TODO user also
 		JScrollPane mg = new JScrollPane(myGroups);
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
