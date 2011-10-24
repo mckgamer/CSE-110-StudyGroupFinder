@@ -46,7 +46,7 @@ public class GroupData implements Data {
 	@Override //TODO
 	public boolean validate() {
 		if (name != null && course != null && mods != null) {
-			if (name.length() > 1 && course.length() > 1 && mods.size() >= 1)
+			if (name.length() > 1 && course.length() > 1)
 			return true;
 		}
 		return false;
