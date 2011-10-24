@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import database.GroupData;
+import domainlogic.AddUserToGroupEvent;
+import domainlogic.RemoveUserFromGroupEvent;
 import domainlogic.UpdateGroupProfileEvent;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
@@ -86,6 +88,8 @@ public class GroupProfile extends JPanel implements ActionListener {
          //TODO Moderator buttons here
         	JButton remove = new JButton("Remove User");
         	remove.setEnabled(false);
+        	remove.setActionCommand("remove");
+            remove.addActionListener(this);
             buttons.add(remove);
             JButton edit = new JButton("Edit Group");
             edit.setActionCommand("edit");
@@ -95,14 +99,14 @@ public class GroupProfile extends JPanel implements ActionListener {
 	        if (parent.getSGS().getLoggedUser().isUserOf(gd.getId())) {
 	        	//Add the Leave Button
 	            JButton leave = new JButton("Leave");
-	            //join.setActionCommand("Leave");
-	            //join.addActionListener(this);
+	            leave.setActionCommand("leave");
+	            leave.addActionListener(this);
 	            buttons.add(leave);
 	        } else {
 		        // Add The Join Button
 		        JButton join = new JButton("Join");
-		        //join.setActionCommand("Join");
-		        //join.addActionListener(this);
+		        join.setActionCommand("join");
+		        join.addActionListener(this);
 		        buttons.add(join);
 	        }
         }
@@ -121,6 +125,24 @@ public class GroupProfile extends JPanel implements ActionListener {
 		if ("edit".equals(e.getActionCommand())) {
 			UpdateGroupDialog ugpd = new UpdateGroupDialog(parent, gd.getId()); 
 			ugpd.setVisible(true);
+		} else if ("leave".equals(e.getActionCommand())) {
+			//TODO show confirmation
+			RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), parent.getSGS().getLoggedUser().getId(),gd.getId());
+			rufg.validate();
+			rufg.execute();
+			//TODO needs to refresh this Panel as well
+		} else if ("join".equals(e.getActionCommand())) {
+			//TODO show confirmation
+			AddUserToGroupEvent autg = new AddUserToGroupEvent(parent.getSGS(), parent.getSGS().getLoggedUser().getId(),gd.getId());
+			autg.validate();
+			autg.execute();
+			//TODO needs to refresh this Panel as well
+		} else if ("remove".equals(e.getActionCommand())) {
+			//TODO show confirmation
+			RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), 1 ,gd.getId());//TODO what userid? is this
+			rufg.validate();
+			rufg.execute();
+			//TODO needs to refresh this Panel as well
 		}
 	}
 

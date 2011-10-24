@@ -13,11 +13,9 @@ import javax.swing.JTextField;
 import util.StringParser;
 
 import database.GroupData;
-import database.UserData;
 import domainlogic.Status;
 import domainlogic.StatusType;
 import domainlogic.UpdateGroupProfileEvent;
-import domainlogic.UpdateUserProfileEvent;
 
 public class UpdateGroupDialog extends JDialog implements ActionListener, PropertyChangeListener {
 	
