@@ -45,7 +45,7 @@ public class StudyGroupSystemTest {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
 		Status stat = new Status();
-		UserData u = new UserData(1, "Roberto", "pw", "modof()");
+		UserData u = new UserData(1, "Roberto", "pw", "~");
 		stat = sgs.createUser(u);
 		System.out.println(stat.getStatus());
 		assertEquals(stat.getStatus(), StatusType.SUCCESS);
@@ -63,7 +63,7 @@ public class StudyGroupSystemTest {
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
 		//login
-		UserData u = new UserData(2, "Roberto", "pw", "modof()"); 
+		UserData u = new UserData(2, "Roberto", "pw", "~"); 
 		stat = sgs.updateUserProfile(u);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		//login
@@ -75,15 +75,15 @@ public class StudyGroupSystemTest {
 	public void createGroup() {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
-		GroupData gd = new GroupData(1, "KickAss Group", "CSE 110","~2", "");
 		Status stat;
+		Logged status = sgs.login("Bob", "pw");		
+		GroupData gd = new GroupData(1, "KickAss Group", "CSE 110", "1" , "1");
 		stat = sgs.createNewGroup(gd);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		GroupData gd2 = sgs.getGroup(3);
 		System.out.println(gd2.getId());
 		System.out.println(gd2.getName());
 		System.out.println(gd2.getCourse());
-		
 	}
 	
 	@Test

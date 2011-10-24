@@ -82,10 +82,10 @@ public class MapDatabase implements Database {
 		//Generate unique Group ID and convert it to a string
 		int uniqueGroupId = getUniqueGroupId();
 		String groupIdString = Integer.toString(uniqueGroupId);
-		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()) ,"1~", groupIdString));
+		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()) ,"~", groupIdString));
 		//Update user profile
 		UserData tempUD = getUser(uID);
-		tempUD.setMod(uID);
+		tempUD.setMod(uniqueGroupId);
 		updateUser(tempUD);
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
@@ -173,11 +173,6 @@ public class MapDatabase implements Database {
 	
 	@Override
 	public void closeConnection() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	private void arrayListToString() {
 		// TODO Auto-generated method stub
 
 	}
