@@ -30,8 +30,7 @@ public class AddUserToGroupEvent implements Event {
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-
+		// TODO This needs to check that the user isnt already in the group, and make sure both group and user doesn't think they are
 	}
 
 	@Override

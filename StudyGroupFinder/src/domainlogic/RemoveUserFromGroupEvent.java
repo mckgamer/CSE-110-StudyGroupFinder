@@ -5,6 +5,7 @@ import database.GroupData;
 
 public class RemoveUserFromGroupEvent implements Event {
 
+	//TODO I think I'm going to add another Data impl for this - Michael Kirby 10/24
 	private int userId;
 	private int groupId;
 	
@@ -30,8 +31,7 @@ public class RemoveUserFromGroupEvent implements Event {
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-		
+		// TODO This needs to make sure the user is in the group and both user and group agree that they are
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 import domainlogic.AddUserToGroupEvent;
+import domainlogic.DeleteGroupEvent;
 import domainlogic.RemoveUserFromGroupEvent;
 import domainlogic.UpdateGroupProfileEvent;
 
@@ -143,19 +144,26 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), parent.getSGS().getLoggedUser().getId(),gd.getId());
 			rufg.validate();
 			rufg.execute();
-			//TODO needs to refresh this Panel as well
+			parent.getGUI().setRight(new GroupProfile(parent, gd)); //TODO is this efficient enough? Maybe hack it till next time loaded?
 		} else if ("join".equals(e.getActionCommand())) {
 			//TODO show confirmation
 			AddUserToGroupEvent autg = new AddUserToGroupEvent(parent.getSGS(), parent.getSGS().getLoggedUser().getId(),gd.getId());
 			autg.validate();
 			autg.execute();
-			//TODO needs to refresh this Panel as well
+			parent.getGUI().setRight(new GroupProfile(parent, gd)); //TODO is this efficient enough? Maybe hack it till next time loaded?
 		} else if ("remove".equals(e.getActionCommand())) {
 			//TODO show confirmation
 			RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), 1 ,gd.getId());//TODO what userid? is this
 			rufg.validate();
 			rufg.execute();
-			//TODO needs to refresh this Panel as well
+			parent.getGUI().setRight(new GroupProfile(parent, gd)); //TODO is this efficient enough? Maybe hack it till next time loaded?
+		} else if ("delete".equals(e.getActionCommand())) {
+			//TODO DEFINITELY show confirmation
+			DeleteGroupEvent dg = new DeleteGroupEvent(parent.getSGS());
+			dg.setData(gd);
+			dg.validate();
+			dg.execute();
+			parent.getGUI().setRight(new JPanel());
 		}
 	}
 

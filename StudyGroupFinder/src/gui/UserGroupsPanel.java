@@ -21,20 +21,27 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 	/** The GUIFrame of the program */
 	GUIFrame parent;
 	
+	/** THis GroupList displays the users current groups */
+	GroupList currGroup;
+	
+	/** This GroupList displays the users suggest groups */
+	GroupList suggGroup;
+	
 	public UserGroupsPanel(GUIFrame parent) {
 		this.parent = parent;
 		
 		setLayout(new GridLayout(4,1));
 		
 		add(new JLabel("Current Groups"));
-		GroupList myGroups = new GroupList(parent, this, parent.getSGS().getLoggedUser().getModOf().toArray()); //TODO user also
-		JScrollPane mg = new JScrollPane(myGroups);
+		currGroup = new GroupList(parent, this, parent.getSGS().getLoggedUser().getModOf().toArray()); //TODO user also
+		JScrollPane mg = new JScrollPane(currGroup);
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
 		add(new JLabel("Suggested Groups"));
-		Object[] empty = {};
-		GroupList suggestGroups = new GroupList(parent, this, empty);
-		JScrollPane sg = new JScrollPane(suggestGroups);
+		Object[] empty = {2};
+		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups().toArray()); //TODO getSugGroups() sgs
+		suggGroup = new GroupList(parent, this, empty);
+		JScrollPane sg = new JScrollPane(suggGroup);
 		sg.setPreferredSize(new Dimension(40,50));
 		add(sg);
 	}
@@ -43,6 +50,11 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting() == false) {
 			GroupData temp = ((GroupList)e.getSource()).getSelectedData();
+			if ((GroupList)e.getSource() == currGroup) {
+				suggGroup.removeSelectionInterval(0, 1);
+			} else {
+				currGroup.removeSelectionInterval(0, 1);
+			}
 			if (temp != null) {
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(temp.getId())));
 			} else {
