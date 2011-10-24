@@ -31,11 +31,11 @@ public class MapDatabase implements Database {
 		//ID uname Password   List of groups to which the user is mod, unique user id
 		int uniqueId = getUniqueUserId();
 		String userIdString = Integer.toString(uniqueId);
-		users.put(uniqueId, addData("Mike","pw","1~",userIdString));
+		users.put(uniqueId, addData("Mike","pw","1~","~", userIdString));
 		
 		uniqueId = getUniqueUserId();
 		userIdString = Integer.toString(uniqueId);
-		users.put(uniqueId, addData("Bob","pw","2~", userIdString));
+		users.put(uniqueId, addData("Bob","pw","2~", "~", userIdString));
 	}
 	
 	
@@ -72,6 +72,7 @@ public class MapDatabase implements Database {
 	
 	/**
 	 * Adds a group to the database
+	 * @param GroupData
 	 * @return Status Object
 	 */
 	public Status addGroup(GroupData gd) {
@@ -83,7 +84,7 @@ public class MapDatabase implements Database {
 		String groupIdString = Integer.toString(uniqueGroupId);
 		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()) ,"~", groupIdString));
 		//Update user profile
-		UserData tempUD = getUser(uID);
+		UserData tempUD = getUserData(uID);
 		tempUD.setMod(uniqueGroupId);
 		updateUser(tempUD);
 		tempStatus.setStatus(StatusType.SUCCESS);
@@ -119,8 +120,32 @@ public class MapDatabase implements Database {
 
 	@Override
 	public Status addUserToGroup(int userid, int groupid) {
-		// TODO Auto-generated method stub
-		return null;
+		//Need to get the GroupData and UserData Objects
+		// Need to add userid to group users Array List.
+		UserData tempUD = this.getUserData(userid);
+		GroupData tempGD = this.getGroup(groupid);
+		Status tempStatus = new Status();
+		//Update GroupData
+		tempGD.setUser(userid);
+		//Update UserData
+		tempUD.setUser(groupid);
+		//UpdateGroup
+		this.updateGroup(tempGD);
+		//Update User
+		this.updateUser(tempUD);
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
+	}
+	
+	/**
+	 * Get User Data
+	 * @param id
+	 * @return User Data
+	 */
+	public UserData getUserData(int id) {
+		Vector<String> temp = users.get(id);
+		UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2), temp.get(3));
+		return tempUD;
 	}
 
 	@Override
@@ -140,7 +165,7 @@ public class MapDatabase implements Database {
 		User user = new User(Logged.LOGGEDOFF, null);
 		for(int i=1; i<=users.size();i++) {
 			if (users.get(i).get(0).equals(uname) && users.get(i).get(1).equals(pw)) {
-				user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2)));
+				user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2),users.get(i).get(3)));
 				user.setStatus(Logged.USER);
 				return user;
 			}
@@ -158,7 +183,7 @@ public class MapDatabase implements Database {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		int uniqueID = getUniqueUserId();
 		String uniqueStringID = Integer.toString(uniqueID);
-		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "~", uniqueStringID));
+		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "~", "~", uniqueStringID));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
@@ -171,16 +196,12 @@ public class MapDatabase implements Database {
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		String idString = Integer.toString(ud.getId());
-		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(),StringParser.unParseArray(ud.getModOf()), idString));
+		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(),StringParser.unParseArray(ud.getModOf()), StringParser.unParseArray(ud.getUserOf()), idString));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
 
-	public UserData getUser(int id){
-		Vector<String> temp = users.get(id);
-		UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2));
-		return tempUD;
-	}
+
 	
 	
 	@Override

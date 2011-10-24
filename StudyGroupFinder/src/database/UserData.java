@@ -90,6 +90,10 @@ public class UserData implements Data {
 		modof.add(id);
 	}
 	
+	public void setUser(int id){
+		userof.add(id);
+	}
+	
 	public boolean isUserOf(int groupId) {
 		return userof.contains(groupId);
 	}

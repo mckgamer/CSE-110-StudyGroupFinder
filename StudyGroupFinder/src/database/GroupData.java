@@ -80,9 +80,19 @@ public class GroupData implements Data {
 	public ArrayList<Integer> getMods() {
 		return mods;
 	}
-	
+	/**
+	 * Add a mod to the Group
+	 * @param id
+	 */
 	public void setMod(int id){
 		mods.add(id);
+	}
+	/**
+	 * Set user to the group
+	 * @param id
+	 */
+	public void setUser(int id){
+		users.add(id);
 	}
 	/** Return an ArrayList<Integer> of the id of the users who are user.
 	 * 

@@ -115,7 +115,7 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 		User temp = database.login("Bob", "pw");
 		assertTrue(temp.getStatus() == Logged.USER);
 		//Alter User Data & Update Database
-		UserData tempUserData= new UserData(2,"Roberto", "heybob", "modOf()");
+		UserData tempUserData= new UserData(2,"Roberto", "heybob", "~", "~");
 		Status newStatus = database.updateUser(tempUserData);
 		assertTrue(newStatus.getStatus() == StatusType.SUCCESS);
 		// Check if database has been updated by logging in
@@ -125,6 +125,16 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 		// Attempt to login using old credentials
 		temp = database.login("Bob", "pw");
 		assertTrue(temp.getStatus() == Logged.INVALID);	
+	}
+	
+	@Test
+	public void joinGroup(){
+		Status tempStatus = new Status();
+		tempStatus = database.addUserToGroup(2, 1);
+		GroupData tempGD = database.getGroup(1);
+		ArrayList<Integer> intArrList = new ArrayList<Integer>();
+		intArrList = tempGD.getUsers();
+		assertTrue(intArrList.contains(2));
 	}
 	
 }

@@ -76,7 +76,7 @@ public class StudyGroupSystem {
 	}
 	
 	public void refreshLoggedUser() {
-		sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
+		sgfUser.setUserData(database.getUserData(sgfUser.getUserData().getId()));
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class StudyGroupSystem {
 	 * @return UserData Object
 	 */
 	public UserData getUser(int id){
-		return database.getUser(id);
+		return database.getUserData(id);
 	}
 	
 	/**
@@ -160,14 +160,27 @@ public class StudyGroupSystem {
 		return tempData;
 	}
 	
+	/**
+	 * Update GroupData
+	 * @param gd
+	 * @return Status
+	 */
 	public Status updateGroupData(GroupData gd){
 		Status tempStatus = new Status();
 		tempStatus = database.updateGroup(gd);
 		return tempStatus;
 	}
 	
-	
-	void addUserToGroup(){
+	/**
+	 * Adds user to group
+	 * @param uid
+	 * @param gid
+	 * @return Status
+	 */
+	public Status joinGroup(int uid, int gid){
+		Status tempStatus = new Status();
+		tempStatus = database.addUserToGroup(uid, gid);
+		return tempStatus;
 		
 	}
 	

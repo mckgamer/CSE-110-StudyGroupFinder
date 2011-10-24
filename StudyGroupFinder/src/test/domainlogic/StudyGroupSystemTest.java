@@ -45,7 +45,7 @@ public class StudyGroupSystemTest {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
 		Status stat = new Status();
-		UserData u = new UserData(1, "Roberto", "pw", "~");
+		UserData u = new UserData(1, "Roberto", "pw", "~", "~");
 		stat = sgs.createUser(u);
 		System.out.println(stat.getStatus());
 		assertEquals(stat.getStatus(), StatusType.SUCCESS);
@@ -63,7 +63,7 @@ public class StudyGroupSystemTest {
 		assertTrue( status == Logged.USER);
 		assertTrue(sgs.isLogged());
 		//login
-		UserData u = new UserData(2, "Roberto", "pw", "~"); 
+		UserData u = new UserData(2, "Roberto", "pw", "~", "~"); 
 		stat = sgs.updateUserProfile(u);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		//login
