@@ -17,6 +17,11 @@ import domainlogic.Status;
 import domainlogic.StatusType;
 import domainlogic.UpdateGroupProfileEvent;
 
+/** This Dialog is displayed when a user selects the edit button on a {@link GroupProfile}.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UpdateGroupDialog extends JDialog implements ActionListener, PropertyChangeListener {
 	
 	/** The {@link GUIFrame} that is displaying this UpdateGroupDialog */

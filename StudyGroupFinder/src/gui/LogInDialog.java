@@ -30,19 +30,18 @@ private String btnString1 = "Login";
 private String btnString2 = "Exit";
 private JButton createAcct = new JButton("Create Account");
 
+/** The {@link GUIFrame} that is displaying this LogInDialog */
 private GUIFrame gframe;
 
+/** The Logged status of this LogInDialog. */ //TODO Weird?
 private Logged log;
 
+/** Returns the Logged status of this Dialog.
+ * 
+ * @return the Logged status of this Dialog.
+ */
 public Logged getStatus() {
 	return log;
-}
-/**
-* Returns null if the typed string was invalid;
-* otherwise, returns the string as the user entered it.
-*/
-public String getValidatedText() {
-return enteredUname;
 }
 
 /** Creates the reusable dialog. */
@@ -84,6 +83,7 @@ setContentPane(optionPane);
 setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 addWindowListener(new WindowAdapter() {
 public void windowClosing(WindowEvent we) {
+	System.exit(0);
 /*
 * Instead of directly closing the window,
 * we're going to change the JOptionPane's
