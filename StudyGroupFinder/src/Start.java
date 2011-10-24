@@ -1,8 +1,8 @@
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import database.MapDatabase;
-import domainlogic.StudyGroupSystem;
-import gui.GUIFrame;
+import database.*;
+import domainlogic.*;
+import gui.*;
 
 /** The main holding class for StudyGroupFinder. This initializes an instance of the program. */
 public class Start extends JPanel {
