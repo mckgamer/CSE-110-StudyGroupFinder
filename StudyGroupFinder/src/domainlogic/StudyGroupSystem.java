@@ -160,8 +160,10 @@ public class StudyGroupSystem {
 		return tempData;
 	}
 	
-	void updateGroupData(){
-		
+	public Status updateGroupData(GroupData gd){
+		Status tempStatus = new Status();
+		tempStatus = database.updateGroup(gd);
+		return tempStatus;
 	}
 	
 	

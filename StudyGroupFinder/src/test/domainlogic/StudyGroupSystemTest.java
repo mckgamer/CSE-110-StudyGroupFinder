@@ -87,6 +87,31 @@ public class StudyGroupSystemTest {
 	}
 	
 	@Test
+	public void updateGroup() {
+		MapDatabase testData = new MapDatabase();
+		StudyGroupSystem sgs = new StudyGroupSystem(testData);
+		Status stat;
+		Logged status = sgs.login("Bob", "pw");		
+		GroupData gd = new GroupData(1, "Insane Group", "CSE 110", "1" , "1");
+		stat = sgs.createNewGroup(gd);
+		assertTrue(stat.getStatus() == StatusType.SUCCESS);
+		GroupData gd2 = sgs.getGroup(3);
+		System.out.println(gd2.getId());
+		System.out.println(gd2.getName());
+		System.out.println(gd2.getCourse());
+		GroupData gd3 = new GroupData(3,"Insanity", "CSE 240", "1" , "1");
+		Status stat2;
+		stat2 = sgs.updateGroupData(gd3);
+		assertTrue(stat2.getStatus() == StatusType.SUCCESS);
+		GroupData gd4;
+		gd4 = sgs.getGroup(3);
+		System.out.println(gd4.getId());
+		System.out.println(gd4.getName());
+		System.out.println(gd4.getCourse());
+		
+	}
+	
+	@Test
 	public void getGroup() {
 		MapDatabase testData = new MapDatabase();
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);

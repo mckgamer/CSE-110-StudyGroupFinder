@@ -89,7 +89,20 @@ public class MapDatabase implements Database {
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
-
+	/**
+	 * Updates Group Data in Database
+	 * @param gd
+	 * @return Status
+	 */
+	public Status updateGroup(GroupData gd){
+		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
+		String idString = Integer.toString(gd.getId());
+		groups.put(gd.getId(), addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()), StringParser.unParseArray(gd.getUsers()), idString));
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
+	}
+	
+	
 	/**
 	 * Gets Group Data from Database
 	 * @param group id
