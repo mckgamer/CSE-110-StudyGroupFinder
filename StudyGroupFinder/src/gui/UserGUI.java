@@ -70,5 +70,13 @@ public class UserGUI extends JPanel {
 		add(right);
 		getRootPane().revalidate();
 	}
+	
+	public void refreshLeft() {
+		removeAll();
+		left = new UserGroupsPanel(parent, this);
+		add(left);
+		add(right);
+		getRootPane().revalidate();
+	}
 
 }

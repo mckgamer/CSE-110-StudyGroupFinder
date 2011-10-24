@@ -101,6 +101,8 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
+			parent.getSGS().refreshLoggedUser();
+			parent.getGUI().refreshLeft();
 			//System.out.println("Added " + parent.getSGS().getGroup(3).getName()); //TODO only temp test for 1st added
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
