@@ -103,6 +103,8 @@ public class UpdateGroupDialog extends JDialog implements ActionListener, Proper
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
+			parent.getGUI().refreshLeft();//TODO if this the best way for refresh right? see below
+			parent.getGUI().setRight(new GroupProfile(parent,parent.getSGS().getGroup(prepop.getId())));
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
 		}
