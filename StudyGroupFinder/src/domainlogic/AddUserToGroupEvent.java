@@ -24,7 +24,7 @@ public class AddUserToGroupEvent implements Event {
 	
 	@Override
 	public void execute() {
-		status = system.addUserToGroup(userId, groupId);
+		status = system.joinGroup(userId, groupId);
 		system.refreshLoggedUser();
 	}
 

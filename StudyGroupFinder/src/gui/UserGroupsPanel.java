@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,7 +34,9 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		setLayout(new GridLayout(4,1));
 		
 		add(new JLabel("Current Groups"));
-		currGroup = new GroupList(parent, this, parent.getSGS().getLoggedUser().getModOf().toArray()); //TODO user also
+		ArrayList<Integer> temp = parent.getSGS().getLoggedUser().getModOf();
+		temp.addAll(parent.getSGS().getLoggedUser().getUserOf());
+		currGroup = new GroupList(parent, this, temp.toArray()); //TODO user also
 		JScrollPane mg = new JScrollPane(currGroup);
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
