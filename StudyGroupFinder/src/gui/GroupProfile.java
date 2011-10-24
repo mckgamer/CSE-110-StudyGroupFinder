@@ -3,6 +3,8 @@ package gui;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -12,11 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import database.GroupData;
+import domainlogic.UpdateGroupProfileEvent;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
-public class GroupProfile extends JPanel {
+public class GroupProfile extends JPanel implements ActionListener {
 	
 	private GUIFrame parent;
+	private GroupData gd;
 	private JLabel name;
 	private JLabel course;
 	private JLabel description;
@@ -27,6 +31,7 @@ public class GroupProfile extends JPanel {
 	 */
 	public GroupProfile(GUIFrame parent, GroupData gd) {
 		this.parent = parent;
+		this.gd = gd;
 		name = new JLabel(gd.getName());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));
 		course = new JLabel("Course: " + gd.getCourse());
@@ -80,8 +85,11 @@ public class GroupProfile extends JPanel {
         if (parent.getSGS().getLoggedUser().isModOf(gd.getId())) {
          //TODO Moderator buttons here
         	JButton remove = new JButton("Remove User");
+        	remove.setEnabled(false);
             buttons.add(remove);
             JButton edit = new JButton("Edit Group");
+            edit.setActionCommand("edit");
+            edit.addActionListener(this);
             buttons.add(edit);
         } else {
 	        if (parent.getSGS().getLoggedUser().isUserOf(gd.getId())) {
@@ -105,6 +113,15 @@ public class GroupProfile extends JPanel {
         meetControlPanel.add(buttons);
        
         add(meetControlPanel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if ("edit".equals(e.getActionCommand())) {
+			UpdateGroupDialog ugpd = new UpdateGroupDialog(parent, gd.getId()); 
+			ugpd.setVisible(true);
+		}
 	}
 
 }
