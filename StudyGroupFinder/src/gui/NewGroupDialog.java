@@ -89,8 +89,8 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("submit".equals(e.getActionCommand())) { //TODO this needs to update the User object for the session
-			int currUser = parent.getSGS().getLoggedUser().getId();
-			event.setData(new GroupData(0,nameField.getText(),courseField.getText(), currUser+"~", "~"));
+			//TODO: is this better than doing it with SGS? int currUser = parent.getSGS().getLoggedUser().getId();
+			event.setData(new GroupData(0,nameField.getText(),courseField.getText(), "~", "~"));
 			event.validate();
 			event.execute();
 			Status result = event.getStatus();

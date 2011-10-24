@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 import domainlogic.AddUserToGroupEvent;
@@ -19,7 +21,7 @@ import domainlogic.RemoveUserFromGroupEvent;
 import domainlogic.UpdateGroupProfileEvent;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
-public class GroupProfile extends JPanel implements ActionListener {
+public class GroupProfile extends JPanel implements ActionListener, ListSelectionListener {
 	
 	private GUIFrame parent;
 	private GroupData gd;
@@ -62,10 +64,14 @@ public class GroupProfile extends JPanel implements ActionListener {
         JLabel meet = new JLabel("Meetings");
         meet.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(meet);
+        /*
+        UserList userList = new UserList(parent, this, gd.getUsers().toArray());
+        */
         ArrayList<Integer> temp = gd.getUsers();
         temp.addAll(gd.getMods());
         Object[] members = temp.toArray();
         JScrollPane membersList = new JScrollPane(new JList(members));
+       // JScrollPane membersList = new JScrollPane(userList);
         membersList.setPreferredSize(new Dimension(40,50));
         submembPan.add(membersList);
         JLabel meets = new JLabel("We meet every 2 days.");
@@ -76,10 +82,8 @@ public class GroupProfile extends JPanel implements ActionListener {
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
-        meetControlPanel.setLayout(new GridLayout(2,2));
+        meetControlPanel.setLayout(new GridLayout(1,2));
         meetControlPanel.add(new JLabel("ModButtons here?"));
-        meetControlPanel.add(new JLabel());
-        meetControlPanel.add(new JLabel());
         
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(0,1,5,4));
@@ -95,6 +99,15 @@ public class GroupProfile extends JPanel implements ActionListener {
             edit.setActionCommand("edit");
             edit.addActionListener(this);
             buttons.add(edit);
+            JButton resign = new JButton("Resign");
+            resign.setEnabled(false);
+            resign.setActionCommand("resign");
+            resign.addActionListener(this);
+            buttons.add(resign);
+            JButton delete = new JButton("Delete Group");
+            delete.setActionCommand("delete");
+            delete.addActionListener(this);
+            buttons.add(delete);
         } else {
 	        if (parent.getSGS().getLoggedUser().isUserOf(gd.getId())) {
 	        	//Add the Leave Button
@@ -144,6 +157,12 @@ public class GroupProfile extends JPanel implements ActionListener {
 			rufg.execute();
 			//TODO needs to refresh this Panel as well
 		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
