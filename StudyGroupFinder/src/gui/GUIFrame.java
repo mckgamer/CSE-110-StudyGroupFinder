@@ -57,5 +57,8 @@ public class GUIFrame extends JFrame {
 	public StudyGroupSystem getSGS() {
 		return sgs;
 	}
-
+	
+	public UserGUI getGUI() {
+		return (UserGUI)gui;
+	}
 }

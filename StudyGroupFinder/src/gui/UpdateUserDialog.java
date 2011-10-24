@@ -10,6 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import util.StringParser;
+
 import database.UserData;
 import domainlogic.CreateUserEvent;
 import domainlogic.Status;
@@ -95,7 +97,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("submit".equals(e.getActionCommand())) { //TODO this needs to update the User object for the session
-			event.setData(new UserData(prepop.getId(),unameField.getText(),pwField.getText(), "1~2~"));
+			event.setData(new UserData(prepop.getId(),unameField.getText(),pwField.getText(), StringParser.unParseArray(prepop.getModOf())));
 			event.validate();
 			event.execute();
 			Status result = event.getStatus();
