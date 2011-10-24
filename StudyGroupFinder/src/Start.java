@@ -23,7 +23,7 @@ public class Start extends JPanel {
 	/** Called by main. Calls all of the logic of the program */
 	private static void createAndShowGUI() {
 		
-        //gui.setContentPane(new Start());
+        //gui.setContentPane(new Start())
         
 		// Call the GUIFrame and make it run the program
         gui.runProgram();
