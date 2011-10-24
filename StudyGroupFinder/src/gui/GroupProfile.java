@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import gui.UserList;
 import database.GroupData;
 import domainlogic.AddUserToGroupEvent;
 import domainlogic.DeleteGroupEvent;
