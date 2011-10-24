@@ -29,7 +29,7 @@ public class DeleteGroupEvent implements Event {
 	@Override
 	public void execute() {
 		if (status.getStatus() != StatusType.INVALID) { //TODO I think for all events this needs to be VALID so it know validate() has already been called for sure
-			status = system.deleteGroup(group.getId());
+			//status = system.deleteGroup(group.getId());
 		}
 	}
 

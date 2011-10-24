@@ -25,7 +25,7 @@ public class RemoveUserFromGroupEvent implements Event {
 	
 	@Override
 	public void execute() {
-		status = system.removeUserFromGroup(userId, groupId);
+		//status = system.removeUserFromGroup(userId, groupId);
 		system.refreshLoggedUser();
 	}
 
