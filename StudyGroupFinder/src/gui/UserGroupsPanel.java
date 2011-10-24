@@ -21,12 +21,8 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 	/** The GUIFrame of the program */
 	GUIFrame parent;
 	
-	/** The UserGUI that holds this UserGroupsPanel */
-	UserGUI ug;
-	
-	public UserGroupsPanel(GUIFrame parent, UserGUI ug) {
+	public UserGroupsPanel(GUIFrame parent) {
 		this.parent = parent;
-		this.ug = ug;
 		
 		setLayout(new GridLayout(4,1));
 		
@@ -48,9 +44,9 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		if (e.getValueIsAdjusting() == false) {
 			GroupData temp = ((GroupList)e.getSource()).getSelectedData();
 			if (temp != null) {
-				ug.setRight(new GroupProfile(parent, parent.getSGS().getGroup(temp.getId())));
+				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(temp.getId())));
 			} else {
-				ug.setRight(new JPanel());
+				parent.getGUI().setRight(new JPanel());
 			}
 		}
 	}
