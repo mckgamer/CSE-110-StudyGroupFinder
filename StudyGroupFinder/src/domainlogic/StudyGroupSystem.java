@@ -75,13 +75,16 @@ public class StudyGroupSystem {
 		return tempStatus;
 	}
 	
+	public void refreshLoggedUser() {
+		sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
+	}
+	
 	/**
 	 * This function updates user data if the user is logged in
 	 * @param UserObject
 	 * @return Status, if sucessful Status = StatusType.SUCCESSFUL, else it will return UNSUCCESSFUL
 	 */
 	public Status updateUserProfile(UserData u){
-		
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		if(isLogged()){
 			tempStatus = database.updateUser(u);
@@ -134,6 +137,7 @@ public class StudyGroupSystem {
 	 * @return Status Objects
 	 */
 	public Status createNewGroup(GroupData gd){
+		gd.setMod(sgfUser.getUserData().getId());
 		Status tempStatus = new Status();
 		tempStatus = database.addGroup(gd);
 		return tempStatus;

@@ -81,6 +81,9 @@ public class GroupData implements Data {
 		return mods;
 	}
 	
+	public void setMod(int id){
+		mods.add(id);
+	}
 	/** Return an ArrayList<Integer> of the id of the users who are user.
 	 * 
 	 * @return an ArrayList<Integer> of the id of the users who are users.
