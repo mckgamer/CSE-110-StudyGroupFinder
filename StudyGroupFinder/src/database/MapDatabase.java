@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import util.StringParser;
+
 import domainlogic.User;
 import domainlogic.User.Logged;
 
@@ -75,10 +77,16 @@ public class MapDatabase implements Database {
 	 */
 	public Status addGroup(GroupData gd) {
 		Status tempStatus = new Status();
+		//get UserID
+		int uID = gd.getMods().get(0);
 		//Generate unique Group ID and convert it to a string
 		int uniqueGroupId = getUniqueGroupId();
 		String groupIdString = Integer.toString(uniqueGroupId);
-		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), "1~","1~", groupIdString));
+		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()) ,"1~", groupIdString));
+		//Update user profile
+		UserData tempUD = getUser(uID);
+		tempUD.setMod(uID);
+		updateUser(tempUD);
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
@@ -138,7 +146,7 @@ public class MapDatabase implements Database {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		int uniqueID = getUniqueUserId();
 		String uniqueStringID = Integer.toString(uniqueID);
-		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "getModOf()", uniqueStringID));
+		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "~", uniqueStringID));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
@@ -151,11 +159,18 @@ public class MapDatabase implements Database {
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		String idString = Integer.toString(ud.getId());
-		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(), "ModOf()", idString));
+		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(),StringParser.unParseArray(ud.getModOf()), idString));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
 
+	public UserData getUser(int id){
+		Vector<String> temp = users.get(id);
+		UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2));
+		return tempUD;
+	}
+	
+	
 	@Override
 	public void closeConnection() {
 		// TODO Auto-generated method stub

@@ -86,6 +86,9 @@ public class UserData implements Data {
 	public ArrayList<Integer> getUserOf() {
 		return userof;
 	}
+	public void setMod(int id){
+		modof.add(id);
+	}
 	
 	public boolean isUserOf(int groupId) {
 		return userof.contains(groupId);
