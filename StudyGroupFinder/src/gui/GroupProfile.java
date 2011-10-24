@@ -16,6 +16,7 @@ import database.GroupData;
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
 public class GroupProfile extends JPanel {
 	
+	private GUIFrame parent;
 	private JLabel name;
 	private JLabel course;
 	private JLabel description;
@@ -24,7 +25,8 @@ public class GroupProfile extends JPanel {
 	 * 
 	 * @param gd the GroupData object to use for this Profile.
 	 */
-	public GroupProfile(GroupData gd) {
+	public GroupProfile(GUIFrame parent, GroupData gd) {
+		this.parent = parent;
 		name = new JLabel(gd.getName());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));
 		course = new JLabel("Course: " + gd.getCourse());
@@ -75,17 +77,29 @@ public class GroupProfile extends JPanel {
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(0,1,5,4));
         
-        // Add The Join Button
-        JButton join = new JButton("Join");
-        //join.setActionCommand("Join");
-        //join.addActionListener(this);
-        buttons.add(join);
+        if (parent.getSGS().getLoggedUser().isModOf(gd.getId())) {
+         //TODO Moderator buttons here
+        	JButton remove = new JButton("Remove User");
+            buttons.add(remove);
+            JButton edit = new JButton("Edit Group");
+            buttons.add(edit);
+        } else {
+	        if (parent.getSGS().getLoggedUser().isUserOf(gd.getId())) {
+	        	//Add the Leave Button
+	            JButton leave = new JButton("Leave");
+	            //join.setActionCommand("Leave");
+	            //join.addActionListener(this);
+	            buttons.add(leave);
+	        } else {
+		        // Add The Join Button
+		        JButton join = new JButton("Join");
+		        //join.setActionCommand("Join");
+		        //join.addActionListener(this);
+		        buttons.add(join);
+	        }
+        }
         
-        //Add the Leave Button
-        join = new JButton("Leave");
-        //join.setActionCommand("Leave");
-        //join.addActionListener(this);
-        buttons.add(join);
+        
         
         
         meetControlPanel.add(buttons);

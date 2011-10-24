@@ -2,7 +2,6 @@ package domainlogic;
 
 import database.Data;
 import database.GroupData;
-import database.UserData;
 
 /** This Event is created by a {@link NewGroupDialog}..
  * 

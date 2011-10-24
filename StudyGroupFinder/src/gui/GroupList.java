@@ -27,6 +27,7 @@ public class GroupList extends JList {
 	/** An ArrayList of GroupData for this List to display as groups. */
 	private ArrayList<GroupData> groups;
 	
+	/** The ListSelectionListener used by this GroupList */
 	private ListSelectionListener ug;
 	
 	/** Construct a GroupList using its GUIFrame and an ArrayList of GroupData.
@@ -37,6 +38,7 @@ public class GroupList extends JList {
 	public GroupList(GUIFrame parent, ArrayList<GroupData> groups) {
 		this.parent = parent;
 		this.groups = groups;
+		//TODO
 	}
 	
 	/** Construct a GroupList using its GUIFrame and an array of Objects that are ids.

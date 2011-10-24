@@ -11,9 +11,17 @@ import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 
+/** This Panel is displayed on the left of the UserGUI. It displays the users current groups
+ * as well as groups suggested to them by the system.
+ * @author Michael Kirby
+ *
+ */
 public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 	
+	/** The GUIFrame of the program */
 	GUIFrame parent;
+	
+	/** The UserGUI that holds this UserGroupsPanel */
 	UserGUI ug;
 	
 	public UserGroupsPanel(GUIFrame parent, UserGUI ug) {
@@ -40,7 +48,7 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		if (e.getValueIsAdjusting() == false) {
 			GroupData temp = ((GroupList)e.getSource()).getSelectedData();
 			if (temp != null) {
-				ug.setRight(new GroupProfile(parent.getSGS().getGroup(temp.getId())));
+				ug.setRight(new GroupProfile(parent, parent.getSGS().getGroup(temp.getId())));
 			} else {
 				ug.setRight(new JPanel());
 			}
