@@ -44,11 +44,10 @@ public class MapDatabase implements Database {
 		//ID  //Name  //Class studied  //List of mod users // List of Users // Group ID
 		int uniqueGroupId = getUniqueGroupId();
 		String groupIdString = Integer.toString(uniqueGroupId);
-		groups.put(uniqueGroupId, addData("The Group","CSE 110","1~", "1~", groupIdString));
-		
+		groups.put(uniqueGroupId, addData("The Group","CSE 110","1~", "~", groupIdString));
 		uniqueGroupId = getUniqueGroupId();
 		groupIdString = Integer.toString(uniqueGroupId);
-		groups.put(uniqueGroupId, addData("Bobs Group","CSE 101","1~", "1~", groupIdString));
+		groups.put(uniqueGroupId, addData("Bobs Group","CSE 101","2~", "~", groupIdString));
 	}
 	
 	/* Helper Method For Populating database */

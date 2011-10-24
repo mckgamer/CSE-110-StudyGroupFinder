@@ -129,7 +129,14 @@ public class StudyGroupSystem {
 	public UserData getLoggedUser(){
 		return sgfUser.getUserData();
 	}
-	
+	/**
+	 * Gets user data for a specific id
+	 * @param id
+	 * @return UserData Object
+	 */
+	public UserData getUser(int id){
+		return database.getUser(id);
+	}
 	
 	/**
 	 * Create a new group with data passed by Gui
@@ -153,13 +160,16 @@ public class StudyGroupSystem {
 		return tempData;
 	}
 	
+	void updateGroupData(){
+		
+	}
+	
+	
 	void addUserToGroup(){
 		
 	}
 	
-	void updateGroupData(){
-		
-	}
+
 	
 	void removeUserFromGroup(){
 		
