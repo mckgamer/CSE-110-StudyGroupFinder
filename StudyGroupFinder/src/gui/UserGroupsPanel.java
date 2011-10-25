@@ -41,9 +41,16 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
 		add(new JLabel("Suggested Groups"));
-		Object[] empty = {};
+		// TODO DUMMY SUGGEST CODE FOLLOWS
+		ArrayList<Integer> empty = new ArrayList<Integer>();
+		for (int x = 1; x < 10; x++) {
+			if (parent.getSGS().getGroup(x) != null && !parent.getSGS().getLoggedUser().isUserOf(x) && !parent.getSGS().getLoggedUser().isModOf(x)) {
+				empty.add(x);
+			}
+		}
+		//TODO END DUMMY SUGGEST CODE
 		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups().toArray()); //TODO getSugGroups() sgs
-		suggGroup = new GroupList(parent, this, empty);
+		suggGroup = new GroupList(parent, this, empty.toArray());
 		JScrollPane sg = new JScrollPane(suggGroup);
 		sg.setPreferredSize(new Dimension(40,50));
 		add(sg);
