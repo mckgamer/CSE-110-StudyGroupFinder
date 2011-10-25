@@ -3,7 +3,7 @@ package domainlogic;
 import database.Data;
 import database.UserData;
 
-/** This event is created by a {@link NewAccountDialog}. It is able to call the appropriate
+/** This event is created by a {@link gui.NewAccountDialog}. It is able to call the appropriate
  * methods to add a user to the system.
  * @author Michael Kirby
  */

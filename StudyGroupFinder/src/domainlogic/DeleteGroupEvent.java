@@ -3,7 +3,7 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 
-/** This Event is created when either a Mod or and Admin hits the delete group button of a {@link GroupProfile}.
+/** This Event is created when either a Mod or and Admin hits the delete group button of a {@link gui.GroupProfile}.
  * 
  * @author Michael Kirby
  *

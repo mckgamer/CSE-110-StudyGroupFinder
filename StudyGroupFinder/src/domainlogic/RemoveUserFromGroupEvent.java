@@ -3,6 +3,11 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 
+/** This Event is created by a {@link gui.GroupProfile}.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class RemoveUserFromGroupEvent implements Event {
 
 	//TODO I think I'm going to add another Data impl for this - Michael Kirby 10/24

@@ -3,6 +3,11 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 
+/** This Event is created by a {@link gui.GroupProfile}.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class AddUserToGroupEvent implements Event {
 
 	private int userId;

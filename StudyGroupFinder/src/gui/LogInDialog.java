@@ -16,6 +16,11 @@ import javax.swing.JTextField;
 
 import domainlogic.User.Logged;
 
+/** This Dialog is shown when the user starts the program or logs out of the program, it starts
+ * the system with a successful login.
+ * @author Michael Kirby
+ *
+ */
 public class LogInDialog extends JDialog
 implements ActionListener,
 PropertyChangeListener {

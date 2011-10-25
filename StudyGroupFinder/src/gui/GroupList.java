@@ -41,10 +41,10 @@ public class GroupList extends JList {
 		//TODO
 	}
 	
-	/** Construct a GroupList using its GUIFrame and an array of Objects that are ids.
+	/** Construct a GroupList using its GUIFrame and an array of Objects that are IDs.
 	 * 
 	 * @param parent the GUIFrame of the program.
-	 * @param userids and array of objects of the ids of the groups for this list.
+	 * @param groupids and array of objects of the IDs of the groups for this list.
 	 */
 	public GroupList(GUIFrame parent, ListSelectionListener ug, Object[] groupids) {
 		this.parent = parent;

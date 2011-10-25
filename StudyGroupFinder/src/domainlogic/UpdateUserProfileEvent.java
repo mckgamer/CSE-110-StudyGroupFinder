@@ -3,7 +3,7 @@ package domainlogic;
 import database.Data;
 import database.UserData;
 
-/** This event is created by a {@link UpdateUserDialog}.
+/** This event is created by a {@link gui.UpdateUserDialog}.
  * 
  * @author Michael Kirby
  *

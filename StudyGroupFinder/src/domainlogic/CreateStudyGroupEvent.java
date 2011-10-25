@@ -3,7 +3,7 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 
-/** This Event is created by a {@link NewGroupDialog}..
+/** This Event is created by a {@link gui.NewGroupDialog}..
  * 
  * @author Michael Kirby
  *
