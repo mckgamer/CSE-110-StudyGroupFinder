@@ -102,6 +102,14 @@ public class UserData implements Data {
 		}
 	}
 	
+	public void unsetMod(int groupID){
+		for(int i = 0; i<modof.size(); i++){
+			if(modof.get(i)==groupID){
+				modof.remove(i);
+			}
+		}
+	}
+	
 	public boolean isUserOf(int groupId) {
 		return userof.contains(groupId);
 	}

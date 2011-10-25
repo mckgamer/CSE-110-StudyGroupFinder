@@ -12,6 +12,7 @@ import util.StringParser;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
+
 public class MapDatabase implements Database {
 
 	private Map<Integer, Vector<String>> users;
@@ -143,7 +144,40 @@ public class MapDatabase implements Database {
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
-	
+	/**
+	 * Delete Group
+	 * @param groupid
+	 * @return Status
+	 */
+	public Status deleteGroup(int groupid){
+		// Create Status Object
+		// Create GroupData object
+		//Get the group to delete
+		// delete references of group from users Mod and users
+		// delete group from database
+		Status tempStatus = new Status();
+		GroupData tempGD = this.getGroup(groupid);
+		ArrayList<Integer> tempUsers = tempGD.getUsers();
+		UserData tempUserData;
+		for(int i=0; i<tempUsers.size(); i++){
+			tempUserData = this.getUserData(tempUsers.get(i));
+			//Remove reference of group from user data
+			tempUserData.unsetUser(groupid);
+			//Save user data
+			this.updateUser(tempUserData);
+		}
+		tempUsers = tempGD.getMods();
+		for(int i=0; i<tempUsers.size(); i++){
+			tempUserData = this.getUserData(tempUsers.get(i));
+			if(groupid == tempUsers.get(i)){
+				tempUserData.unsetMod(groupid);
+				this.updateUser(tempUserData);
+			}
+		}
+		groups.remove(groupid);
+		tempStatus.setStatus(StatusType.SUCCESS);
+		return tempStatus;
+	}
 	/**
 	 * Get User Data
 	 * @param id
@@ -155,28 +189,24 @@ public class MapDatabase implements Database {
 		return tempUD;
 	}
 
-	@Override
+	/**
+	 * Remove User From Group
+	 * @param userID
+	 * @param GroupID
+	 * @return Status
+	 */
 	public Status removeUserFromGroup(int userid, int groupid) {
 		Status tempStatus = new Status();
-		//Get userData object
-		//Get user Array list
-		//Search Array List for user
-		//Remove group from array
-		//Store UserData in Database
 		UserData tempUserData = getUserData(userid);
 		tempUserData.unsetUser(groupid);
 		this.updateUser(tempUserData);
-		
 		GroupData tempGroupData = getGroup(groupid);
 		tempGroupData.unsetUser(userid);
 		this.updateGroup(tempGroupData);
 		
+		//Return Status
 		tempStatus.setStatus(StatusType.SUCCESS);
-		//Get GroupData Object
-		//Get Group Users Array List
-		//Search Array List for User
-		//Remove User From Array
-		//Store Group Data in Database
+	
 		
 		// TODO Auto-generated method stub
 		return null;

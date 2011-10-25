@@ -171,6 +171,12 @@ public class StudyGroupSystem {
 		return tempStatus;
 	}
 	
+	public Status deleteGroup(int groupID){
+		Status tempStatus = new Status();
+		tempStatus = database.deleteGroup(groupID);
+		return tempStatus;
+	}
+	
 	/**
 	 * Adds user to group
 	 * @param uid
