@@ -185,8 +185,15 @@ public class StudyGroupSystem {
 	}
 	
 
-	
-	void removeUserFromGroup(){
+	/**
+	 * Remove a user form a group
+	 * @param userID
+	 * @param groupID
+	 * @return Status
+	 */
+	public Status removeUserFromGroup(int userID, int groupID){
+		Status tempStatus = database.removeUserFromGroup(userID, groupID);
+		return tempStatus;
 		
 	}
 	

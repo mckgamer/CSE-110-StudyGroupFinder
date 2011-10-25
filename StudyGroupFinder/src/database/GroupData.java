@@ -11,22 +11,22 @@ import util.StringParser;
  *
  */
 public class GroupData implements Data {
-	
+
 	/** The ID of this GroupData */
 	int id;
-	
+
 	/** The name of this GroupData */
 	String name;
-	
+
 	/** The course of this GroupData */
 	String course;
-	
+
 	/** The list of mods of this GroupData as an ArrayList<Integer>.*/
 	ArrayList<Integer> mods;
-	
+
 	/** The list of other users of this GroupData as an ArrayList<Integer>.*/
 	ArrayList<Integer> users;
-	
+
 	/** Constructs a GroupData object using all it needs
 	 * 
 	 * @param id the id of the Group, null if not a group yet.
@@ -42,21 +42,29 @@ public class GroupData implements Data {
 		mods = StringParser.parseString(modst);
 		users = StringParser.parseString(userst);
 	}
-	
+
 	@Override //TODO
 	public boolean validate() {
 		if (name != null && course != null && mods != null) {
 			if (name.length() > 1 && course.length() > 1)
-			return true;
+				return true;
 		}
 		return false;
 	}
-	
+
+	public void unsetUser(int userid){
+		for(int i = 0; i<users.size(); i++){
+			if(users.get(i)==userid){
+				users.remove(i);
+			}
+		}
+	}
+
 	@Override
 	public int getId() {
 		return id;
 	}
-	
+
 	/** Returns the Name of this GroupData.
 	 * 
 	 * @return the name of this GroupData.
@@ -64,7 +72,7 @@ public class GroupData implements Data {
 	public String getName() {
 		return name;
 	}
-	
+
 	/** Returns the course of this GroupData.
 	 * 
 	 * @return the course of this GroupData.
@@ -72,7 +80,7 @@ public class GroupData implements Data {
 	public String getCourse() {
 		return course;
 	}
-	
+
 	/** Return an ArrayList<Integer> of the id of the users who are mods.
 	 * 
 	 * @return an ArrayList<Integer> of the id of the users who are mods.

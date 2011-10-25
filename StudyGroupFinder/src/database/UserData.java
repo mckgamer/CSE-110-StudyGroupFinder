@@ -94,6 +94,14 @@ public class UserData implements Data {
 		userof.add(id);
 	}
 	
+	public void unsetUser(int groupID){
+		for(int i = 0; i<userof.size(); i++){
+			if(userof.get(i)==groupID){
+				userof.remove(i);
+			}
+		}
+	}
+	
 	public boolean isUserOf(int groupId) {
 		return userof.contains(groupId);
 	}

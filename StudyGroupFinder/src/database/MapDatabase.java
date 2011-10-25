@@ -1,6 +1,8 @@
 package database;
 import domainlogic.Status;
 import domainlogic.StatusType;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -118,7 +120,12 @@ public class MapDatabase implements Database {
 		return null;
 	}
 
-	@Override
+	/**
+	 * Add User To Group
+	 * @param int userid
+	 * @param int groupid
+	 * @return Status Object
+	 */
 	public Status addUserToGroup(int userid, int groupid) {
 		//Need to get the GroupData and UserData Objects
 		// Need to add userid to group users Array List.
@@ -150,6 +157,27 @@ public class MapDatabase implements Database {
 
 	@Override
 	public Status removeUserFromGroup(int userid, int groupid) {
+		Status tempStatus = new Status();
+		//Get userData object
+		//Get user Array list
+		//Search Array List for user
+		//Remove group from array
+		//Store UserData in Database
+		UserData tempUserData = getUserData(userid);
+		tempUserData.unsetUser(groupid);
+		this.updateUser(tempUserData);
+		
+		GroupData tempGroupData = getGroup(groupid);
+		tempGroupData.unsetUser(userid);
+		this.updateGroup(tempGroupData);
+		
+		tempStatus.setStatus(StatusType.SUCCESS);
+		//Get GroupData Object
+		//Get Group Users Array List
+		//Search Array List for User
+		//Remove User From Array
+		//Store Group Data in Database
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
