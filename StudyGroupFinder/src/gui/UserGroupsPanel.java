@@ -34,7 +34,7 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		setLayout(new GridLayout(4,1));
 		
 		add(new JLabel("Current Groups"));
-		ArrayList<Integer> temp = parent.getSGS().getLoggedUser().getModOf();
+		ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().getLoggedUser().getModOf());
 		temp.addAll(parent.getSGS().getLoggedUser().getUserOf());
 		currGroup = new GroupList(parent, this, temp.toArray()); //TODO user also
 		JScrollPane mg = new JScrollPane(currGroup);

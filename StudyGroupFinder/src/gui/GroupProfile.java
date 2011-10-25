@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import gui.UserList;
 import database.GroupData;
 import domainlogic.AddUserToGroupEvent;
 import domainlogic.DeleteGroupEvent;
@@ -67,7 +66,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         meet.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(meet);
         
-        ArrayList<Integer> temp = gd.getMods();
+        ArrayList<Integer> temp = new ArrayList<Integer>(gd.getMods());
 		temp.addAll(gd.getUsers());
         UserList userList = new UserList(parent, this, temp.toArray()); //TODO Users Also
         /*
