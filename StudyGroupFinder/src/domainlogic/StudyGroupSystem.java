@@ -132,7 +132,7 @@ public class StudyGroupSystem {
 	/**
 	 * Gets user data for a specific id
 	 * @param id
-	 * @return UserData Object
+	 * @return UserData Object.
 	 */
 	public UserData getUser(int id){
 		return database.getUserData(id);
