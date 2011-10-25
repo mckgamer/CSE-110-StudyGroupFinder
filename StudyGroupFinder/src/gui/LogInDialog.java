@@ -32,7 +32,7 @@ private JTextField textField2;
 private JOptionPane optionPane;
 
 private String btnString1 = "Login";
-private String btnString2 = "Exit";
+private JButton exit = new JButton("Exit");
 private JButton createAcct = new JButton("Create Account");
 
 /** The {@link GUIFrame} that is displaying this LogInDialog */
@@ -68,10 +68,12 @@ Object[] array = {msgString1, textField, msgString2, textField2};
 
 //Create an array specifying the number of dialog buttons
 //and their text.
-Object[] options = {btnString1, btnString2, createAcct};
+Object[] options = {btnString1, exit, createAcct};
 
 createAcct.setActionCommand("createAcct");
 createAcct.addActionListener(this);
+exit.setActionCommand("exit");
+exit.addActionListener(this);
 
 //Create the JOptionPane.
 optionPane = new JOptionPane(array,
@@ -119,6 +121,8 @@ public void actionPerformed(ActionEvent e) {
 	if ("createAcct".equals(e.getActionCommand())) {
 		NewAccountDialog nad = new NewAccountDialog(gframe);
 		nad.setVisible(true);
+	} else if ("exit".equals(e.getActionCommand())) {
+		System.exit(0);
 	} else {
 		optionPane.setValue(btnString1);
 	}
