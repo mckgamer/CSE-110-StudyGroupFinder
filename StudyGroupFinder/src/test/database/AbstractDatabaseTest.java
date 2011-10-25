@@ -29,5 +29,8 @@ public abstract class AbstractDatabaseTest {
 		assertTrue(temp.getStatus() == Logged.INVALID);
 		assertNull(temp.getUserData());
 	}
-
+	@Test
+	public void deleteGroup(){
+		
+	}
 }

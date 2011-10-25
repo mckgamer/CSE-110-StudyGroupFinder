@@ -147,7 +147,7 @@ public class MapDatabase implements Database {
 	/**
 	 * Delete Group
 	 * @param groupid
-	 * @return Status
+	 * @return Status.
 	 */
 	public Status deleteGroup(int groupid){
 		// Create Status Object
@@ -169,10 +169,10 @@ public class MapDatabase implements Database {
 		tempUsers = tempGD.getMods();
 		for(int i=0; i<tempUsers.size(); i++){
 			tempUserData = this.getUserData(tempUsers.get(i));
-			if(groupid == tempUsers.get(i)){
-				tempUserData.unsetMod(groupid);
-				this.updateUser(tempUserData);
-			}
+			//Remove reference of group from user data
+			tempUserData.unsetMod(groupid);
+			//Save user data
+			this.updateUser(tempUserData);
 		}
 		groups.remove(groupid);
 		tempStatus.setStatus(StatusType.SUCCESS);

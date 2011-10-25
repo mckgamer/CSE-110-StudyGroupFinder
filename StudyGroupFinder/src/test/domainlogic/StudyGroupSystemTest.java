@@ -77,13 +77,16 @@ public class StudyGroupSystemTest {
 		StudyGroupSystem sgs = new StudyGroupSystem(testData);
 		Status stat;
 		Logged status = sgs.login("Bob", "pw");		
-		GroupData gd = new GroupData(1, "KickAss Group", "CSE 110", "1" , "1");
+		GroupData gd = new GroupData(1, "KickAss Group", "CSE 110", "~" , "1~");
 		stat = sgs.createNewGroup(gd);
 		assertTrue(stat.getStatus() == StatusType.SUCCESS);
 		GroupData gd2 = sgs.getGroup(3);
 		System.out.println(gd2.getId());
 		System.out.println(gd2.getName());
 		System.out.println(gd2.getCourse());
+		sgs.deleteGroup(3);
+		System.out.println(gd2.getMods());
+		System.out.println(gd2.getUsers());
 	}
 	
 	@Test

@@ -58,6 +58,11 @@ public interface Database {
 	 */
 	public Status updateUser(UserData ud);
 	
+	public Status deleteGroup(int groupID);
+	
+	public UserData getUserData(int id);
+
+	
 	/** Closes database connection */
 	public void closeConnection();
 }

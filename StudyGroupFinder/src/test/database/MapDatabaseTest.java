@@ -137,4 +137,18 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 		assertTrue(intArrList.contains(2));
 	}
 	
+	@Test
+	public void deleteGroup(){
+		
+		database.deleteGroup(1);
+		GroupData tempGroup = database.getGroup(2);
+		System.out.println(tempGroup.getName());
+		UserData tempUserData = database.getUserData(1);	
+		//Add Group  then delete it
+		GroupData newGroup = new GroupData(1,"HEYBOB", "CES 110","1~", "1~");
+		database.addGroup(newGroup);
+		
+		
+		
+	}
 }
