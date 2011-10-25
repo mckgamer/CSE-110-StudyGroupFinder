@@ -30,6 +30,9 @@ public final class StringParser {
 	 * @return the resulting string.
 	 */
 	public static String unParseArray(ArrayList<Integer> a) {
+		if (a == null || a.isEmpty()) {
+			return "~";
+		}
 		String retur = "";
 		for(Integer i: a) {
 			retur = retur + i;

@@ -41,7 +41,7 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
 		add(new JLabel("Suggested Groups"));
-		Object[] empty = {2};
+		Object[] empty = {};
 		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups().toArray()); //TODO getSugGroups() sgs
 		suggGroup = new GroupList(parent, this, empty);
 		JScrollPane sg = new JScrollPane(suggGroup);

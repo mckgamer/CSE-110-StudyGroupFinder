@@ -30,6 +30,8 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 	private JLabel course;
 	private JLabel description;
 	
+	private UserList userList;
+	
 	/** Constructs this GroupProfile JPanel using a GroupData object.
 	 * 
 	 * @param gd the GroupData object to use for this Profile.
@@ -68,7 +70,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         
         ArrayList<Integer> temp = new ArrayList<Integer>(gd.getMods());
 		temp.addAll(gd.getUsers());
-        UserList userList = new UserList(parent, this, temp.toArray()); //TODO Users Also
+        userList = new UserList(parent, this, temp.toArray());
         /*
         ArrayList<Integer> temp = gd.getUsers();
         temp.addAll(gd.getMods());
@@ -94,7 +96,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         if (parent.getSGS().getLoggedUser().isModOf(gd.getId())) {
          //TODO Moderator buttons here
         	JButton remove = new JButton("Remove User");
-        	remove.setEnabled(false);
+        	//remove.setEnabled(false);
         	remove.setActionCommand("remove");
             remove.addActionListener(this);
             buttons.add(remove);
@@ -157,17 +159,21 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			parent.getGUI().refreshLeft();
 		} else if ("remove".equals(e.getActionCommand())) {
 			//TODO show confirmation
-			RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), 1 ,gd.getId());//TODO what userid? is this
-			rufg.validate();
-			rufg.execute();
-			parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
+			if (userList.getSelectedData() != null) {
+				RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), userList.getSelectedData().getId(),gd.getId());//TODO what userid? is this
+				rufg.validate();
+				rufg.execute();
+				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
+			}
 		} else if ("delete".equals(e.getActionCommand())) {
 			//TODO DEFINITELY show confirmation
 			DeleteGroupEvent dg = new DeleteGroupEvent(parent.getSGS());
 			dg.setData(gd);
 			dg.validate();
 			dg.execute();
+			parent.getSGS().refreshLoggedUser();
 			parent.getGUI().setRight(new JPanel());
+			parent.getGUI().refreshLeft();
 		}
 	}
 
