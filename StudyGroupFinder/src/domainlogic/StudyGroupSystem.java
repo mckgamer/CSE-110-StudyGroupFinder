@@ -1,5 +1,6 @@
 package domainlogic;
 
+import database.Database;
 import database.GroupData;
 import database.MapDatabase;
 import database.UserData;
@@ -10,30 +11,31 @@ import domainlogic.User.Logged;
 /**
  * StudyGroupSystem class is the domain logic class for the Study Group System.
  * The gui of the system calls methods within this class to carry out user
- * functions. The class iterfaces with the database. A database
- * of MapDatabase type needs to be passed into the class.
+ * methods. The class interfaces with the database. 
  * @author Robert Filiczkowski
  * Date Created 10/21/2011
- *
+ * Last Updated 11/15/2011
  */
 public class StudyGroupSystem {
 	
 	//Class Variables
-	private MapDatabase database = new MapDatabase();
+	// Change to interface Database instead of MapDatabase
+	//Database database = new Database();
+	private Database database = new MapDatabase();
 	private User sgfUser;
-	
 	/**
 	 * Class Constructor that takes a MapDatabase as a parameter
 	 * @param mapData
 	 */
-	public StudyGroupSystem(MapDatabase mapData){
+	public StudyGroupSystem(Database mapData){ 
 		this.database = mapData;
 	}
 	
-	/**
-	 * Login Method
-	 * @param userName
-	 * @param pw
+	/**Login Method
+	 * Preconditions: username and pw are Strings
+	 * PostConditions: Returns a Logged Enumerator type from the User object
+	 * @param userName User name for login
+	 * @param pw password for user
 	 * @return Logged Enumerator Type
 	 */
 	public Logged login(String userName, String pw){
@@ -44,8 +46,9 @@ public class StudyGroupSystem {
 		return sgfUser.getStatus();
 	}
 	
-	/**
-	 * Checks to see if user is logged in
+	/**Checks to see if user is logged in
+	 * Precondition: None
+	 * PostCondition: None
 	 * @return Boolean True or False
 	 */
 	public boolean isLogged(){
@@ -58,10 +61,11 @@ public class StudyGroupSystem {
 			return false;
 	}
 	
-	/**
-	 * Creates a new user into database
+	/** Creates a new user into database
+	 * Preconditions: Valid UserData object
+	 * PostConditions: {@link Status} object that holds information on what happened
 	 * @param UserData Object
-	 * @return A Status object 
+	 * @return {@link Status} Status object that holds information on what happened
 	 */
 	public Status createUser(UserData u){
 		Status tempStatus = new Status();
@@ -74,15 +78,20 @@ public class StudyGroupSystem {
 		
 		return tempStatus;
 	}
-	
+	/** Refreshes the user data from the database
+	 * Preconditions: User is logged into the system user.getStatus() = users or admin
+	 * Postconditions: updates current User object with data from database
+	 * 
+	 */
 	public void refreshLoggedUser() {
-		sgfUser.setUserData(database.getUserData(sgfUser.getUserData().getId()));
+		sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
 	}
 	
-	/**
-	 * This function updates user data if the user is logged in
+	/** Updates User Profile
+	 * Preconditions: u is a valid UserData object
+	 * Postconditions: 
 	 * @param UserObject
-	 * @return Status, if sucessful Status = StatusType.SUCCESSFUL, else it will return UNSUCCESSFUL
+	 * @return {@link Status} Status object that holds information on what happened
 	 */
 	public Status updateUserProfile(UserData u){
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
@@ -95,53 +104,40 @@ public class StudyGroupSystem {
 			return tempStatus;
 	}
 	
-	/**
-	 * Changes the status of logged in user to LOGGEDOFF
-	 * @return Status object for the gui to evaluate
+	/** User Loggoff
+	 * Preconditions: user is logged into the system
+	 * Postcondition: Changes the User objects status to LOGGEDOFF
+	 * @return {@link Status} Status object that holds information on what happened
 	 */
-/*	public Status logoff(){
-		Status tempStatus = new Status();
-		if(isLogged()){
-			sgfUser.setStatus(Logged.LOGGEDOFF);
-			tempStatus.setStatus(StatusType.SUCCESS);
-			return tempStatus;
-		}
-		tempStatus.setStatus(StatusType.UNSUCCESSFUL);
-		return tempStatus;
-	/*
-	/** Logs the user out of the program by calling the User logoff method. */
 	public void logoff(){
 		if (sgfUser != null) {
 			sgfUser.logoff();
 		}
-	  
 	}
-	
-	
-	// These are list of methods identified from The subsystem interaction diagrams
-	// They will need to be implemented at some point. Not all methods will be included
-	// in phase 1 of this project.
-	
-	/**
-	 * Gets User Data For logged In User
-	 * @return UserData Object
+
+	/** Gets User Data For logged In User
+	 * Preconditions: User must be logged into system
+	 * Postconditions: Returns the UserData object associated with the user.
+	 * @return UserData Object of the logged-in user
 	 */
 	public UserData getLoggedUser(){
 		return sgfUser.getUserData();
 	}
-	/**
-	 * Gets user data for a specific id
+	/**Gets user data for a specific id
+	 * Preconditions: id is an integer
+	 * Postconditions: Returns the UserData object associated to the id
 	 * @param id
-	 * @return UserData Object.
+	 * @return UserData Object
 	 */
 	public UserData getUser(int id){
-		return database.getUserData(id);
+		return database.getUser(id);
 	}
 	
-	/**
-	 * Create a new group with data passed by Gui
-	 * @param gd
-	 * @return Status Objects
+	/** Create a new group
+	 * Preconditions: gd is a Valid GroupData object
+	 * Postconditions: Returns Status object
+	 * @param gd is a GroupData object
+	 * @return {@link Status} Status object that holds information on what happened
 	 */
 	public Status createNewGroup(GroupData gd){
 		gd.setMod(sgfUser.getUserData().getId());
@@ -150,9 +146,10 @@ public class StudyGroupSystem {
 		return tempStatus;
 		
 	}
-	/**
-	 * Gets Group Data from ID
-	 * @param id
+	/** Gets Group Data from ID
+	 * Preconditions: id is an integer
+	 * Postconditions: Returns a GroupData object associated with the group id
+	 * @param id is an id of a group
 	 * @return GroupData Object
 	 */
 	public GroupData getGroup(int id){
@@ -160,51 +157,52 @@ public class StudyGroupSystem {
 		return tempData;
 	}
 	
-	/**
-	 * Update GroupData
-	 * @param gd
-	 * @return Status
+	/** Update GroupData
+	 * Preconditions: gd is a valid GroupData object
+	 * Postconditions: Returns Status object
+	 * @param gd is a GroupData object
+	 * @return Status object that holds information on what happened
 	 */
 	public Status updateGroupData(GroupData gd){
 		Status tempStatus = new Status();
 		tempStatus = database.updateGroup(gd);
 		return tempStatus;
 	}
-	
+	/** Delete Group
+	 * Preconditions: groupID is an integer
+	 * Postconditions: Returns a Status object
+	 * @param groupID is the groupID to delete
+	 * @return Status object that holds information on what happened
+	 */
 	public Status deleteGroup(int groupID){
 		Status tempStatus = new Status();
 		tempStatus = database.deleteGroup(groupID);
 		return tempStatus;
 	}
 	
-	/**
-	 * Adds user to group
-	 * @param uid
-	 * @param gid
-	 * @return Status
+	/** Adds user to group
+	 * Preconditions: uid and gid are integers
+	 * Postconditions: Status object is returned
+	 * @param uid is the user id
+	 * @param gid is the group ide
+	 * @return Status object that holds information on what happened
 	 */
 	public Status joinGroup(int uid, int gid){
 		Status tempStatus = new Status();
 		tempStatus = database.addUserToGroup(uid, gid);
 		return tempStatus;
-		
 	}
 	
-
-	/**
-	 * Remove a user form a group
-	 * @param userID
-	 * @param groupID
-	 * @return Status
+	/** Remove a user form a group
+	 * Preconditions: userID and GroupID are integers
+	 * Postconditions: Return a Status object
+	 * @param userID is the userid of the user to remove from the group
+	 * @param groupID is the groupid to remove the user from
+	 * @return Status object that holds information on what happened
 	 */
 	public Status removeUserFromGroup(int userID, int groupID){
 		Status tempStatus = database.removeUserFromGroup(userID, groupID);
 		return tempStatus;
 		
 	}
-	
-	void deleteGroup(){
-		
-	}
-	
 }

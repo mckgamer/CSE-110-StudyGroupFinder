@@ -73,10 +73,11 @@ public class MapDatabase implements Database {
 		return groupIdCounter;
 	}
 	
-	/**
-	 * Adds a group to the database
-	 * @param GroupData
-	 * @return Status Object
+	/** Adds a Group to the database 
+	 * Precondition: GroupData object is valid. All data object variables have been validated.
+	 * Postcondition: Method will return a Status object that contains the result of the method call  
+	 * @param gd the {@link GroupData} object to add.
+	 * @return {@link Status} object that holds information on what happened.
 	 */
 	public Status addGroup(GroupData gd) {
 		Status tempStatus = new Status();
@@ -87,16 +88,18 @@ public class MapDatabase implements Database {
 		String groupIdString = Integer.toString(uniqueGroupId);
 		groups.put(uniqueGroupId, addData(gd.getName(), gd.getCourse(), StringParser.unParseArray(gd.getMods()) ,"~", groupIdString));
 		//Update user profile
-		UserData tempUD = getUserData(uID);
+		UserData tempUD = getUser(uID);
 		tempUD.setMod(uniqueGroupId);
 		updateUser(tempUD);
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
-	/**
-	 * Updates Group Data in Database
-	 * @param gd
-	 * @return Status
+	
+	/** Updates Group Data in Database
+	 * Preconditions: gd is a valid GroupData object
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param gd {@link GroupData} GroupData object
+	 * @return {@link Status} object that holds information on what happened
 	 */
 	public Status updateGroup(GroupData gd){
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
@@ -106,11 +109,11 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 	
-	
-	/**
-	 * Gets Group Data from Database
-	 * @param group id
-	 * @return GroupData Object
+	/** Gets the specified GroupData from the database.
+	 * Precondition: The group id is an integer.
+	 * Postcondition: Method will return the GroupData object associated with the id number 
+	 * @param id the ID of the group to get.
+	 * @return the {@link GroupData} of the group.
 	 */
 	public GroupData getGroup(int id) {
 		if (groups.containsKey(id)) {
@@ -121,16 +124,17 @@ public class MapDatabase implements Database {
 		return null;
 	}
 
-	/**
-	 * Add User To Group
-	 * @param int userid
-	 * @param int groupid
-	 * @return Status Object
+	/** Adds the specified user to the specified group
+	 * Preconditions: userid and groupid are integers.
+	 * Postconditions: return a Status object that contains the result of the method call  
+	 * @param userid the ID of the user to add.
+	 * @param groupid the ID of the group to add to.
+	 * @return {@link Status} object that holds information on what happened. 
 	 */
 	public Status addUserToGroup(int userid, int groupid) {
 		//Need to get the GroupData and UserData Objects
 		// Need to add userid to group users Array List.
-		UserData tempUD = this.getUserData(userid);
+		UserData tempUD = this.getUser(userid);
 		GroupData tempGD = this.getGroup(groupid);
 		Status tempStatus = new Status();
 		//Update GroupData
@@ -144,23 +148,20 @@ public class MapDatabase implements Database {
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
-	/**
-	 * Delete Group
-	 * @param groupid
-	 * @return Status.
+	/** Deletes a Group
+	 * Preconditions: groupID is an integer
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param groupID
+	 * @return {@link Status} object that holds information on what happened
 	 */
 	public Status deleteGroup(int groupid){
-		// Create Status Object
-		// Create GroupData object
-		//Get the group to delete
-		// delete references of group from users Mod and users
-		// delete group from database
+
 		Status tempStatus = new Status();
 		GroupData tempGD = this.getGroup(groupid);
 		ArrayList<Integer> tempUsers = tempGD.getUsers();
 		UserData tempUserData;
 		for(int i=0; i<tempUsers.size(); i++){
-			tempUserData = this.getUserData(tempUsers.get(i));
+			tempUserData = this.getUser(tempUsers.get(i));
 			//Remove reference of group from user data
 			tempUserData.unsetUser(groupid);
 			//Save user data
@@ -168,7 +169,7 @@ public class MapDatabase implements Database {
 		}
 		tempUsers = tempGD.getMods();
 		for(int i=0; i<tempUsers.size(); i++){
-			tempUserData = this.getUserData(tempUsers.get(i));
+			tempUserData = this.getUser(tempUsers.get(i));
 			//Remove reference of group from user data
 			tempUserData.unsetMod(groupid);
 			//Save user data
@@ -178,26 +179,28 @@ public class MapDatabase implements Database {
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
-	/**
-	 * Get User Data
+	/** Gets User Data Object for Specified ID
+	 * Preconditions: id is an integer
+	 * Postconditions: Returns a UserData object for the specified id
 	 * @param id
-	 * @return User Data
+	 * @return {@link UserData} object containing the user data associated with the user id.
 	 */
-	public UserData getUserData(int id) {
+	public UserData getUser(int id) {
 		Vector<String> temp = users.get(id);
 		UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2), temp.get(3));
 		return tempUD;
 	}
 
-	/**
-	 * Remove User From Group
-	 * @param userID
-	 * @param GroupID
-	 * @return Status
+	/** Removes the specified user from the specified group.
+	 * Preconditions: userid and groupid are integers
+	 * Postconditions: Returns a Status object that contains the result of the method call 
+	 * @param userid the ID of the user to remove.
+	 * @param groupid the ID of the group to remove from.
+	 * @return {@link Status} object that holds information on what happened.
 	 */
 	public Status removeUserFromGroup(int userid, int groupid) {
 		Status tempStatus = new Status();
-		UserData tempUserData = getUserData(userid);
+		UserData tempUserData = getUser(userid);
 		tempUserData.unsetUser(groupid);
 		this.updateUser(tempUserData);
 		GroupData tempGroupData = getGroup(groupid);
@@ -206,17 +209,15 @@ public class MapDatabase implements Database {
 		
 		//Return Status
 		tempStatus.setStatus(StatusType.SUCCESS);
-	
-		
-		// TODO Auto-generated method stub
-		return null;
+		return tempStatus;
 	}
 
-	/**
-	 * User Login
-	 * @param String User Name
-	 * @param String Password
-	 * @return User Object
+	/** Gets user login info from database
+	 * Preconditions: uname is an integer and pw is a String
+	 * Postconditions: Returns a UserData object for the user specified by uname
+	 * @param uname the username of the user.
+	 * @param pw the password of the user.
+	 * @return a {@link User} object for the logged in, or failed, user.
 	 */
 	public User login(String uname, String pw) {
 		// TODO This is really bad but will work for now
@@ -232,10 +233,11 @@ public class MapDatabase implements Database {
 		return user;
 	}
 
-	/**
-	 * Add User to Databalse
-	 * @param UserData Object
-	 * @return Status Object
+	/** Adds a User to the database 
+	 * Preconditions: ud is a valid UserData object.
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param ud the {@link UserData} object to add.
+	 * @return {@link Status} object that holds information on what happened.
 	 */
 	public Status addUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
@@ -246,10 +248,11 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 
-	/**
-	 * Update user in database
-	 * @param UserData Object
-	 * @return Status Object
+	/** Updates a User in the database
+	 * Preconditions: ud is a valid UserData object.
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param ud {@link UserData} object with updated information. 
+	 * @return {@link Status} object that holds information on what happened.
 	 */
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
@@ -257,15 +260,6 @@ public class MapDatabase implements Database {
 		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(),StringParser.unParseArray(ud.getModOf()), StringParser.unParseArray(ud.getUserOf()), idString));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
-	}
-
-
-	
-	
-	@Override
-	public void closeConnection() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

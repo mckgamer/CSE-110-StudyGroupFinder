@@ -18,7 +18,7 @@ public interface Database {
 	 * Precondition: The group id is an integer.
 	 * Postcondition: Method will return the GroupData object associated with the id number 
 	 * @param id the ID of the group to get.
-	 * @return the {@link GroupData} of the group.
+	 * @return the c of the group.
 	 */
 	public GroupData getGroup(int id);
 	
@@ -40,7 +40,7 @@ public interface Database {
 	 */
 	public Status removeUserFromGroup(int userid, int groupid);
 	
-	/** Logs the user into the database
+	/** Gets user login info from database
 	 * Preconditions: uname is an integer and pw is a String
 	 * Postconditions: Returns a UserData object for the user specified by uname
 	 * @param uname the username of the user.
@@ -65,23 +65,27 @@ public interface Database {
 	 */
 	public Status updateUser(UserData ud);
 	
-	/**Deletes a Group
+	/** Deletes a Group
 	 * Preconditions: groupID is an integer
-	 * Postconsitions: Returns a Status object that contains the result of the method call
-	 * @param groupID
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param groupID an id for the group to delete
 	 * @return {@link Status} object that holds information on what happened
 	 */
 	public Status deleteGroup(int groupID);
 	
-	/** Retrieves user data give an id
+	/** Gets User Data Object for Specified ID
 	 * Preconditions: id is an integer
 	 * Postconditions: Returns a UserData object for the specified id
 	 * @param id
 	 * @return {@link UserData} object containing the user data associated with the user id.
 	 */
-	public UserData getUserData(int id);
-
+	public UserData getUser(int id);
 	
-	/** Closes database connection */
-	public void closeConnection();
+	/** Updates Group Data in Database
+	 * Preconditions: gd is a valid GroupData object
+	 * Postconditions: Returns a Status object that contains the result of the method call
+	 * @param gd {@link GroupData} GroupData object
+	 * @return {@link Status} object that holds information on what happened
+	 */
+	public Status updateGroup(GroupData gd);
 }
