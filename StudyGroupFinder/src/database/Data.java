@@ -15,4 +15,8 @@ public interface Data {
 	
 	/** Returns the id of the Data Object */
 	int getId();
+
+	/** Produce a human readable summary of data contents **/
+	String toString();
+	
 }

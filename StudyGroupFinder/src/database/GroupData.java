@@ -43,6 +43,22 @@ public class GroupData implements Data {
 		users = StringParser.parseString(userst);
 	}
 
+	/** Constructs a GroupData object using all it needs
+	 * 
+	 * @param id the id of the Group, null if not a group yet.
+	 * @param name the name of the group.
+	 * @param course the course of this group.
+	 * @param modst a String of user IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
+	 * @param userst a String of user IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
+	 */
+	public GroupData(int id, String name, String course, ArrayList<Integer> modList, ArrayList<Integer> userList) {
+		this.id = id;
+		this.name = name;
+		this.course = course;
+		this.mods = modList;
+		this.users = userList;
+	}
+
 	@Override //TODO
 	public boolean validate() {
 		if (name != null && course != null && mods != null) {
@@ -110,4 +126,25 @@ public class GroupData implements Data {
 		return users;
 	}
 
+	public String toString() {
+		String s = "";
+		/** Produce name and course */
+		s = 	"Group: " +
+				"Name=" + this.name + ", " +
+				"Course=" + this.course + ", ";
+
+		/** Users */
+		s = s + "Users(";
+		for (int i: users) { s = s + i + ", "; }
+		s = s + "), ";
+		
+		/** Mods */
+		s = s + "Mods(";
+		for (int i: mods) { s = s + i + ", "; }
+		s = s + ")";
+				
+		return s;
+		
+	}
+	
 }
