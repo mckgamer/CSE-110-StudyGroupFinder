@@ -42,6 +42,22 @@ public class UserData implements Data {
 		userof = StringParser.parseString(user); //TODO change to user parameter
 	}
 	
+	/** Constructs a UserData object using all it needs
+	 * 
+	 * @param id the id of the User, null if not a user yet.
+	 * @param uname the username of the user.
+	 * @param pw the password of the user.
+	 * @param modof is an ArrayList of integers
+	 * @param userof is an ArrayList of integers
+	 */
+	public UserData(int id, String uname, String pw, ArrayList<Integer> modof, ArrayList<Integer> userof) {
+		this.id = id;
+		this.uname = uname;
+		this.pw = pw;
+		this.modof = modof;
+		this.userof = userof;
+	}
+	
 	@Override //TODO
 	public boolean validate() {
 		if (uname == null || pw == null) { // Will need to check for modOfGroup when it is finalized
@@ -116,6 +132,26 @@ public class UserData implements Data {
 	
 	public boolean isModOf(int groupId) {
 		return modof.contains(groupId);
+	}
+	
+	public String toString() {
+		String s = "";
+		/** Produce name and password */
+		s = 	"User: " +
+				"Name=" + this.uname + ", " +
+				"PW=" + this.pw + ", ";
+
+		/** Groups as user */
+		s = s + "UserOf(";
+		for (int i: userof) { s = s + i + ", "; }
+		s = s + "), ";
+		
+		/** Groups as mod */
+		s = s + "ModOf(";
+		for (int i: modof) { s = s + i + ", "; }
+		s = s + ")";
+				
+		return s;
 	}
 
 }
