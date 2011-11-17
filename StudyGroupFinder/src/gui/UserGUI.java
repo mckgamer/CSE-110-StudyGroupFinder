@@ -16,12 +16,13 @@ import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
 
-/** UserGUI is a JPanel that manages everything that a user can do.
+/** UserGUI is a JPanel and implementation of {@link GUIPanel} that manages 
+ *  everything that a user can do.
  * 
  * @author Michael Kirby
  *
  */
-public class UserGUI extends JPanel {
+public class UserGUI extends JPanel implements GUIPanel  {
 
 	/** The current JPanel that this UserGUI is displaying on the left. */
 	private JPanel left;
