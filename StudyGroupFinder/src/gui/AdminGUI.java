@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 
 /** AdminGUI is a JPanel and implementation of {@link GUIPanel} that manages 
@@ -10,15 +12,57 @@ import javax.swing.JPanel;
  */
 public class AdminGUI extends JPanel implements GUIPanel {
 
+	/** The current JPanel that this UserGUI is displaying on the left. */
+	private JPanel left;
+	
+	/** The current JPanel that this UserGUI is displaying on the right. */
+	private JPanel right;
+	
+	/** The {@link GUIFrame} that is displaying this UserGUI */
+	private GUIFrame parent;
+	
+	/** Constructs this AdminGUI object using the {@link GUIFrame} that will display it.
+	 * 
+	 * @param parent the {@link GUIFrame} that will display this AdminGUI.
+	 */
+	public AdminGUI(GUIFrame parent) {
+		
+		//Give this GUI a reference to its GUIFrame parent
+		this.parent = parent;
+		
+		//Set the menubar of the GUIFrame to a UserMenu
+		AdminMenu menubar = new AdminMenu(parent);
+        parent.setJMenuBar(menubar);
+        
+        //Set the size and layout of the Panel
+		setSize(500,400);
+		setLayout(new GridLayout(1,2,15,0));
+		
+		//Initialize the left and right JPanels for this GUI
+		left = new UserGroupsPanel(parent);
+		
+		right = new JPanel();
+		
+		//Apply this GUI's left and right JPanels
+		add(left);
+		add(right);
+	}
+	
 	@Override
 	public void setRight(JPanel panel) {
-		// TODO Auto-generated method stub
-		
+		remove(right);
+		right = panel;
+		add(right);
+		getRootPane().revalidate();
 	}
 
 	@Override
 	public void refreshLeft() {
-		// TODO Auto-generated method stub
+		removeAll();
+		left = new UserGroupsPanel(parent);
+		add(left);
+		add(right);
+		getRootPane().revalidate();
 		
 	}
 

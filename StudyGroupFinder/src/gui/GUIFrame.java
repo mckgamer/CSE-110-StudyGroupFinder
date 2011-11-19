@@ -40,10 +40,10 @@ public class GUIFrame extends JFrame {
 		while (sgs.isLogged() == false) {
 			LogInDialog ld = new LogInDialog(this);
 	        ld.setVisible(true);
-	        if (ld.getStatus() == Logged.USER) {
+	        if (ld.getStatus() != Logged.USER) {
 				gui = new UserGUI(this);
-			} else if (ld.getStatus() == Logged.ADMIN) {
-				//gui = new AdminGUI();
+			} else if (ld.getStatus() != Logged.ADMIN) {
+				gui = new AdminGUI(this);
 			}
 		}
 		setContentPane(gui);
