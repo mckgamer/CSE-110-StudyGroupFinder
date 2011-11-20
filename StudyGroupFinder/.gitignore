@@ -1,1 +1,3 @@
 *.CLASS
+*.class
+.classpath
