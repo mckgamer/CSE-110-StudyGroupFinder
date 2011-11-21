@@ -33,7 +33,7 @@ public class StudyGroupSystem {
 	
 	/**Login Method
 	 * Preconditions: username and pw are Strings
-	 * PostConditions: Returns a Logged Enumerator type from the User object
+	 * PostConditions: User will be logged into the system
 	 * @param userName User name for login
 	 * @param pw password for user
 	 * @return Logged Enumerator Type
@@ -63,7 +63,7 @@ public class StudyGroupSystem {
 	
 	/** Creates a new user into database
 	 * Preconditions: Valid UserData object
-	 * PostConditions: {@link Status} object that holds information on what happened
+	 * PostConditions: Creates a new user in the database
 	 * @param UserData Object
 	 * @return {@link Status} Status object that holds information on what happened
 	 */
@@ -89,7 +89,7 @@ public class StudyGroupSystem {
 	
 	/** Updates User Profile
 	 * Preconditions: u is a valid UserData object
-	 * Postconditions: 
+	 * Postconditions: Updates the user profile with data provided by user
 	 * @param UserObject
 	 * @return {@link Status} Status object that holds information on what happened
 	 */
@@ -135,7 +135,7 @@ public class StudyGroupSystem {
 	
 	/** Create a new group
 	 * Preconditions: gd is a Valid GroupData object
-	 * Postconditions: Returns Status object
+	 * Postconditions: Creates a new study group and saves it into the database
 	 * @param gd is a GroupData object
 	 * @return {@link Status} Status object that holds information on what happened
 	 */
@@ -148,7 +148,7 @@ public class StudyGroupSystem {
 	}
 	/** Gets Group Data from ID
 	 * Preconditions: id is an integer
-	 * Postconditions: Returns a GroupData object associated with the group id
+	 * Postconditions: gets group data from database
 	 * @param id is an id of a group
 	 * @return GroupData Object
 	 */
@@ -159,7 +159,7 @@ public class StudyGroupSystem {
 	
 	/** Update GroupData
 	 * Preconditions: gd is a valid GroupData object
-	 * Postconditions: Returns Status object
+	 * Postconditions: Updates the group data in the database
 	 * @param gd is a GroupData object
 	 * @return Status object that holds information on what happened
 	 */
@@ -170,7 +170,7 @@ public class StudyGroupSystem {
 	}
 	/** Delete Group
 	 * Preconditions: groupID is an integer
-	 * Postconditions: Returns a Status object
+	 * Postconditions: Deletes the group associated with groupID from the database
 	 * @param groupID is the groupID to delete
 	 * @return Status object that holds information on what happened
 	 */
@@ -182,7 +182,7 @@ public class StudyGroupSystem {
 	
 	/** Adds user to group
 	 * Preconditions: uid and gid are integers
-	 * Postconditions: Status object is returned
+	 * Postconditions: Adds the specified user to the specified group
 	 * @param uid is the user id
 	 * @param gid is the group ide
 	 * @return Status object that holds information on what happened
@@ -194,8 +194,8 @@ public class StudyGroupSystem {
 	}
 	
 	/** Remove a user form a group
-	 * Preconditions: userID and GroupID are integers
-	 * Postconditions: Return a Status object
+	 * Preconditions: userID and groupID are integers
+	 * Postconditions: Removes user associated with userID from the group associated with groupID
 	 * @param userID is the userid of the user to remove from the group
 	 * @param groupID is the groupid to remove the user from
 	 * @return Status object that holds information on what happened
