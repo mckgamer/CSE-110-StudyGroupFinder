@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import domainlogic.Status;
 import domainlogic.User;
 import domainlogic.User.Logged;
 
@@ -12,6 +13,45 @@ public abstract class AbstractDatabaseTest {
 	
 	protected Database database;
 	
+	/** Test Add Group
+	 */
+	public abstract void testAddGroup();
+	
+	/** Test Get Group
+	 */
+	public abstract void testGetGroup();
+	
+	/** Test Add User
+	 */
+	public abstract void testAddUserToGroup();
+	
+	/** Test Remove User From Group
+	 */
+	public abstract void testRemoveUserFromGroup();
+	
+	/** Test Add User 
+	 */
+	public abstract void testAddUser();
+	
+	/** Delete User
+	 */
+	public abstract void testDeleteUser();
+	
+	/** Test Update User
+	 */
+	public abstract void testUpdateUser();
+	
+	/** Test Delete Group
+	 */
+	public abstract Void testDeleteGroup();
+	
+	/** Test Get User
+	 */
+	public abstract void testGetUser();
+	
+	/** Updates Group Data in Database
+	 */
+	public abstract void testUpdateGroup();
 	
 	@Test
 	public void testLogInUser() {
@@ -28,9 +68,5 @@ public abstract class AbstractDatabaseTest {
 		assertNotNull(temp);
 		assertTrue(temp.getStatus() == Logged.INVALID);
 		assertNull(temp.getUserData());
-	}
-	@Test
-	public void deleteGroup(){
-		
 	}
 }
