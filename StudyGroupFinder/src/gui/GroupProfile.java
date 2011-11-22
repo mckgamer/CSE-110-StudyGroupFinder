@@ -23,6 +23,7 @@ import domainlogic.DeleteGroupEvent;
 import domainlogic.MakeModeratorEvent;
 import domainlogic.RemoveUserFromGroupEvent;
 import domainlogic.UpdateGroupProfileEvent;
+import domainlogic.User.Logged;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
 public class GroupProfile extends JPanel implements ActionListener, ListSelectionListener {
@@ -96,7 +97,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(0,1,5,4));
         
-        if (parent.getSGS().getLoggedUser().isModOf(gd.getId())) {
+        if (parent.getSGS().getLoggedUser().isModOf(gd.getId()) || parent.getSGS().getUserStatus() == Logged.ADMIN) {
          //TODO Moderator buttons here
         	JButton remove = new JButton("Remove User");
         	//remove.setEnabled(false);
@@ -115,11 +116,13 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
             edit.setActionCommand("edit");
             edit.addActionListener(this);
             buttons.add(edit);
-            JButton resign = new JButton("Resign");
-            resign.setEnabled(false);
-            resign.setActionCommand("resign");
-            resign.addActionListener(this);
-            buttons.add(resign);
+            if (parent.getSGS().getUserStatus() != Logged.ADMIN) {
+	            JButton resign = new JButton("Resign");
+	            resign.setEnabled(false);
+	            resign.setActionCommand("resign");
+	            resign.addActionListener(this);
+	            buttons.add(resign);
+            }
             JButton delete = new JButton("Delete Group");
             delete.setActionCommand("delete");
             delete.addActionListener(this);

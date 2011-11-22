@@ -210,20 +210,56 @@ public class StudyGroupSystem {
 		
 	}
 	
+	/** This method searches for groups in the database with the specified search data.
+	 * 
+	 * @param search the SearchData to use to search with.
+	 * @return the SearchData modified with the results of the search added.
+	 */
 	public SearchData searchGroups(SearchData search) {
+		//TODO Dummy Code Make this call the DB function
 		Vector<Integer> empty = new Vector<Integer>();
 		for (int x = 1; x < 10; x++) {
 			if (getGroup(x) != null && !getLoggedUser().isUserOf(x) && !getLoggedUser().isModOf(x)) {
 				empty.add(x);
 			}
 		}
+		//End Dummy Code
 		search.setResults(empty);
 		return search;
 		
 	}
 	
+	/** This method searches for users in the database with the specified search data.
+	 * 
+	 * @param search the SearchData to use to search with.
+	 * @return the SearchData modified with the results of the search added.
+	 */
+	public SearchData searchUsers(SearchData search) {
+		//TODO Dummy Code Make this call the DB function
+		Vector<Integer> empty = new Vector<Integer>();
+		empty.add(1);
+		empty.add(2);
+		//End Dummy Code
+		search.setResults(empty);
+		return search;
+		
+	}
+	
+	/** For the suggested groups logic. This takes the logged in Users profile and converts
+	 * to a filter string for their suggested groups.
+	 * 
+	 * @return the filter string.
+	 */
 	public String getSuggestedTerms() {
 		//TODO getLoggedUser().getCourses() this should just add some terms that the user applys to
 		return "cse";
+	}
+	
+	/** This method returns the Logged status of the currently logged in user.
+	 * 
+	 * @return the Logged status of the currently logged in user.
+	 */
+	public Logged getUserStatus() {
+		return sgfUser.getStatus();
 	}
 }
