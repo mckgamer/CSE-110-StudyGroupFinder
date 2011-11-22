@@ -1,13 +1,34 @@
 package domainlogic;
 
 import database.Data;
+import database.SearchData;
 
+/** This Event is created whenever an Admin searches for a user.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class UserSearchEvent implements Event {
 
+	/** The {@link SearchData} object that this Event will use to complete its task. */
+	private SearchData search;
+	
+	/** The {@link Status} object associated with the current state of this Event. */
+	private Status status;
+	
+	/** The {@link StudyGroupSystem} that this Event uses. */
+	private StudyGroupSystem system;
+	
+	/** Construct a DeleteUserEvent using a default status and null {@link UserData} object */
+	public UserSearchEvent(StudyGroupSystem sgs) {
+		search = null;
+		status = new Status();
+		system = sgs;
+	}
+	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		search = system.searchUsers(search);
 	}
 
 	@Override
@@ -18,20 +39,17 @@ public class UserSearchEvent implements Event {
 
 	@Override
 	public Status getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return status;
 	}
 
 	@Override
 	public Data getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return search;
 	}
 
 	@Override
 	public void setData(Data data) {
-		// TODO Auto-generated method stub
-
+		search = (SearchData) data;
 	}
 
 }
