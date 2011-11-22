@@ -16,6 +16,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
+import database.SearchData;
+import domainlogic.GroupSearchEvent;
 
 /** This Panel is displayed on the left of the UserGUI. It displays the users current groups
  * as well as groups suggested to them by the system.
@@ -35,37 +37,48 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 	
 	JTextField filtsg;
 	
-	public UserGroupsPanel(GUIFrame parent, String filterTerms) {
+	GroupSearchEvent search;
+	
+	public UserGroupsPanel(GUIFrame parent, SearchData oldsearch) {
+		
 		this.parent = parent;
+		
+		search = new GroupSearchEvent(parent.getSGS());
+		if (oldsearch == null) {
+			oldsearch = new SearchData();
+			oldsearch.setPrivateTerms(parent.getSGS().getSuggestedTerms());
+		}
+		search.setData(oldsearch);
 		
 		setLayout(new GridLayout(5,1));
 		
+		// Display the Users Current Groups
 		add(new JLabel("Current Groups"));
 		ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().getLoggedUser().getModOf());
 		temp.addAll(parent.getSGS().getLoggedUser().getUserOf());
-		currGroup = new GroupList(parent, this, temp.toArray()); //TODO user also
+		currGroup = new GroupList(parent, this, temp.toArray());
 		JScrollPane mg = new JScrollPane(currGroup);
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
+		
+		//Display the Groups Suggested to the User
 		add(new JLabel("Suggested Groups"));
 		JPanel filt = new JPanel(new GridLayout(1,2));
-		filtsg = new JTextField(filterTerms);
+		filtsg = new JTextField(oldsearch.getTerms());
 		filt.add(filtsg);
 		JButton filter = new JButton("Filter");
         filter.setActionCommand("filter");
         filter.addActionListener(this);
         filt.add(filter);
 		add(filt);
-		// TODO DUMMY SUGGEST CODE FOLLOWS
-		ArrayList<Integer> empty = new ArrayList<Integer>();
-		for (int x = 1; x < 10; x++) {
-			if (parent.getSGS().getGroup(x) != null && !parent.getSGS().getLoggedUser().isUserOf(x) && !parent.getSGS().getLoggedUser().isModOf(x)) {
-				empty.add(x);
-			}
-		}
-		//TODO END DUMMY SUGGEST CODE
-		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups(filterTerms));
-		suggGroup = new GroupList(parent, this, empty.toArray());
+		
+		//Update the search event if it has yet to be executed
+		if (((SearchData)search.getData()).getResults() == null) {
+			search.execute();
+		} 
+		suggGroup = new GroupList(parent, this, ((SearchData)search.getData()).getResults().toArray());
+
+		//suggGroup = new GroupList(parent, this, empty.toArray());
 		JScrollPane sg = new JScrollPane(suggGroup);
 		sg.setPreferredSize(new Dimension(40,50));
 		add(sg);
@@ -91,13 +104,14 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("filter".equals(e.getActionCommand())) {
-			System.out.println("Filter TBI.");	
+			((SearchData)search.getData()).setTerms(filtsg.getText());
+			search.execute();
 			parent.getGUI().refreshLeft();
 		}
 	}
 	
-	public String getFilter() {
-		return filtsg.getText();
+	public SearchData getFilter() {
+		return (SearchData) search.getData();
 	}
 
 }

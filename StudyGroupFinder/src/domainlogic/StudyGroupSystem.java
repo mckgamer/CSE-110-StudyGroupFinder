@@ -1,8 +1,12 @@
 package domainlogic;
 
+import java.util.ArrayList;
+import java.util.Vector;
+
 import database.Database;
 import database.GroupData;
 import database.MapDatabase;
+import database.SearchData;
 import database.UserData;
 import domainlogic.User;
 import domainlogic.User.Logged;
@@ -204,5 +208,22 @@ public class StudyGroupSystem {
 		Status tempStatus = database.removeUserFromGroup(userID, groupID);
 		return tempStatus;
 		
+	}
+	
+	public SearchData searchGroups(SearchData search) {
+		Vector<Integer> empty = new Vector<Integer>();
+		for (int x = 1; x < 10; x++) {
+			if (getGroup(x) != null && !getLoggedUser().isUserOf(x) && !getLoggedUser().isModOf(x)) {
+				empty.add(x);
+			}
+		}
+		search.setResults(empty);
+		return search;
+		
+	}
+	
+	public String getSuggestedTerms() {
+		//TODO getLoggedUser().getCourses() this should just add some terms that the user applys to
+		return "cse";
 	}
 }

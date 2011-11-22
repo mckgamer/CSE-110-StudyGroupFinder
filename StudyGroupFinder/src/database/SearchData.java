@@ -11,10 +11,13 @@ import java.util.Vector;
 public class SearchData implements Data {
 
 	/** These are the search terms associated with this SearchData */
-	private Vector<String> terms;
+	private String terms;
+	
+	/** These are the private search terms associated with this SearchData, ie suggested terms. */
+	private String privateterms;
 	
 	/** The results of this SearchData's execution */
-	private Vector<String> results;
+	private Vector<Integer> results;
 	
 	@Override
 	public boolean validate() {
@@ -28,11 +31,37 @@ public class SearchData implements Data {
 		return 0;
 	}
 	
+	/** Returns the terms string.
+	 * 
+	 * @return the terms searched for.
+	 */
+	public String getTerms() {
+		return terms;
+	}
+	
+	/** Sets the terms string.
+	 */
+	public void setTerms(String terms) {
+		this.terms = terms;
+	}
+	
+	/** Sets the private terms string.
+	 */
+	public void setPrivateTerms(String terms) {
+		this.privateterms = terms;
+	}
+	
+	/** Sets the results vector.
+	 */
+	public void setResults(Vector<Integer> results) {
+		this.results = results;
+	}
+	
 	/** Returns the result vector.
 	 * 
 	 * @return the results of the search in Vector form.
 	 */
-	public Vector<String> getResults() {
+	public Vector<Integer> getResults() {
 		return results;
 	}
 
