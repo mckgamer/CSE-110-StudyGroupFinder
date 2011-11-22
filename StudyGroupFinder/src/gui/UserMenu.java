@@ -69,7 +69,7 @@ public class UserMenu extends JMenuBar implements ActionListener {
 			NewGroupDialog ngd = new NewGroupDialog(parent);
 	        ngd.setVisible(true);
 		} else if("Edit Profile".equals(e.getActionCommand())) {
-			UpdateUserDialog ngd = new UpdateUserDialog(parent);
+			UpdateUserDialog ngd = new UpdateUserDialog(parent,parent.getSGS().getLoggedUser().getId());
 	        ngd.setVisible(true);
 		} else if("about".equals(e.getActionCommand())) {
 			AboutSGFDialog asd = new AboutSGFDialog(parent);

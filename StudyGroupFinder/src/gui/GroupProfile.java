@@ -64,7 +64,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         
         JPanel submembPan = new JPanel();
         submembPan.setLayout(new GridLayout(2,2,5,0));
-        JLabel mem = new JLabel("Members");
+        JLabel mem = new JLabel("Groups");
         mem.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(mem);
         JLabel meet = new JLabel("Meetings");

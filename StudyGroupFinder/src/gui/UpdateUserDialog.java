@@ -42,7 +42,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	 * 
 	 * @param parent the {@link GUIFrame} that will display this UpdateUserDialog.
 	 */
-	public UpdateUserDialog(GUIFrame parent) {
+	public UpdateUserDialog(GUIFrame parent, int user) {
 		super(parent, true);
 		
 		//Give this Dialog a reference to its GUIFrame parent
@@ -58,7 +58,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		unameField = new JTextField(10);
 		pwField = new JTextField(10);
 
-		prepop = parent.getSGS().getLoggedUser();
+		prepop = parent.getSGS().getUser(user);
 		unameField.setText(prepop.getUName());
 		pwField.setText(prepop.getPW());
 		
@@ -107,6 +107,8 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
+			parent.getGUI().refreshLeft();//TODO if this the best way for refresh right? see below
+			parent.getGUI().setRight(new UserProfile(parent,parent.getSGS().getUser(prepop.getId())));
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
 		}

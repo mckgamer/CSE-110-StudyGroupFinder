@@ -58,7 +58,7 @@ public class GUIFrame extends JFrame {
 		return sgs;
 	}
 	
-	public UserGUI getGUI() {
-		return (UserGUI)gui;
+	public GUIPanel getGUI() {
+		return (GUIPanel) gui;
 	}
 }
