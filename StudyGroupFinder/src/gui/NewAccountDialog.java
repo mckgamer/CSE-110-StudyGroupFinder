@@ -10,9 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import database.GroupData;
 import database.UserData;
-import domainlogic.CreateStudyGroupEvent;
 import domainlogic.CreateUserEvent;
 import domainlogic.Status;
 import domainlogic.StatusType;
@@ -98,7 +96,6 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
-			//System.out.println("Added " + parent.getSGS().getGroup(3).getName()); //TODO only temp test for 1st added
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
 		}

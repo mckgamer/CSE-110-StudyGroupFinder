@@ -1,6 +1,6 @@
 package domainlogic;
 
-/** Holds a StatusType, as well as a message useful for GUI 
+/** Holds a {@link StatusType}, as well as a message useful for GUI 
  * 
  * @author Michael Kirby
  *

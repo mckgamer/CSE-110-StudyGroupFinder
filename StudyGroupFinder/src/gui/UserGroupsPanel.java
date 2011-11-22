@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -21,8 +20,8 @@ import domainlogic.GroupSearchEvent;
 
 /** This Panel is displayed on the left of the UserGUI. It displays the users current groups
  * as well as groups suggested to them by the system.
+ * 
  * @author Michael Kirby
- *
  */
 public class UserGroupsPanel extends JPanel implements ActionListener, ListSelectionListener {
 	

@@ -11,11 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import database.GroupData;
-import database.UserData;
 import domainlogic.CreateStudyGroupEvent;
 import domainlogic.Status;
 import domainlogic.StatusType;
-import domainlogic.UpdateUserProfileEvent;
 
 /** A JDialog for creating a new study group. This is displayed when the user selects
  * New Study Group.
@@ -103,7 +101,6 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 			setVisible(false);
 			parent.getSGS().refreshLoggedUser();
 			parent.getGUI().refreshLeft();
-			//System.out.println("Added " + parent.getSGS().getGroup(3).getName()); //TODO only temp test for 1st added
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
 		}

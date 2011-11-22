@@ -5,6 +5,12 @@ import database.GroupData;
 import database.GroupUserData;
 import database.UserData;
 
+/** This Event is created by a {@link gui.GroupProfile} when a Moderator or Admin makes a User a moderator
+ * for the Group.
+ * 
+ * @author Michael Kirby
+ *
+ */
 public class MakeModeratorEvent implements Event {
 
 	/** The {@link GroupUserData} object that this Event will use to complete its task. */

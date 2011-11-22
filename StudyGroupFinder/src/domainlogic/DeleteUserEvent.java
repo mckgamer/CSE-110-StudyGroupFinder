@@ -3,6 +3,7 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 import database.UserData;
+import domainlogic.User.Logged;
 
 /** This Event is created when either an Admin hits the delete user button of a {@link gui.UserProfile}.
  * 
@@ -36,8 +37,12 @@ public class DeleteUserEvent implements Event {
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-		
+		//TODO maybe this should check that the userdata is valid still, or the user exists?
+		if (user.getId() == system.getLoggedUser().getId() || system.getUserStatus() == Logged.ADMIN) {
+			status.setStatus(StatusType.VALID);
+		} else {
+			status.setStatus(StatusType.INVALID);
+		}
 	}
 
 	@Override

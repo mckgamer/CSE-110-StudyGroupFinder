@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import util.StringParser;
 
 import database.UserData;
-import domainlogic.CreateUserEvent;
 import domainlogic.Status;
 import domainlogic.StatusType;
 import domainlogic.UpdateUserProfileEvent;

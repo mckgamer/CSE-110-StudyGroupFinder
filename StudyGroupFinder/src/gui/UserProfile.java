@@ -9,22 +9,13 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import database.GroupData;
-import database.GroupUserData;
 import database.UserData;
-import domainlogic.AddUserToGroupEvent;
-import domainlogic.DeModEvent;
-import domainlogic.DeleteGroupEvent;
 import domainlogic.DeleteUserEvent;
-import domainlogic.MakeModeratorEvent;
-import domainlogic.RemoveUserFromGroupEvent;
-import domainlogic.UpdateGroupProfileEvent;
 
 /** UserProfile is a JPanel that is able to display user data using a {@link UserData} object. */
 public class UserProfile extends JPanel implements ActionListener, ListSelectionListener {

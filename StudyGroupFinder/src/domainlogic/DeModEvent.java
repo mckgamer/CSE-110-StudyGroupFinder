@@ -4,6 +4,11 @@ import database.Data;
 import database.GroupData;
 import database.GroupUserData;
 
+/** This event is created by a {@link gui.GroupProfile}. It is able to call the appropriate
+ * methods to remove a user's moderator privileges from the group.
+ * 
+ * @author Michael Kirby
+ */
 public class DeModEvent implements Event {
 
 	/** The {@link GroupUserData} object that this Event will use to complete its task. */

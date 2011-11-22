@@ -3,7 +3,8 @@ package domainlogic;
 import database.Data;
 import database.UserData;
 
-/** This event is created by a {@link gui.UpdateUserDialog}.
+/** This event is created by a {@link gui.UpdateUserDialog} when a User or admin wants to update
+ * the users profile.
  * 
  * @author Michael Kirby
  *

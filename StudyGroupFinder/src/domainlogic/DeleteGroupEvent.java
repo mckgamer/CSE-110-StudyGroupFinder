@@ -2,6 +2,7 @@ package domainlogic;
 
 import database.Data;
 import database.GroupData;
+import domainlogic.User.Logged;
 
 /** This Event is created when either a Mod or and Admin hits the delete group button of a {@link gui.GroupProfile}.
  * 
@@ -35,7 +36,12 @@ public class DeleteGroupEvent implements Event {
 
 	@Override
 	public void validate() {
-		// TODO Maybe double check that the user is allowed to do this? Either by idMod() or Logged status from sgs
+		//TODO maybe this shuld check that the groupdata is valid still, or the group exists?
+		if (group.getMods().contains(system.getLoggedUser().getId()) || system.getUserStatus() == Logged.ADMIN) {
+			status.setStatus(StatusType.VALID);
+		} else {
+			status.setStatus(StatusType.INVALID);
+		}
 	}
 
 	@Override

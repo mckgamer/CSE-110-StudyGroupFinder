@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
@@ -22,7 +21,6 @@ import domainlogic.DeModEvent;
 import domainlogic.DeleteGroupEvent;
 import domainlogic.MakeModeratorEvent;
 import domainlogic.RemoveUserFromGroupEvent;
-import domainlogic.UpdateGroupProfileEvent;
 import domainlogic.User.Logged;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
