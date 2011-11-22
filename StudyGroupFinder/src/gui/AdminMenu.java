@@ -43,7 +43,8 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 	    
 	    menu = new JMenu("Help");
 	    menuItem = new JMenuItem("About StudyGroupFinder");
-	    menuItem.setEnabled(false);
+	    menuItem.setActionCommand("about");
+	    menuItem.addActionListener(this);
 	    menu.add(menuItem);
 	    add(menu);
 	}
@@ -59,6 +60,9 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 		} else if("New Group".equals(e.getActionCommand())) {
 			NewGroupDialog ngd = new NewGroupDialog(parent);
 	        ngd.setVisible(true);
+		} else if("about".equals(e.getActionCommand())) {
+			AboutSGFDialog asd = new AboutSGFDialog(parent);
+	        asd.setVisible(true);
 		}
 	}
     

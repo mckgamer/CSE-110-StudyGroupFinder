@@ -51,7 +51,8 @@ public class UserMenu extends JMenuBar implements ActionListener {
 	    
 	    menu = new JMenu("Help");
 	    menuItem = new JMenuItem("About StudyGroupFinder");
-	    menuItem.setEnabled(false);
+	    menuItem.setActionCommand("about");
+	    menuItem.addActionListener(this);
 	    menu.add(menuItem);
 	    add(menu);
 	}
@@ -70,6 +71,9 @@ public class UserMenu extends JMenuBar implements ActionListener {
 		} else if("Edit Profile".equals(e.getActionCommand())) {
 			UpdateUserDialog ngd = new UpdateUserDialog(parent);
 	        ngd.setVisible(true);
+		} else if("about".equals(e.getActionCommand())) {
+			AboutSGFDialog asd = new AboutSGFDialog(parent);
+	        asd.setVisible(true);
 		}
 	}
     
