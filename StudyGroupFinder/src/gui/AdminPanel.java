@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import database.Data;
 import database.GroupData;
+import database.SearchData;
+import domainlogic.GroupSearchEvent;
+import domainlogic.UserSearchEvent;
 
 /** This Panel is displayed on the left of the {@link AdminGUI}. It displays all groups and all users.
  * 
@@ -29,8 +33,46 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 	/** This UserList displays all users. */
 	UserList users;
 	
-	public AdminPanel(GUIFrame parent) {
+	/** The JTextField for Filtering groups */
+	JTextField filtsg;
+	
+	/** The JTextField for Filtering Users */
+	JTextField filtuser;
+	
+	/** The GroupSearchEvent used for the GroupList */
+	GroupSearchEvent groupsearch;
+	
+	/** The UserSearchEvent used for the UserList */
+	UserSearchEvent usersearch;
+	
+	
+	public AdminPanel(GUIFrame parent, SearchData gsearch, SearchData usearch) {
 		this.parent = parent;
+		
+		groupsearch = new GroupSearchEvent(parent.getSGS());
+		if (gsearch == null) {
+			gsearch = new SearchData();
+		}
+		groupsearch.setData(gsearch);
+		
+		usersearch = new UserSearchEvent(parent.getSGS());
+		if (usearch == null) {
+			usearch = new SearchData();
+		}
+		usersearch.setData(usearch);
+		
+		//Update the search event if it has yet to be executed
+		if (((SearchData)groupsearch.getData()).getResults() == null) {
+			groupsearch.execute();
+		} 
+		groups = new GroupList(parent, this, ((SearchData)groupsearch.getData()).getResults().toArray());
+		
+		//Update the search event if it has yet to be executed
+		if (((SearchData)usersearch.getData()).getResults() == null) {
+			usersearch.execute();
+		} 
+		users = new UserList(parent, this, ((SearchData)usersearch.getData()).getResults().toArray());
+
 		
 		setLayout(new GridLayout(4,1));
 		
@@ -38,7 +80,7 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 		//ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().searchGroups());
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		temp.add(1);
-		groups = new GroupList(parent, this, temp.toArray());
+		//groups = new GroupList(parent, this, temp.toArray());
 		JScrollPane mg = new JScrollPane(groups);
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
@@ -46,7 +88,7 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 		//ArrayList<Integer> temp2 = new ArrayList<Integer>(parent.getSGS().searchUsers());
 		ArrayList<Integer> temp2 = new ArrayList<Integer>();
 		temp2.add(1);
-		users = new UserList(parent, this, temp2.toArray());
+		//users = new UserList(parent, this, temp2.toArray());
 		JScrollPane sg = new JScrollPane(users);
 		sg.setPreferredSize(new Dimension(40,50));
 		add(sg);
@@ -73,6 +115,14 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 				parent.getGUI().setRight(new JPanel());
 			}
 		}
+	}
+	
+	public SearchData getGroupSearch() {
+		return (SearchData) groupsearch.getData();
+	}
+	
+	public SearchData getUserSearch() {
+		return (SearchData) usersearch.getData();
 	}
 
 }

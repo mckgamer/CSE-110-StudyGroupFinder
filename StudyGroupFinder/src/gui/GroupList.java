@@ -52,7 +52,10 @@ public class GroupList extends JList {
 		groups = new ArrayList<GroupData>();
 		if (groupids.length != 0) {
 			for (Object i : groupids) {
-				groups.add(parent.getSGS().getGroup((Integer)i));
+				GroupData temp = parent.getSGS().getGroup((Integer)i); //TODO This is a fix but inneficient for multi-db calls
+				if (temp != null) {
+					groups.add(temp);
+				}
 			}
 		}
 		Vector<Object> options =  new Vector<Object>();
