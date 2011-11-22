@@ -107,8 +107,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
-			parent.getGUI().refreshLeft();//TODO if this the best way for refresh right? see below
-			parent.getGUI().setRight(new UserProfile(parent,parent.getSGS().getUser(prepop.getId())));
+			parent.getGUI().refreshLeft();
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);
 		}
