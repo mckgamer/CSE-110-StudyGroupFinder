@@ -2,11 +2,16 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -17,7 +22,7 @@ import database.GroupData;
  * @author Michael Kirby
  *
  */
-public class UserGroupsPanel extends JPanel implements ListSelectionListener {
+public class UserGroupsPanel extends JPanel implements ActionListener, ListSelectionListener {
 	
 	/** The GUIFrame of the program */
 	GUIFrame parent;
@@ -28,10 +33,12 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 	/** This GroupList displays the users suggest groups */
 	GroupList suggGroup;
 	
-	public UserGroupsPanel(GUIFrame parent) {
+	JTextField filtsg;
+	
+	public UserGroupsPanel(GUIFrame parent, String filterTerms) {
 		this.parent = parent;
 		
-		setLayout(new GridLayout(4,1));
+		setLayout(new GridLayout(5,1));
 		
 		add(new JLabel("Current Groups"));
 		ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().getLoggedUser().getModOf());
@@ -41,6 +48,14 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 		mg.setPreferredSize(new Dimension(40,40));
 		add(mg);
 		add(new JLabel("Suggested Groups"));
+		JPanel filt = new JPanel(new GridLayout(1,2));
+		filtsg = new JTextField(filterTerms);
+		filt.add(filtsg);
+		JButton filter = new JButton("Filter");
+        filter.setActionCommand("filter");
+        filter.addActionListener(this);
+        filt.add(filter);
+		add(filt);
 		// TODO DUMMY SUGGEST CODE FOLLOWS
 		ArrayList<Integer> empty = new ArrayList<Integer>();
 		for (int x = 1; x < 10; x++) {
@@ -49,7 +64,7 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 			}
 		}
 		//TODO END DUMMY SUGGEST CODE
-		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups().toArray()); //TODO getSugGroups() sgs
+		//suggGroup = new GroupList(parent, this, parent.getSGS().getSuggestedGroups(filterTerms));
 		suggGroup = new GroupList(parent, this, empty.toArray());
 		JScrollPane sg = new JScrollPane(suggGroup);
 		sg.setPreferredSize(new Dimension(40,50));
@@ -71,6 +86,18 @@ public class UserGroupsPanel extends JPanel implements ListSelectionListener {
 				parent.getGUI().setRight(new JPanel());
 			}
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ("filter".equals(e.getActionCommand())) {
+			System.out.println("Filter TBI.");	
+			parent.getGUI().refreshLeft();
+		}
+	}
+	
+	public String getFilter() {
+		return filtsg.getText();
 	}
 
 }

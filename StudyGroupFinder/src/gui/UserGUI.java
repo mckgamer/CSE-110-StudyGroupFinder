@@ -51,7 +51,7 @@ public class UserGUI extends JPanel implements GUIPanel  {
 		setLayout(new GridLayout(1,2,15,0));
 		
 		//Initialize the left and right JPanels for this GUI
-		left = new UserGroupsPanel(parent);
+		left = new UserGroupsPanel(parent, "");
 		
 		right = new JPanel();
 		
@@ -73,7 +73,7 @@ public class UserGUI extends JPanel implements GUIPanel  {
 	
 	public void refreshLeft() {
 		removeAll();
-		left = new UserGroupsPanel(parent);
+		left = new UserGroupsPanel(parent, ((UserGroupsPanel)left).getFilter());
 		add(left);
 		add(right);
 		getRootPane().revalidate();

@@ -1,4 +1,4 @@
-package domainlogic;
++package domainlogic;
 
 import database.Data;
 import database.GroupData;
@@ -26,14 +26,17 @@ public class MakeModeratorEvent implements Event {
 	@Override
 	public void execute() {
 		if (status.getStatus() != StatusType.INVALID) { //TODO I think for all events this needs to be VALID so it know validate() has already been called for sure
-			status = system.makeModerator(usergroup.getId(), (GroupUserData)usergroup.getGroupId());
+			status = system.makeModerator(usergroup.getId(), ((GroupUserData)usergroup).getGroupId());
 		}
 	}
 
 	@Override
 	public void validate() {
-		// TODO Auto-generated method stub
-
+		if (usergroup.validate()) {
+			status.setStatus(StatusType.VALID);
+		} else {
+			status.setStatus(StatusType.INVALID);
+		}
 	}
 
 	@Override

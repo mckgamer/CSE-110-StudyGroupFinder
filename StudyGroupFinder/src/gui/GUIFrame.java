@@ -27,7 +27,7 @@ public class GUIFrame extends JFrame {
 	 */
 	public GUIFrame(StudyGroupSystem sgs) {
 		this.sgs = sgs;
-		setTitle("Study Group Finder 0.1");
+		setTitle("Study Group Finder 0.6");
         setMinimumSize(new Dimension(740,500));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +35,7 @@ public class GUIFrame extends JFrame {
         gui = new JPanel();
 	}
 	
-	/** Controls Logging in and makes sure this GUIFrame is displaying its curent JPanel (gui) */
+	/** Controls Logging in and makes sure this GUIFrame is displaying its current JPanel (gui) */
 	public void runProgram() {
 		while (sgs.isLogged() == false) {
 			LogInDialog ld = new LogInDialog(this);

@@ -39,7 +39,7 @@ public class AdminGUI extends JPanel implements GUIPanel {
 		setLayout(new GridLayout(1,2,15,0));
 		
 		//Initialize the left and right JPanels for this GUI
-		left = new UserGroupsPanel(parent);
+		left = new AdminPanel(parent);
 		
 		right = new JPanel();
 		
@@ -59,7 +59,7 @@ public class AdminGUI extends JPanel implements GUIPanel {
 	@Override
 	public void refreshLeft() {
 		removeAll();
-		left = new UserGroupsPanel(parent);
+		left = new AdminPanel(parent);
 		add(left);
 		add(right);
 		getRootPane().revalidate();

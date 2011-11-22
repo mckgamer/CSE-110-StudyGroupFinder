@@ -32,9 +32,6 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 	    menuItem.setActionCommand("New Group");
 	    menuItem.addActionListener(this);
 	    menu.add(menuItem);
-	    menuItem = new JMenuItem("Check For Invites");
-	    menuItem.setEnabled(false);
-	    menu.add(menuItem);
 	    add(menu);
 	    
 	    menu = new JMenu("My Account");

@@ -28,8 +28,7 @@ public class GroupSearchEvent implements Event {
 	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		search = system.searchGroups(search);
 	}
 
 	@Override

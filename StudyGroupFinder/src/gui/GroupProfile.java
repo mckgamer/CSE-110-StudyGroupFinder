@@ -16,8 +16,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import database.GroupData;
+import database.GroupUserData;
 import domainlogic.AddUserToGroupEvent;
+import domainlogic.DeModEvent;
 import domainlogic.DeleteGroupEvent;
+import domainlogic.MakeModeratorEvent;
 import domainlogic.RemoveUserFromGroupEvent;
 import domainlogic.UpdateGroupProfileEvent;
 
@@ -100,6 +103,14 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         	remove.setActionCommand("remove");
             remove.addActionListener(this);
             buttons.add(remove);
+            JButton makemod = new JButton("Make User Mod");
+            makemod.setActionCommand("makemod");
+            makemod.addActionListener(this);
+            buttons.add(makemod);
+            JButton demod = new JButton("DeMod User");
+            demod.setActionCommand("demod");
+            demod.addActionListener(this);
+            buttons.add(demod);
             JButton edit = new JButton("Edit Group");
             edit.setActionCommand("edit");
             edit.addActionListener(this);
@@ -163,6 +174,24 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 				RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), userList.getSelectedData().getId(),gd.getId());//TODO what userid? is this
 				rufg.validate();
 				rufg.execute();
+				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
+			}
+		} else if ("makemod".equals(e.getActionCommand())) {
+			//TODO show confirmation
+			if (userList.getSelectedData() != null) {
+				MakeModeratorEvent mme = new MakeModeratorEvent(parent.getSGS());
+				mme.setData(new GroupUserData(userList.getSelectedData(),gd));
+				mme.validate();
+				mme.execute();
+				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
+			}
+		} else if ("demod".equals(e.getActionCommand())) {
+			//TODO show confirmation
+			if (userList.getSelectedData() != null) {
+				DeModEvent dme = new DeModEvent(parent.getSGS());
+				dme.setData(new GroupUserData(userList.getSelectedData(),gd));
+				dme.validate();
+				dme.execute();
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
 			}
 		} else if ("delete".equals(e.getActionCommand())) {
