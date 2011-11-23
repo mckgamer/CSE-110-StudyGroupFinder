@@ -7,9 +7,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-/** This JMenuBar is used by the UserGUI to update the frames menubar appropriately. 
+/** This JMenuBar is used by the {@link UserGUI} to update the frames menubar appropriately. 
  * 
- * @author Michael
+ * @author Michael Kirby
  *
  */
 public class UserMenu extends JMenuBar implements ActionListener {

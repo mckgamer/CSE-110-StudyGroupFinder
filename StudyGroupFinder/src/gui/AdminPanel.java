@@ -12,7 +12,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import database.Data;
-import database.GroupData;
 import database.SearchData;
 import domainlogic.GroupSearchEvent;
 import domainlogic.UserSearchEvent;

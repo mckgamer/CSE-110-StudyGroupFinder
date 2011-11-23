@@ -5,6 +5,7 @@ import database.UserData;
 
 /** This event is created by a {@link gui.NewAccountDialog}. It is able to call the appropriate
  * methods to add a user to the system.
+ * 
  * @author Michael Kirby
  */
 public class CreateUserEvent implements Event {
@@ -18,7 +19,7 @@ public class CreateUserEvent implements Event {
 	/** The {@link StudyGroupSystem} that this Event uses. */
 	private StudyGroupSystem system;
 	
-	/** Construct a UserEvent using a default status and null {@link UserData} object */
+	/** Construct a CreateUserEvent using a default status and null {@link UserData} object */
 	public CreateUserEvent(StudyGroupSystem sgs) {
 		user = null;
 		status = new Status();

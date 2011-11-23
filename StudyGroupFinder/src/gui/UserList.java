@@ -7,7 +7,6 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 
-import database.GroupData;
 import database.UserData;
 
 /** UserList is a JList that can display numerous UserData by interfacing with the SGS.

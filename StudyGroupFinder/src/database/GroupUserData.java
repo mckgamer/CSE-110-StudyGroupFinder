@@ -1,7 +1,5 @@
 package database;
 
-import java.util.ArrayList;
-
 /**
  * This {@link Data} implementation is used in any case where a relationship between a User
  * and a group is required.
@@ -16,9 +14,14 @@ public class GroupUserData implements Data {
 	/** The GroupData of the Group. */
 	private GroupData group;
 	
-	public GroupUserData(UserData uid, GroupData gid) {
-		this.user = user;
-		this.group = group;
+	/** Construct this GroupUserData using a UserData and GroupData object.
+	 * 
+	 * @param ud the UserData object of the user.
+	 * @param gd the GroupData object of the group.
+	 */
+	public GroupUserData(UserData ud, GroupData gd) {
+		this.user = ud;
+		this.group = gd;
 	}
 	
 	@Override
@@ -31,6 +34,10 @@ public class GroupUserData implements Data {
 		return user.getId();
 	}
 	
+	/** Returns the id of the group of this Data.
+	 * 
+	 * @return the id of the group of this Data.
+	 */
 	public int getGroupId() {
 		return group.getId();
 	}

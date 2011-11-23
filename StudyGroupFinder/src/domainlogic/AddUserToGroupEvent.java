@@ -2,8 +2,9 @@ package domainlogic;
 
 import database.Data;
 import database.GroupData;
+import database.GroupUserData;
 
-/** This Event is created by a {@link gui.GroupProfile}.
+/** This Event is created by a {@link gui.GroupProfile} when a user joins a group.
  * 
  * @author Michael Kirby
  *
@@ -12,6 +13,9 @@ public class AddUserToGroupEvent implements Event {
 
 	private int userId;
 	private int groupId;
+	
+	/** The {@link GroupUserData} object that this Event will use to complete its task. */
+	private GroupUserData usergroup; //TODO use this in the constructor
 	
 	/** The {@link Status} object associated with the current state of this Event. */
 	private Status status;
@@ -36,6 +40,11 @@ public class AddUserToGroupEvent implements Event {
 	@Override
 	public void validate() {
 		// TODO This needs to check that the user isnt already in the group, and make sure both group and user doesn't think they are
+		if (usergroup.validate()) {
+			status.setStatus(StatusType.VALID);
+		} else {
+			status.setStatus(StatusType.INVALID);
+		}
 	}
 
 	@Override
@@ -45,14 +54,12 @@ public class AddUserToGroupEvent implements Event {
 
 	@Override
 	public Data getData() {
-		// TODO Auto-generated method stub
-		return null;
+		return usergroup;
 	}
 
 	@Override
 	public void setData(Data data) {
-		// TODO Auto-generated method stub
-		
+		usergroup = (GroupUserData) data;
 	}
 
 }

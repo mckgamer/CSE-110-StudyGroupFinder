@@ -7,9 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import domainlogic.Status;
-import domainlogic.StatusType;
-
 /** This JDialog displays the credits of Study Group Finder.
  * 
  * @author Michael Kirby
