@@ -25,6 +25,7 @@ public class MySqlDatabase implements Database {
 
 	/* local variables for the database connection */
     private Connection mySQLConnection;
+    private String connectionString = "";
         
     /* database helper */
     private MySqlDatabaseHelper dbh;
@@ -48,7 +49,8 @@ public class MySqlDatabase implements Database {
 		Status st;
 		
 		print("--Initializing database and connection");
-		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://localhost:3306/testdb", "root", "");
+//		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://localhost:3306/testdb", "root", "");
+		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
 		
 		print("--Creating and populating database");
 		db.dbh.buildDatabase();
@@ -60,45 +62,49 @@ public class MySqlDatabase implements Database {
 		print("Log in status: " + mike.getStatus());
 		
 		print("--Getting user data");
-		UserData mikeData = db.getUserData(mike_id);
+		UserData mikeData = db.getUser(mike_id);
 		print(mikeData.toString());
 		
 		print("--Updating user: mike to michael");
 		UserData michaelData = new UserData(
 				mikeData.getId(), "michael", mikeData.getPW(), mikeData.getModOf(), mikeData.getUserOf());
 		st = db.updateUser(michaelData);
-		print("Status: " + st.getStatus());
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
 		
 		print("--Creating new user: bob, a member of group 1");
-		UserData bob = new UserData(0, "bob", "pw", "~", "1~");
+		UserData bob = new UserData(0, "bob", "pw", "", "");
 		st = db.addUser(bob);
 		int bob_id = 2;
-		print("Status: " + st.getStatus());
+		db.setMembershipUser(bob_id, 1);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
 		
 		print("--Creating new group: group2 with no members");
 		GroupData gp2 = new GroupData(0, "group2", "cse111", "~", "~");
 		st = db.addGroup(gp2);
 		int grp2_id = 2;
-		print("Status: " + st.getStatus());	
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printGroups();
 		
 		print("--Getting group data of group2");
 		GroupData gp3 = db.getGroup(grp2_id);
 		print(gp3.toString());
 		
-		print("--Update group");
-		print("Not yet implemented in Database interface");
+		print("--Update group2 to cse222");
+		gp2.course = "cse222";
+		st = db.updateGroup(gp2);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
+		db.dbh.printGroups();
 
-		print("--Adding bob to group2");
-		st = db.addUserToGroup(bob_id, grp2_id);
-		print("Status: " + st.getStatus());	
+		print("--Adding bob to group2 as moderator");
+		st = db.setMembershipMod(bob_id, grp2_id);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printMemberships();
 
 		print("--Removing michael from group 1");
-		st = db.removeUserFromGroup(mike_id, 1);
-		print("Status: " + st.getStatus());	
+		st = db.setMembershipNone(mike_id, 1);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printMemberships();
 		
 		print("--Displaying final state of database");
@@ -127,7 +133,7 @@ public class MySqlDatabase implements Database {
 	 * @param user - a {@link String} specifying the database login name, typically "root"
 	 * @param pass - a {@link String} specifying the database login password, typically "" for root
 	 */
-    MySqlDatabase(String url, String user, String pass) {    	
+    public MySqlDatabase(String url, String user, String pass) {    	
         try {
 			this.mySQLConnection = DriverManager.getConnection(url, user, pass);
 		} catch (SQLException e) {
@@ -135,6 +141,12 @@ public class MySqlDatabase implements Database {
 		}
         
         dbh = new MySqlDatabaseHelper(this.mySQLConnection);
+        connectionString = user + "@" + url;
+    }
+    
+    @Override
+    public String toString() {
+    	return connectionString;
     }
     
 	/**
@@ -147,12 +159,20 @@ public class MySqlDatabase implements Database {
 		if (user_id==0) {
 			user.setStatus(Logged.INVALID);			
 		} else {
-			user.setUserData(getUserData(user_id));
+			user.setUserData(getUser(user_id));
 			user.setStatus(Logged.USER);		
 		}
 		return user;		
 	}
 
+	/**
+	 * Delete all current data and build tables for database
+	 */
+	public void buildDatabase() {
+		this.dbh.buildDatabase();		
+	}
+
+	
 	/**
 	 * A helper function for login() that finds the user id based on username
 	 * and password. 
@@ -191,7 +211,7 @@ public class MySqlDatabase implements Database {
 	 * @see database.Database#getUserData(int)
 	 */
 	@Override
-	public UserData getUserData(int id) {
+	public UserData getUser(int id) {
 		UserData ud = null;
 		String uname = "", password = "";
 		
@@ -252,14 +272,14 @@ public class MySqlDatabase implements Database {
 		return memIds;
 	}
 	/**
-	 * Find all users (including mods) of a given group
+	 * Find all users (excluding moderators) of a given group
 	 * @param group_id - an integer for the group id to search
 	 * @return an {@link ArrayList} of user_id integers that are in the group
 	 */
 	private ArrayList<Integer> getMembershipUsersOfGroup(int group_id) {
 		ArrayList<Integer> memIds = getMembershipIds(
 				"SELECT user_id FROM memberships " +
-				"WHERE group_id = " + group_id + ";");
+				"WHERE group_id = " + group_id + " AND is_mod = FALSE;");
 		return memIds;
 	}
 	/**
@@ -274,14 +294,14 @@ public class MySqlDatabase implements Database {
 		return memIds;
 	}
 	/** 
-	 * Find all groups that a user belongs to
+	 * Find all groups that a user belongs to (excluding moderators)
 	 * @param user_id - integer of user id to search
 	 * @return an {@link ArrayList} of group id integers that the user belongs to
 	 */
 	private ArrayList<Integer> getMembershipGroupsForUser(int user_id) {
 		ArrayList<Integer> memIds = getMembershipIds(
 				"SELECT group_id FROM memberships " +
-				"WHERE user_id = " + user_id + ";");
+				"WHERE user_id = " + user_id + " AND is_mod=FALSE;");
 		return memIds;
 	}
 	/**
@@ -303,19 +323,19 @@ public class MySqlDatabase implements Database {
 	public Status addUser(UserData ud) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
-		/* Add data to user table */
+		/* Add place holder row in user table */
 		dbh.sqlExecute("INSERT INTO `users` (`name`, `password`) " +
 				  "VALUES ('" + ud.getUName() + "', '" + ud.getPW() + "');");
 		
 		/* Get user id */
-		int user_id = dbh.getMaxId("users");
+		ud.id = dbh.getMaxId("users");
 		
-		/* Add memberships */
-		setMembership(user_id, ud.getUserOf(), false);
-		setMembership(user_id, ud.getModOf(), true);
-
+		/* Add user properties */
+		updateUser(ud);
+		
 		/* return status */
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User successfully added");
 		return st;
 	}
 	
@@ -344,21 +364,22 @@ public class MySqlDatabase implements Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		/* Update the user memberships */
-		setMembership(ud.getId(), ud.getUserOf(), false);
-		setMembership(ud.getId(), ud.getModOf(), true);
-		
+				
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User properties updated");
 		return st;
 	}
 
+	/** UNUSED FUNCTIONS
+	 * Mike C: I assume these are unneeded and am seeing if commenting them out
+	 * breaks anything.
+	 */
+	
 	/**
 	 * Add or set the membership of a user for a set of groups
 	 * @param user_id - integer of user id
 	 * @param group_ids - an {@link ArrayList} of groups to apply the user to
 	 * @param is_mod - a boolean to indicator if the user joins as a moderator (TRUE) or user (FALSE) 
-	 */
 	private void setMembership(int user_id, ArrayList<Integer> group_ids, boolean is_mod) {
 		for (int i = 0; i < group_ids.size(); i++) {
 			if (is_mod) {
@@ -368,12 +389,13 @@ public class MySqlDatabase implements Database {
 			}
 		}
 	}
+	 */
+	
 	/**
 	 * Add or set the membership of a set of users for a given group
 	 * @param user_ids - an {@link ArrayList} of user id integers to apply to the group
 	 * @param group_id - integer of group id
 	 * @param is_mod - a boolean to indicator if all users joins as a moderator (TRUE) or user (FALSE)
-	 */
 	private void setMembership(ArrayList<Integer> user_ids, int group_id, boolean is_mod) {
 		for (int i = 0; i < user_ids.size(); i++) {
 			if (is_mod) {
@@ -383,34 +405,59 @@ public class MySqlDatabase implements Database {
 			}
 		}
 	}
+	 */
+	
 	/**
 	 * Remove a user from a group. Works even if user is not currently a member.
 	 * @param user_id - integer of user id
 	 * @param group_id - integer of group id
 	 */
-	private void setMembershipNone(int user_id, int group_id) {
+	public Status setMembershipNone(int user_id, int group_id) {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
 		dbh.sqlExecute("DELETE memberships.* FROM memberships " +
 				  "WHERE (user_id=" + user_id + " AND group_id=" + group_id + ");");
+		
+		/* Return status */
+		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User removed from group");
+		return st;
+		
 	}
 	/**
 	 * Add a user to a group. Works regardless of user's current group status.
 	 * @param user_id - integer of user id
 	 * @param group_id - integer of group id
 	 */
-	private void setMembershipUser(int user_id, int group_id) {
-		setMembershipNone(user_id, group_id);
+	public Status setMembershipUser(int user_id, int group_id) {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
 		dbh.sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) " +
 				  "VALUES ('" + user_id + "', '" + group_id + "', FALSE);");
+
+		/* Return status */
+		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User added to group as non-moderator");
+		return st;
+
 	}
 	/**
 	 * Add a user to a group as moderator. Works regardless of user's current group status.
 	 * @param user_id - integer of user id
 	 * @param group_id - integer of group id
 	 */
-	private void setMembershipMod(int user_id, int group_id) {
+	public Status setMembershipMod(int user_id, int group_id) {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
 		setMembershipNone(user_id, group_id);
 		dbh.sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) " +
 				  "VALUES ('" + user_id + "', '" + group_id + "', TRUE);");
+		
+		/* Return status */
+		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User added to group as moderator");
+		return st;
+		
 	}
 	
 	
@@ -421,19 +468,22 @@ public class MySqlDatabase implements Database {
 	public Status addGroup(GroupData gd) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
-		/** Add data to groups table **/
-		dbh.sqlExecute("INSERT INTO `groups` (`name`, `course`) " +
-				  "VALUES ('" + gd.getName() + "', '" + gd.getCourse() + "');");		
+		/* Create place holder row in groups table */
+		dbh.sqlExecute("INSERT INTO `groups` (`name`) " +
+				  "VALUES ('" + gd.getName() + "');");		
 
-		/** Get group id **/
-		int group_id = dbh.getMaxId("groups");
+		/* Get group id */
+		gd.id = dbh.getMaxId("groups");
+				
+		/* Update group properties */
+		updateGroup(gd);
 		
-		/** Add memberships **/
-		setMembership(gd.getUsers(), group_id, false);
-		setMembership(gd.getMods(), group_id, true);
+		/* Add moderator */
+		setMembershipMod(gd.getMods().get(0), gd.id);
 		
 		/** return status **/
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("Group added successfully");
 		return st;
 	}
 
@@ -473,27 +523,34 @@ public class MySqlDatabase implements Database {
 		return gd;
 	}
 
-	/**
-	 * @see database.Database#addUserToGroup(int, int)
-	 */
 	@Override
-	public Status addUserToGroup(int userid, int groupid) {
+	public Status updateGroup(GroupData gd) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
-		setMembershipUser(userid, groupid);
+		
+		/* Find the group in the database with update-able query*/
+		ResultSet res = dbh.sqlUpdatable("SELECT * FROM `groups` " +
+								 "WHERE (`id` = '" + gd.getId() + "');");
+		
+		/* Update the user fields */
+		try {
+			if (res.next()) {
+				res.updateString("name", gd.name);
+				res.updateString("course", gd.course);
+				res.updateRow();
+			}
+			
+			/* Close statement and result set */
+			res.getStatement().close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+				
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("Group properties updated");
 		return st;
-	}
-
-	/**
-	 * @see database.Database#removeUserFromGroup(int, int)
-	 */
-	@Override
-	public Status removeUserFromGroup(int userid, int groupid) {
-		Status st = new Status(StatusType.UNSUCCESSFUL);
-		setMembershipNone(userid, groupid);
-		st.setStatus(StatusType.SUCCESS);
-		return st;
-	}
+	}	
+	
 
 	/**
 	 * @see database.Database#deleteGroup(int)
@@ -517,9 +574,7 @@ public class MySqlDatabase implements Database {
 
 	/**
 	 * Close the JDBC connection to MySql database
-	 * @see database.Database#closeConnection()
 	 */
-	@Override
 	public void closeConnection() {
         try {
 			mySQLConnection.close();
@@ -527,5 +582,6 @@ public class MySqlDatabase implements Database {
 			e.printStackTrace();
 		}
 	}
+
 
 }

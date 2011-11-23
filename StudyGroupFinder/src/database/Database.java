@@ -29,7 +29,16 @@ public interface Database {
 	 * @param groupid the ID of the group to add to.
 	 * @return {@link Status} object that holds information on what happened. 
 	 */
-	public Status addUserToGroup(int userid, int groupid);
+	public Status setMembershipUser(int userid, int groupid);
+	
+	/** Adds the specified user to the specified group as moderator
+	 * Preconditions: userid and groupid are integers.
+	 * Postconditions: Adds the user associated to userid to the group associated with groupid
+	 * @param userid the ID of the user to add.
+	 * @param groupid the ID of the group to add to.
+	 * @return {@link Status} object that holds information on what happened. 
+	 */
+	public Status setMembershipMod(int userid, int groupid);
 	
 	/** Removes the specified user from the specified group.
 	 * Preconditions: userid and groupid are integers
@@ -38,7 +47,7 @@ public interface Database {
 	 * @param groupid the ID of the group to remove from.
 	 * @return {@link Status} object that holds information on what happened.
 	 */
-	public Status removeUserFromGroup(int userid, int groupid);
+	public Status setMembershipNone(int userid, int groupid);
 	
 	/** Gets user login info from database
 	 * Preconditions: uname is an integer and pw is a String
@@ -88,4 +97,8 @@ public interface Database {
 	 * @return {@link Status} object that holds information on what happened
 	 */
 	public Status updateGroup(GroupData gd);
+	
+	/** Provide basic description of data implementation/connection
+	 */
+	public String toString();
 }

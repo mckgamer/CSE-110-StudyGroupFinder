@@ -13,7 +13,7 @@ import util.StringParser;
 public class GroupData implements Data {
 
 	/** The ID of this GroupData */
-	int id;
+	public int id;
 
 	/** The name of this GroupData */
 	String name;

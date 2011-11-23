@@ -23,16 +23,30 @@ import domainlogic.User.Logged;
 public class StudyGroupSystem {
 	
 	//Class Variables
-	// Change to interface Database instead of MapDatabase
-	//Database database = new Database();
-	private Database database = new MapDatabase();
+	private Database database = null;
 	private User sgfUser;
+	
 	/**
-	 * Class Constructor that takes a MapDatabase as a parameter
-	 * @param mapData
+	 * Class Constructor without database parameter
+	 * Must subsequently use {@link setDatabase}
 	 */
-	public StudyGroupSystem(Database mapData){ 
-		this.database = mapData;
+	public StudyGroupSystem() {} 
+	
+	/**
+	 * Class Constructor that takes a Database as a parameter
+	 * @param database
+	 */
+	public StudyGroupSystem(Database database){ 
+		this.database = database;
+	}
+	
+	/**
+	 * Set or change the database of the system
+	 * @param database is an implementation of the {@link Database} class, 
+	 * such as {@link MapDatabase} or {@link database.MySqlDatabase}
+	 */
+	public void setDatabase(Database database) {
+		this.database = database;
 	}
 	
 	/**Login Method
@@ -193,7 +207,7 @@ public class StudyGroupSystem {
 	 */
 	public Status joinGroup(int uid, int gid){
 		Status tempStatus = new Status();
-		tempStatus = database.addUserToGroup(uid, gid);
+		tempStatus = database.setMembershipUser(uid, gid);
 		return tempStatus;
 	}
 	
@@ -205,7 +219,7 @@ public class StudyGroupSystem {
 	 * @return Status object that holds information on what happened
 	 */
 	public Status removeUserFromGroup(int userID, int groupID){
-		Status tempStatus = database.removeUserFromGroup(userID, groupID);
+		Status tempStatus = database.setMembershipNone(userID, groupID);
 		return tempStatus;
 		
 	}
@@ -261,5 +275,12 @@ public class StudyGroupSystem {
 	 */
 	public Logged getUserStatus() {
 		return sgfUser.getStatus();
+	}
+	
+	/** 
+	 * Return basic description of database implementation
+	 */
+	public String toString() {
+		return database.toString();
 	}
 }

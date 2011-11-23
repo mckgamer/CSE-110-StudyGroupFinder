@@ -13,7 +13,7 @@ import util.StringParser;
 public class UserData implements Data {
 	
 	/** The ID of this UserData */
-	private int id;
+	public int id;
 	
 	/** The username of this UserData */
 	private String uname;
