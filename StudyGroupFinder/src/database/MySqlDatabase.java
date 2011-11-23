@@ -6,11 +6,14 @@ import domainlogic.User;
 import domainlogic.User.Logged;
 import util.MySqlDatabaseHelper;
 
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.mysql.jdbc.CommunicationsException;
 
 /**
  * 
@@ -47,10 +50,14 @@ public class MySqlDatabase implements Database {
 	public static void main(String[] args) {
 		showDebug = true;
 		Status st;
+		MySqlDatabase db = new MySqlDatabase();
 		
 		print("--Initializing database and connection");
-//		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://localhost:3306/testdb", "root", "");
-		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
+		boolean use_local = true;
+		if (use_local)
+			db.openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
+		else
+			db.openConnection("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
 		
 		print("--Creating and populating database");
 		db.dbh.buildDatabase();
@@ -133,16 +140,55 @@ public class MySqlDatabase implements Database {
 	 * @param user - a {@link String} specifying the database login name, typically "root"
 	 * @param pass - a {@link String} specifying the database login password, typically "" for root
 	 */
-    public MySqlDatabase(String url, String user, String pass) {    	
+    public MySqlDatabase() {}
+    
+    /**
+     * Open a connection to a database
+     * @param url - a {@link String} address of database, for example: <code> "jdbc:mysql://localhost:3306/testdb"</code>
+     * @param user - a {@link String} user login name for database (example: "root")
+     * @param password - a {@link String} login password for database (can be empty, "")
+     * @return {@link Status} 
+     **/
+    public Status openConnection(String url, String user, String password) {
+    	Status st = new Status(StatusType.UNSUCCESSFUL);
+
         try {
-			this.mySQLConnection = DriverManager.getConnection(url, user, pass);
+			this.mySQLConnection = DriverManager.getConnection(url, user, password);
+        } catch (CommunicationsException e) {
+        	System.err.println("");
+        	throw new RuntimeException("Could not open connection with database: " + url);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
         
         dbh = new MySqlDatabaseHelper(this.mySQLConnection);
         connectionString = user + "@" + url;
+        
+        /* Set status */
+        st.setStatus(StatusType.SUCCESS);
+        st.setMessage("Connection opened");
+        return st;
     }
+    
+	/**
+	 * Close the JDBC connection to MySql database
+	 * @return {@link Status}
+	 */
+	public Status closeConnection() {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
+        try {
+			mySQLConnection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
+        /* Return status */
+        st.setStatus(StatusType.SUCCESS);
+        st.setMessage("Connection closed");
+        return st;
+	}
+
     
     @Override
     public String toString() {
@@ -572,16 +618,6 @@ public class MySqlDatabase implements Database {
 	}
 
 
-	/**
-	 * Close the JDBC connection to MySql database
-	 */
-	public void closeConnection() {
-        try {
-			mySQLConnection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 
 }
