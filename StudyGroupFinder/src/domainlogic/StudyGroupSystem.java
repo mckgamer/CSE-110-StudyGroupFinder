@@ -247,7 +247,7 @@ public class StudyGroupSystem {
 	 * @return the SearchData modified with the results of the search added.
 	 */
 	public SearchData searchGroups(SearchData search) {
-		return search.setResults(database.searchGroups(search));
+		return search.setResultData(database.searchGroups(search));
 	}
 	
 	/** This method searches for users in the database with the specified search data.
@@ -256,7 +256,7 @@ public class StudyGroupSystem {
 	 * @return the SearchData modified with the results of the search added.
 	 */
 	public SearchData searchUsers(SearchData search) {
-		return search.setResults(database.searchUsers(search));
+		return search.setResultData(database.searchUsers(search));
 	}
 	
 	/** For the suggested groups logic. This takes the logged in Users profile and converts

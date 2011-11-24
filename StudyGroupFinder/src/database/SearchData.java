@@ -2,6 +2,7 @@ package database;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 /** 
  * This {@link Data} implementation is used for handling search results in Study Group
@@ -12,13 +13,13 @@ import java.util.StringTokenizer;
 public class SearchData implements Data {
 
 	/** These are the search terms associated with this SearchData */
-	private String terms;
-	
+	private String terms;	
 	/** These are the private search terms associated with this SearchData, ie suggested terms. */
 	private String privateterms;
-	
-	/** The results of this SearchData's execution */
-	private ArrayList<? extends Data> results;
+	/** The ids of data objects found from search execution */
+	private Vector<Integer> resultIds = new Vector<Integer>();
+	/** The data objects found from search execution */
+	private ArrayList<? extends Data> resultData = new ArrayList<Data>();
 
 	/* Constructors */
 	public SearchData() {}
@@ -56,23 +57,43 @@ public class SearchData implements Data {
 		return this;
 	}
 	
+	/** Returns the result vector.
+	 * 
+	 * @return the results of the search in Vector form.
+	 */
+	public Vector<Integer> getResults() {
+		return resultIds;
+	}
+	/**
+	 * Sets the results results
+	 * @param results - and {@link Vector} of int object ids
+	 * @return itself, a {@link SearchData} object 
+	 * 
+	 */
+	public SearchData setResults(Vector<Integer> results) {
+		this.resultIds = results;
+		return this;
+	}
+	
+	/**
+	 * Returns the result Array of objects
+	 * @return an {@link ArrayList} of {@link Data} objects
+	 */
+	public ArrayList<? extends Data> getResultData() {
+		return resultData;
+	}
 	/**
 	 * Sets the results results
 	 * @param results - and {@link ArrayList} of {@link Data} objects
 	 * @return itself, a {@link SearchData} object 
 	 * 
 	 */
-	public SearchData setResults(ArrayList<? extends Data> results) {
-		this.results = results;
+	public SearchData setResultData(ArrayList<? extends Data> results) {
+		this.resultData = results;
+		/* Set result ids based on object collection */
+		resultIds = new Vector<Integer>();
+		for (Data d: results) resultIds.add(d.getId());
 		return this;
-	}
-	
-	/** Returns the result vector.
-	 * 
-	 * @return the results of the search in Vector form.
-	 */
-	public ArrayList<? extends Data> getResults() {
-		return results;
 	}
 	
 	/**
@@ -89,6 +110,11 @@ public class SearchData implements Data {
 	 */
 	public String getSql(String fieldname) {
 		String sql = "";
+		String terms = getTerms();
+		
+		/* Return empty result if terms is empty/null terms,  */
+		if (terms == null || terms.isEmpty())
+			return sql;
 		
 		/* Error if field name is empty */
 		if (fieldname.isEmpty())
@@ -121,13 +147,13 @@ public class SearchData implements Data {
 	}
 	
 	public String toString() {
-		String s = "";
-		s = s + "Terms: " + this.terms + "\n";
-		s = s + "Private terms: " + this.privateterms + "\n";
-		if (results.size() == 0)
-			s = s + "Results: empty" + "\n";
+		String s =	"Terms: " + this.terms + "\n" +
+					"Private terms: " + this.privateterms + "\n";
+		s = s + "ResultIds: " + resultIds.toString() + "\n";
+		if (resultData.size() == 0)
+			s = s + "ResultData: empty";
 		else 
-			for (Data d: results) s = s + d + "\n";
+			for (Data d: resultData) {s = s + "\n" + d;}
 		return s;
 	}
 

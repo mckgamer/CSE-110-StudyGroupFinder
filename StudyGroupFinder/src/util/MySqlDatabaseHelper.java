@@ -107,7 +107,6 @@ public class MySqlDatabaseHelper {
 		    
 		    /* Get generated key, throw exception is <1 or >1 key */
 		    ResultSet res = statement.getGeneratedKeys();
-		    displayResultSet(res);
 		    if (res.next())
 		    	id = res.getInt(1);
 	    	if (res.next())

@@ -70,9 +70,6 @@ public class MySqlDatabase implements Database {
 		db.dbh.buildDatabase();
 		db.dbh.populateDatabase();
 		
-		db.dbh.printUsers();
-		
-		
 		print("--Logging in");
 		User mike = db.login("mike", "pw");
 		int mike_id = mike.getUserData().getId();
@@ -136,17 +133,17 @@ public class MySqlDatabase implements Database {
 		print("--Searching users for mich");
 		db.addUser(new UserData(0, "michelle", "password", "", ""));
 		SearchData sd = new SearchData("mich");
-		sd.setResults(db.searchUsers(sd));
+		sd.setResultData(db.searchUsers(sd));
 		print(sd.toString());
 		
 		print("--Searching groups for cse");
 		sd.setTerms("cse");
-		sd.setResults(db.searchGroups(sd));
+		sd.setResultData(db.searchGroups(sd));
 		print(sd.toString());
 		
 		print("--Searching groups for michael");
 		sd.setTerms(mikeData.courses);
-		sd.setResults(db.searchGroups(sd));
+		sd.setResultData(db.searchGroups(sd));
 		print(sd.toString());
 		
 		print("--Displaying final state of database");
@@ -653,11 +650,19 @@ public class MySqlDatabase implements Database {
 		fieldnames.add("name");
 		// fieldnames.add("courses");
 		String sqlWhere = criteria.getSql(fieldnames);
+
+		/* Build SQL query
+		 * If sqlWhere is empty, return all records */
+		String sqlQuery;
+		if (sqlWhere.isEmpty())
+			sqlQuery = "SELECT * from `users`;";
+		else
+			sqlQuery = "SELECT * from `users` WHERE " + sqlWhere + ";";
+		
 		
 		try {
 			/* Run query */
-			ResultSet res = dbh.sqlQuery(
-							"SELECT * from `users` WHERE " + sqlWhere + ";");
+			ResultSet res = dbh.sqlQuery(sqlQuery);
 			
 			/* Aggregate results */
 			while (res.next()) {
@@ -683,11 +688,18 @@ public class MySqlDatabase implements Database {
 		fieldnames.add("name");
 		fieldnames.add("course");
 		String sqlWhere = criteria.getSql(fieldnames);
-
+		
+		/* Build SQL query
+		 * If sqlWhere is empty, return all records */
+		String sqlQuery;
+		if (sqlWhere.isEmpty())
+			sqlQuery = "SELECT * from `groups`;";
+		else
+			sqlQuery = "SELECT * from `groups` WHERE " + sqlWhere + ";";
+		
 		try {
 			/* Run query */
-			ResultSet res = dbh.sqlQuery(
-							"SELECT * from `groups` WHERE " + sqlWhere + ";");
+			ResultSet res = dbh.sqlQuery(sqlQuery);
 			
 			/* Aggregate results */
 			while (res.next()) {

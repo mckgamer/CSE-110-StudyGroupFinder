@@ -109,6 +109,7 @@ public class UserData implements Data {
 		String s = "";
 		/** Produce name and password */
 		s = 	"User: " +
+				"ID=" + this.id + ", " + 
 				"Name=" + this.name + ", " +
 				"password=" + this.password + ", " +
 				"courses=" + this.courses + ", ";
