@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * This is critical functionality for the {@link database.MySqlDatabase} class
@@ -73,15 +74,38 @@ public class MySqlDatabaseHelper {
 	 * @param sqlCommand - a {@link String} properly formatted SQL query
 	 */
 	public void sqlExecute(String sqlCommand){
-	    Statement statement;
 		try {
-			statement = mySQLConnection.createStatement();
+			Statement statement = mySQLConnection.createStatement();
 		    statement.executeUpdate(sqlCommand);
 		    statement.close();
 		} catch (SQLException e) {
 			print("Error in sqlUpdate, sqlCommand=" + sqlCommand);
 			e.printStackTrace();
 		}
+	}
+
+	/** 
+	 * Execute an insert command in the SQL database and return keys
+	 * @param sqlCommand - a {@link String} properly formatted SQL query
+	 */
+	public ArrayList<Integer> sqlInsert(String sqlCommand){
+	    Statement statement = null;
+	    ArrayList<Integer> keys = new ArrayList<Integer>();
+	    
+		try {
+			statement = mySQLConnection.createStatement();
+		    statement.executeUpdate(sqlCommand);
+		    
+		    ResultSet res = statement.getGeneratedKeys();
+		    while (res.next());
+		    	keys.add(res.getInt(1));
+		    
+		    statement.close();
+		} catch (SQLException e) {
+			print("Error in sqlInsert, sqlCommand=" + sqlCommand);
+			e.printStackTrace();
+		}
+		return keys;
 	}
 
 	/**

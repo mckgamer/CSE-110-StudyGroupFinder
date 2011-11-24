@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.CommunicationsException;
+
 /**
  * 
  * Implementation of the {@link Database} interface using a JDBC connection to a MySQL
@@ -30,6 +32,13 @@ public class MySqlDatabase implements Database {
     /* database helper */
     private MySqlDatabaseHelper dbh;
     
+    /* Exception */
+    class InvalidDatabaseID extends Exception {
+		private static final long serialVersionUID = 1L;
+		InvalidDatabaseID() {}
+    	InvalidDatabaseID(String msg) {super(msg);}    	
+    };
+    
 	/* Initialize the driver */
 	static {
 		try {
@@ -47,10 +56,14 @@ public class MySqlDatabase implements Database {
 	public static void main(String[] args) {
 		showDebug = true;
 		Status st;
+		MySqlDatabase db = new MySqlDatabase();
 		
 		print("--Initializing database and connection");
-//		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://localhost:3306/testdb", "root", "");
-		MySqlDatabase db = new MySqlDatabase("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
+		boolean use_local = true;
+		if (use_local)
+			db.openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
+		else
+			db.openConnection("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
 		
 		print("--Creating and populating database");
 		db.dbh.buildDatabase();
@@ -62,7 +75,12 @@ public class MySqlDatabase implements Database {
 		print("Log in status: " + mike.getStatus());
 		
 		print("--Getting user data");
-		UserData mikeData = db.getUser(mike_id);
+		UserData mikeData = null;
+		try {
+			mikeData = db.getUser(mike_id);
+		} catch (InvalidDatabaseID e) {
+			e.printStackTrace();
+		}
 		print(mikeData.toString());
 		
 		print("--Updating user: mike to michael");
@@ -107,6 +125,19 @@ public class MySqlDatabase implements Database {
 		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printMemberships();
 		
+		print("--Searching users for mich");
+		db.addUser(new UserData(0, "michelle", "password", "", ""));
+		SearchData sd = new SearchData("mich");
+		ArrayList<UserData> foundUsers = db.searchUsers(sd);
+		for (UserData u: foundUsers)
+			print("Found users: " + u);
+		
+		print("--Searching groups for cse");
+		sd.setTerms("cse");
+		ArrayList<GroupData> foundGroups = db.searchGroups(sd);
+		for (GroupData g: foundGroups)
+			print("Found groups: " + g);
+		
 		print("--Displaying final state of database");
 		db.dbh.printDatabase();
 		
@@ -133,34 +164,80 @@ public class MySqlDatabase implements Database {
 	 * @param user - a {@link String} specifying the database login name, typically "root"
 	 * @param pass - a {@link String} specifying the database login password, typically "" for root
 	 */
-    public MySqlDatabase(String url, String user, String pass) {    	
+    public MySqlDatabase() {}
+    
+    /**
+     * Open a connection to a database
+     * @param url - a {@link String} address of database, for example: <code> "jdbc:mysql://localhost:3306/testdb"</code>
+     * @param user - a {@link String} user login name for database (example: "root")
+     * @param password - a {@link String} login password for database (can be empty, "")
+     * @return {@link Status} 
+     **/
+    public Status openConnection(String url, String user, String password) {
+    	Status st = new Status(StatusType.UNSUCCESSFUL);
+
         try {
-			this.mySQLConnection = DriverManager.getConnection(url, user, pass);
+			this.mySQLConnection = DriverManager.getConnection(url, user, password);
+        } catch (CommunicationsException e) {
+        	System.err.println("");
+        	throw new RuntimeException("Could not open connection with database: " + url);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
         
         dbh = new MySqlDatabaseHelper(this.mySQLConnection);
         connectionString = user + "@" + url;
+        
+        /* Set status */
+        st.setStatus(StatusType.SUCCESS);
+        st.setMessage("Connection opened");
+        return st;
     }
+    
+	/**
+	 * Close the JDBC connection to MySql database
+	 * @return {@link Status}
+	 */
+	public Status closeConnection() {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
+        try {
+			mySQLConnection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
+        /* Return status */
+        st.setStatus(StatusType.SUCCESS);
+        st.setMessage("Connection closed");
+        return st;
+	}
+
     
     @Override
     public String toString() {
     	return connectionString;
     }
     
-	/**
-	 * @see database.Database#login(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public User login(String uname, String pw) {
 		User user = new User(Logged.LOGGEDOFF, null);
-		int user_id = loginGetUserId(uname, pw);
-		if (user_id==0) {
-			user.setStatus(Logged.INVALID);			
-		} else {
-			user.setUserData(getUser(user_id));
-			user.setStatus(Logged.USER);		
+		
+		/* Attempt to locate user record */
+		ResultSet res = loginGetResults(uname, pw);
+		
+		
+		
+		/* Get user data */
+		try {
+			if (res.next()) {
+				user.setUserData(rowToUserData(res));
+				user.setStatus(Logged.USER);		
+			} else {
+				user.setStatus(Logged.INVALID);			
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return user;		
 	}
@@ -180,40 +257,23 @@ public class MySqlDatabase implements Database {
 	 * @param password - the {@link String} of the password
 	 * @return user_id - the int id of matching user. Returns 0 if no match.  
 	 */
-	private int loginGetUserId(String uname, String password) {
-		int user_id = 0;
-		try {
-			/* Query for matching user */
-			ResultSet res = dbh.sqlQuery("SELECT id FROM `users` " +
-									 "WHERE (" +
-									 "`name`='" + uname + "'" +
-									 " AND " +
-									 "`password`='" + password + "'" +
-									 ");");
-			
-			/* If results were found, return the id */
-			if (res.next()) {
-				user_id = res.getInt("id");
-			}
-			
-			/* Close statement and result set */
-			res.getStatement().close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return user_id;
-		
+	private ResultSet loginGetResults(String uname, String password) {
+		/* Query for matching user */
+		return dbh.sqlQuery("SELECT * FROM `users` " +
+								 "WHERE (" +
+								 "`name`='" + uname + "'" +
+								 " AND " +
+								 "`password`='" + password + "'" +
+								 ");");
 	}
 	
 	/**
+	 * @throws InvalidDatabaseID 
 	 * @see database.Database#getUserData(int)
 	 */
 	@Override
-	public UserData getUser(int id) {
-		UserData ud = null;
-		String uname = "", password = "";
+	public UserData getUser(int id) throws InvalidDatabaseID {
+		UserData ud = new UserData();
 		
 		try {
 			/* Query for matching user */
@@ -222,8 +282,9 @@ public class MySqlDatabase implements Database {
 			
 			/* If results were found, save variables */
 			if (res.next()) {
-				uname = res.getString("name");
-				password = res.getString("password");
+				ud = rowToUserData(res);
+			} else {
+				throw new InvalidDatabaseID("No user with id="+id);
 			}
 
 			/* Close statement and result set */
@@ -231,17 +292,58 @@ public class MySqlDatabase implements Database {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return ud;
-		}	
-				
-		/* now query for memberships */
-		ArrayList<Integer> userof = getMembershipGroupsForUser(id);
-		ArrayList<Integer> modof  = getMembershipModsForUser(id);				
-				
-		/* Add data to UserData and return */
-		ud = new UserData(id, uname, password, modof, userof);					
+		}
 		return ud;
 	}
+	
+	/**
+	 * Transfer data from a row in the users table to a UserData object
+	 * @param res - a {@link ResultSet} from the user table
+	 * @return {@link UserData}
+	 */
+	private UserData rowToUserData(ResultSet res) {
+		UserData ud = new UserData();
+		
+		try {
+			ud.id = res.getInt("id");
+			ud.uname = res.getString("name");
+			ud.pw = res.getString("password");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		/* now query for memberships */
+		ud.userof = getMembershipGroupsForUser(ud.id);
+		ud.modof = getMembershipModsForUser(ud.id);				
+				
+		/* Return data*/
+		return ud;
+	}
+
+	/**
+	 * Transfer data from a row in the groups table to a GroupData object
+	 * @param res - a {@link ResultSet} from the group table
+	 * @return {@link GroupData}
+	 */
+	private GroupData rowToGroupData(ResultSet res) {
+		GroupData gd = new GroupData();
+		
+		try {
+			gd.id = res.getInt("id");
+			gd.name = res.getString("name");
+			gd.course = res.getString("course");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		/* now query for memberships */
+		gd.users = getMembershipUsersOfGroup(gd.id);
+		gd.mods  = getMembershipModsOfGroup(gd.id);				
+				
+		/* Return data*/
+		return gd;
+	}
+	
 	
 	/**
 	 * A helper function for finding which users belong to groups and
@@ -316,9 +418,6 @@ public class MySqlDatabase implements Database {
 		return memIds;
 	}
 	
-	/**
-	 * @see database.Database#addUser(database.UserData)
-	 */
 	@Override
 	public Status addUser(UserData ud) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
@@ -369,43 +468,6 @@ public class MySqlDatabase implements Database {
 		st.setMessage("User properties updated");
 		return st;
 	}
-
-	/** UNUSED FUNCTIONS
-	 * Mike C: I assume these are unneeded and am seeing if commenting them out
-	 * breaks anything.
-	 */
-	
-	/**
-	 * Add or set the membership of a user for a set of groups
-	 * @param user_id - integer of user id
-	 * @param group_ids - an {@link ArrayList} of groups to apply the user to
-	 * @param is_mod - a boolean to indicator if the user joins as a moderator (TRUE) or user (FALSE) 
-	private void setMembership(int user_id, ArrayList<Integer> group_ids, boolean is_mod) {
-		for (int i = 0; i < group_ids.size(); i++) {
-			if (is_mod) {
-				setMembershipMod(user_id, group_ids.get(i));
-			} else {
-				setMembershipUser(user_id, group_ids.get(i));
-			}
-		}
-	}
-	 */
-	
-	/**
-	 * Add or set the membership of a set of users for a given group
-	 * @param user_ids - an {@link ArrayList} of user id integers to apply to the group
-	 * @param group_id - integer of group id
-	 * @param is_mod - a boolean to indicator if all users joins as a moderator (TRUE) or user (FALSE)
-	private void setMembership(ArrayList<Integer> user_ids, int group_id, boolean is_mod) {
-		for (int i = 0; i < user_ids.size(); i++) {
-			if (is_mod) {
-				setMembershipMod(user_ids.get(i), group_id);
-			} else {
-				setMembershipUser(user_ids.get(i), group_id);
-			}
-		}
-	}
-	 */
 	
 	/**
 	 * Remove a user from a group. Works even if user is not currently a member.
@@ -479,7 +541,9 @@ public class MySqlDatabase implements Database {
 		updateGroup(gd);
 		
 		/* Add moderator */
-		setMembershipMod(gd.getMods().get(0), gd.id);
+		ArrayList<Integer> mods = gd.getMods();
+		for (int mod: mods)
+			setMembershipMod(mod, gd.id);
 		
 		/** return status **/
 		st.setStatus(StatusType.SUCCESS);
@@ -570,18 +634,70 @@ public class MySqlDatabase implements Database {
 		st.setStatus(StatusType.SUCCESS);
 		return st;
 	}
+	
+	@Override
+	public ArrayList<UserData> searchUsers(SearchData criteria) {
+		ArrayList<UserData> foundUsers = new ArrayList<UserData>(); 
 
-
-	/**
-	 * Close the JDBC connection to MySql database
-	 */
-	public void closeConnection() {
-        try {
-			mySQLConnection.close();
+		/* Build SQL WHERE clause */
+		ArrayList<String> fieldnames = new ArrayList<String>();
+		fieldnames.add("name");
+		// fieldnames.add("courses");
+		String sqlWhere = criteria.getSql(fieldnames);
+		
+		try {
+			/* Run query */
+			ResultSet res = dbh.sqlQuery(
+							"SELECT * from `users` WHERE " + sqlWhere + ";");
+			
+			/* Aggregate results */
+			while (res.next()) {
+				foundUsers.add(rowToUserData(res));
+			}
+			
+			/* Close statement and result set */
+			res.getStatement().close();
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		return foundUsers;
 	}
+	
+	@Override
+	public ArrayList<GroupData> searchGroups(SearchData criteria) {
+		ArrayList<GroupData> foundGroups = new ArrayList<GroupData>(); 
+
+		/* Build SQL WHERE clause */
+		ArrayList<String> fieldnames = new ArrayList<String>();
+		fieldnames.add("name");
+		fieldnames.add("course");
+		String sqlWhere = criteria.getSql(fieldnames);
+
+		print("SELECT * from `groups` WHERE " + sqlWhere + ";");
+
+		try {
+			/* Run query */
+			ResultSet res = dbh.sqlQuery(
+							"SELECT * from `groups` WHERE " + sqlWhere + ";");
+			
+			/* Aggregate results */
+			while (res.next()) {
+				foundGroups.add(rowToGroupData(res));
+			}
+			
+			/* Close statement and result set */
+			res.getStatement().close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return foundGroups;
+	}
+
+
 
 
 }

@@ -9,10 +9,10 @@ import gui.GUIFrame;
 public class Start extends JPanel {	
 	
 	/** The {@link Database} to use for the program. */
-	static Database db = null;
+	static final Database db = new MySqlDatabase();
 
 	/** The {@link StudyGroupSystem} to use for the program. */
-	static StudyGroupSystem system = new StudyGroupSystem();
+	static final StudyGroupSystem system = new StudyGroupSystem(db);
 	
 	/** The {@link GUIFrame} to use for the program. */
 	final static GUIFrame gui = new GUIFrame(system);
@@ -25,20 +25,27 @@ public class Start extends JPanel {
 		/* local */
 		if (databaseMode.equalsIgnoreCase("local")) {				
 			System.out.print("Attempting to run on local MySql...");
-			db = new MySqlDatabase("jdbc:mysql://localhost:3306/testdb", "root", "");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
 			System.out.println("Connected");
 
-		/* remote-new */
-		} else if (databaseMode.equalsIgnoreCase("remote-new")) {
-			System.out.print("Attempting to create new remote instance of MySql...");
-			db = new MySqlDatabase("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
+		/* local-new */
+		} else if (databaseMode.equalsIgnoreCase("local-new")) {
+			System.out.print("Attempting to create new local instance of MySql...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
 			System.out.println("Connected...");
 			((MySqlDatabase) db).buildDatabase();
 			
+		/* remote-new */
+		} else if (databaseMode.equalsIgnoreCase("remote-new")) {
+			System.out.print("Attempting to create new remote instance of MySql...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
+			System.out.println("Connected...");
+			((MySqlDatabase) db).buildDatabase();
+				
 		/* remote (any other, default) */
 		} else { // includes "" or "remote" 
 			System.out.print("Attempting to run on remote instance of MySql...");
-			db = new MySqlDatabase("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
 			System.out.println("Connected");
 		}
 		
@@ -63,8 +70,9 @@ public class Start extends JPanel {
 	 * 
 	 * @param args - first command line option specifies database and can be:<ul>
 	 * <li> <code>remote</code> = use remote server (default)
-	 * <li> <code>remote-new</code> = user remote server but delete/reinitialize database 
+	 * <li> <code>remote-new</code> = use remote server but delete/reinitialize database 
 	 * <li> <code>local</code> = use local instance of MySql (local server must be running) 
+	 * <li> <code>local-new</code> = use local server but delete/reinitialize database 
 	 * </ul>
 	 */
 	public static void main(String[] args) {

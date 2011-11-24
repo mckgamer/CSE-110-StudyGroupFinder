@@ -12,21 +12,18 @@ import util.StringParser;
  */
 public class GroupData implements Data {
 
-	/** The ID of this GroupData */
+	/* Properties of the group */
 	public int id;
+	public String name;
+	public String course;
+	public ArrayList<Integer> mods;
+	public ArrayList<Integer> users;
 
-	/** The name of this GroupData */
-	String name;
-
-	/** The course of this GroupData */
-	String course;
-
-	/** The list of mods of this GroupData as an ArrayList<Integer>.*/
-	ArrayList<Integer> mods;
-
-	/** The list of other users of this GroupData as an ArrayList<Integer>.*/
-	ArrayList<Integer> users;
-
+	/** 
+	 * Empty constructor
+	 */
+	GroupData() {}
+	
 	/** Constructs a GroupData object using all it needs
 	 * 
 	 * @param id the id of the Group, null if not a group yet.
