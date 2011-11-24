@@ -13,15 +13,19 @@ import util.StringParser;
  */
 public class UserData implements Data {
 	
-	/* Properties of the user */
+	/** The ID of the user **/
 	public int id;
+	/** The login name of the user **/
 	public String name;
+	/** The login password of the user **/
 	public String password;
+	/** A comma delimited string of courses the user is interested in **/
 	public String courses;
+	/** The date of the last login, updated by database.login() method **/
 	public Date last_login;
-	
-	/* Memberships that are stored in the database */
+	/** ArrayList of group ids that the user is a moderator of **/
 	public ArrayList<Integer> modof;
+	/** ArrayList of group ids that the user is a member (non-moderator) of **/
 	public ArrayList<Integer> userof;
 	
 	/** Construct an empty UserData object

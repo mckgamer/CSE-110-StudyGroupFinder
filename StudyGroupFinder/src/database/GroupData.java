@@ -12,11 +12,15 @@ import util.StringParser;
  */
 public class GroupData implements Data {
 
-	/* Properties of the group */
+	/** ID of the group **/
 	public int id;
+	/** Name of the group **/
 	public String name;
+	/** Course to which the group belongs **/
 	public String course;
+	/** ArrayList of user ids that are moderators of the group **/
 	public ArrayList<Integer> mods;
+	/** ArrayList of user ids that are members (non-moderators) of the group **/
 	public ArrayList<Integer> users;
 
 	/** 

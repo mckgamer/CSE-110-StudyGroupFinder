@@ -26,11 +26,11 @@ import com.mysql.jdbc.CommunicationsException;
  */
 public class MySqlDatabase implements Database {
 
-	/* local variables for the database connection */
+	/** Connection object to database **/
     private Connection mySQLConnection;
+    /** Description of current connection **/
     private String connectionString = "";
-        
-    /* database helper */
+    /** Reference to database helper object **/
     private MySqlDatabaseHelper dbh;
     
     /* Exceptions */
