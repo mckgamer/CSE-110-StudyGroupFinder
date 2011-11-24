@@ -1,5 +1,8 @@
 package database;
 
+import java.util.ArrayList;
+
+import database.MySqlDatabase.InvalidDatabaseID;
 import domainlogic.Status;
 import domainlogic.User;
 
@@ -20,7 +23,7 @@ public interface Database {
 	 * @param id the ID of the group to get.
 	 * @return the c of the group.
 	 */
-	public GroupData getGroup(int id);
+	public GroupData getGroup(int id) throws InvalidDatabaseID;
 	
 	/** Adds the specified user to the specified group
 	 * Preconditions: userid and groupid are integers.
@@ -28,6 +31,7 @@ public interface Database {
 	 * @param userid the ID of the user to add.
 	 * @param groupid the ID of the group to add to.
 	 * @return {@link Status} object that holds information on what happened. 
+	 * @throws InvalidDatabaseID -if requested id goes not exist in database
 	 */
 	public Status setMembershipUser(int userid, int groupid);
 	
@@ -87,16 +91,30 @@ public interface Database {
 	 * Postconditions: Gets the user data associated with the id
 	 * @param id
 	 * @return {@link UserData} object containing the user data associated with the user id.
+	 * @throws InvalidDatabaseID 
 	 */
-	public UserData getUser(int id);
+	public UserData getUser(int id) throws InvalidDatabaseID;
 	
 	/** Updates Group Data in Database
 	 * Preconditions: gd is a valid GroupData object
 	 * Postconditions: Updates the group data for associated groupid in the database
 	 * @param gd {@link GroupData} GroupData object
 	 * @return {@link Status} object that holds information on what happened
+	 * @throws InvalidDatabaseID -if requested id goes not exist in database
 	 */
 	public Status updateGroup(GroupData gd);
+	
+	/** Search for users and return multiple results
+	 * @param criteria - a {@link SearchData} object containing search terms
+	 * @return an {@link ArrayList} of {@link UserData} objects for matching users
+	 */
+	public ArrayList<UserData> searchUsers(SearchData criteria);
+	
+	/** Search for groups and return multiple results
+	 * @param criteria - a {@link SearchData} object containing search terms
+	 * @return an {@link ArrayList} of {@link GroupData} objects for matching groups
+	 */
+	public ArrayList<GroupData> searchGroups(SearchData criteria);
 	
 	/** Provide basic description of data implementation/connection
 	 */

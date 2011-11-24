@@ -12,20 +12,20 @@ import util.StringParser;
  */
 public class UserData implements Data {
 	
-	/** The ID of this UserData */
+	/* Properties of the user */
 	public int id;
+	public String uname;
+	public String pw;
+	public String courses;
 	
-	/** The username of this UserData */
-	private String uname;
+	/* Memberships that are stored in the database */
+	public ArrayList<Integer> modof;
+	public ArrayList<Integer> userof;
 	
-	/** The password of this UserData */
-	private String pw;
-	
-	/** The list of modof of this UserData */
-	private ArrayList<Integer> modof;
-	
-	/** The list of userof of this UserData */
-	private ArrayList<Integer> userof;
+	/** Construct an empty UserData object
+	 * 
+	 */
+	public UserData() {}
 	
 	/** Constructs a UserData object using all it needs
 	 * 
@@ -58,6 +58,7 @@ public class UserData implements Data {
 		this.userof = userof;
 	}
 	
+
 	@Override //TODO
 	public boolean validate() {
 		if (uname == null || pw == null) { // Will need to check for modOfGroup when it is finalized
@@ -90,7 +91,7 @@ public class UserData implements Data {
 	/** Return the ArrayList of type Integer that represent the groups that this user is mod of.
 	 * 
 	 * @return the ArrayList of type Integer that represent the groups that this user is mod of.
-	 */ //TODO This maybe should parse it back into a string
+	 */
 	public ArrayList<Integer> getModOf() {
 		return modof;
 	}
@@ -98,7 +99,7 @@ public class UserData implements Data {
 	/** Return the ArrayList of type Integer that represent the groups that this user is user of.
 	 * 
 	 * @return the ArrayList of type Integer that represent the groups that this user is user of.
-	 */ //TODO This maybe should parse it back into a string
+	 */
 	public ArrayList<Integer> getUserOf() {
 		return userof;
 	}
