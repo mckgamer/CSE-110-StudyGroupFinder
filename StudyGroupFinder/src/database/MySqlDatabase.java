@@ -128,15 +128,13 @@ public class MySqlDatabase implements Database {
 		print("--Searching users for mich");
 		db.addUser(new UserData(0, "michelle", "password", "", ""));
 		SearchData sd = new SearchData("mich");
-		ArrayList<UserData> foundUsers = db.searchUsers(sd);
-		for (UserData u: foundUsers)
-			print("Found users: " + u);
+		sd.setResults(db.searchUsers(sd));
+		print(sd.toString());
 		
 		print("--Searching groups for cse");
 		sd.setTerms("cse");
-		ArrayList<GroupData> foundGroups = db.searchGroups(sd);
-		for (GroupData g: foundGroups)
-			print("Found groups: " + g);
+		sd.setResults(db.searchGroups(sd));
+		print(sd.toString());
 		
 		print("--Displaying final state of database");
 		db.dbh.printDatabase();

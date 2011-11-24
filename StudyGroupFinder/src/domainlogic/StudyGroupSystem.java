@@ -1,8 +1,5 @@
 package domainlogic;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
 import database.Database;
 import database.GroupData;
 import database.MapDatabase;
@@ -103,10 +100,11 @@ public class StudyGroupSystem {
 	 * 
 	 */
 	public void refreshLoggedUser() {
+		int user_id = sgfUser.getUserData().getId();
 		try {
-			sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
+			sgfUser.setUserData(database.getUser(user_id));
 		} catch (InvalidDatabaseID e) {
-			// TODO Auto-generated catch block
+			System.err.println("Attempted to refreshLoggenUser with invalid user_id="+user_id);
 			e.printStackTrace();
 		}
 	}
@@ -157,7 +155,8 @@ public class StudyGroupSystem {
 		try {
 			return database.getUser(id);
 		} catch (InvalidDatabaseID e) {
-			// TODO Auto-generated catch block
+			System.err.println("Attempted to access invalid user id =" + id);
+			System.err.println("Returning an empty UserData object");
 			e.printStackTrace();
 			return new UserData();
 		}
@@ -186,7 +185,8 @@ public class StudyGroupSystem {
 		try {
 			return database.getGroup(id);
 		} catch (InvalidDatabaseID e) {
-			// TODO Auto-generated catch block
+			System.err.println("Attempted to access invalid group id =" + id);
+			System.err.println("Returning an empty GroupData object");
 			e.printStackTrace();
 			return new GroupData();
 		}
@@ -247,17 +247,7 @@ public class StudyGroupSystem {
 	 * @return the SearchData modified with the results of the search added.
 	 */
 	public SearchData searchGroups(SearchData search) {
-		//TODO Dummy Code Make this call the DB function
-		Vector<Integer> empty = new Vector<Integer>();
-		for (int x = 1; x < 10; x++) {
-			if (getGroup(x) != null && !getLoggedUser().isUserOf(x) && !getLoggedUser().isModOf(x)) {
-				empty.add(x);
-			}
-		}
-		//End Dummy Code
-		search.setResults(empty);
-		return search;
-		
+		return search.setResults(database.searchGroups(search));
 	}
 	
 	/** This method searches for users in the database with the specified search data.
@@ -266,14 +256,7 @@ public class StudyGroupSystem {
 	 * @return the SearchData modified with the results of the search added.
 	 */
 	public SearchData searchUsers(SearchData search) {
-		//TODO Dummy Code Make this call the DB function
-		Vector<Integer> empty = new Vector<Integer>();
-		empty.add(1);
-		empty.add(2);
-		//End Dummy Code
-		search.setResults(empty);
-		return search;
-		
+		return search.setResults(database.searchUsers(search));
 	}
 	
 	/** For the suggested groups logic. This takes the logged in Users profile and converts

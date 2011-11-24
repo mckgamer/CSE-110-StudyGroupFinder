@@ -19,7 +19,7 @@ public class SearchData implements Data {
 	private String privateterms;
 	
 	/** The results of this SearchData's execution */
-	private ArrayList<Data> results;
+	private ArrayList<? extends Data> results;
 
 	/* Constructors */
 	SearchData() {}
@@ -27,13 +27,11 @@ public class SearchData implements Data {
 	
 	@Override
 	public boolean validate() {
-		// TODO check that all the terms are ok, or there are any
-		return false;
+		return (this.terms != null || this.privateterms != null);
 	}
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -47,31 +45,34 @@ public class SearchData implements Data {
 	
 	/** Sets the terms string.
 	 */
-	public void setTerms(String terms) {
+	public SearchData setTerms(String terms) {
 		this.terms = terms;
+		return this;
 	}
 	
 	/** Sets the private terms string.
 	 */
-	public void setPrivateTerms(String terms) {
+	public SearchData setPrivateTerms(String terms) {
 		this.privateterms = terms;
+		return this;
 	}
 	
-	/** Sets the results vector.
+	/**
+	 * Sets the results results
+	 * @param results - and {@link ArrayList} of {@link Data} objects
+	 * @return itself, a {@link SearchData} object 
+	 * 
 	 */
-	/* Mike C: I changed results to an ArrayList<Data> but this isn't
-	 * useful in the way I expected. Not sure what results will be used
-	 * for or what type it should be.
-	 */
-	public void setResults(ArrayList<Data> results) {
+	public SearchData setResults(ArrayList<? extends Data> results) {
 		this.results = results;
+		return this;
 	}
 	
 	/** Returns the result vector.
 	 * 
 	 * @return the results of the search in Vector form.
 	 */
-	public ArrayList<Data> getResults() {
+	public ArrayList<? extends Data> getResults() {
 		return results;
 	}
 	
@@ -146,6 +147,17 @@ public class SearchData implements Data {
 		System.out.println("Multiple terms =" + sd.getSql("name") + "=");
 		System.out.println("Multiple terms =" + sd.getSql(fieldnames) + "=");
 		
+	}
+	
+	public String toString() {
+		String s = "";
+		s = s + "Terms: " + this.terms + "\n";
+		s = s + "Private terms: " + this.privateterms + "\n";
+		if (results.size() == 0)
+			s = s + "Results: empty" + "\n";
+		else 
+			for (Data d: results) s = s + d + "\n";
+		return s;
 	}
 
 }
