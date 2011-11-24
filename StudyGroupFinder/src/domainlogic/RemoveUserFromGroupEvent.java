@@ -10,10 +10,6 @@ import database.GroupUserData;
  * @author Michael Kirby
  */
 public class RemoveUserFromGroupEvent implements Event {
-
-	//TODO I think I'm going to add another Data impl for this - Michael Kirby 10/24
-	private int userId;
-	private int groupId;
 	
 	/** The {@link GroupUserData} object that this Event will use to complete its task. */
 	private GroupUserData usergroup; //TODO use this in the constructor
@@ -28,13 +24,12 @@ public class RemoveUserFromGroupEvent implements Event {
 	public RemoveUserFromGroupEvent(StudyGroupSystem sgs, int userId, int groupId) {
 		status = new Status();
 		system = sgs;
-		this.userId = userId;
-		this.groupId = groupId;
+		usergroup = new GroupUserData(userId, groupId);
 	}
 	
 	@Override
 	public void execute() {
-		status = system.removeUserFromGroup(userId, groupId);
+		status = system.removeUserFromGroup(usergroup.getId(), usergroup.getGroupId());
 		system.refreshLoggedUser();
 	}
 

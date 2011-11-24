@@ -181,7 +181,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			//TODO show confirmation
 			if (userList.getSelectedData() != null) {
 				MakeModeratorEvent mme = new MakeModeratorEvent(parent.getSGS());
-				mme.setData(new GroupUserData(userList.getSelectedData(),gd));
+				mme.setData(new GroupUserData(userList.getSelectedData().getId(),gd.getId()));
 				mme.validate();
 				mme.execute();
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
@@ -190,7 +190,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			//TODO show confirmation
 			if (userList.getSelectedData() != null) {
 				DeModEvent dme = new DeModEvent(parent.getSGS());
-				dme.setData(new GroupUserData(userList.getSelectedData(),gd));
+				dme.setData(new GroupUserData(userList.getSelectedData().getId(),gd.getId()));
 				dme.validate();
 				dme.execute();
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?

@@ -9,19 +9,19 @@ package database;
 public class GroupUserData implements Data {
 
 	/** The UserData of the user. */
-	private UserData user;
+	private int user;
 
 	/** The GroupData of the Group. */
-	private GroupData group;
+	private int group;
 	
 	/** Construct this GroupUserData using a UserData and GroupData object.
 	 * 
-	 * @param ud the UserData object of the user.
-	 * @param gd the GroupData object of the group.
+	 * @param uid the id of the user.
+	 * @param gid the id of the group.
 	 */
-	public GroupUserData(UserData ud, GroupData gd) {
-		this.user = ud;
-		this.group = gd;
+	public GroupUserData(int uid, int gid) {
+		this.user = uid;
+		this.group = gid;
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class GroupUserData implements Data {
 
 	@Override
 	public int getId() {
-		return user.getId();
+		return user;
 	}
 	
 	/** Returns the id of the group of this Data.
@@ -39,7 +39,7 @@ public class GroupUserData implements Data {
 	 * @return the id of the group of this Data.
 	 */
 	public int getGroupId() {
-		return group.getId();
+		return group;
 	}
 
 }

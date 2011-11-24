@@ -10,9 +10,6 @@ import database.GroupUserData;
  *
  */
 public class AddUserToGroupEvent implements Event {
-
-	private int userId;
-	private int groupId;
 	
 	/** The {@link GroupUserData} object that this Event will use to complete its task. */
 	private GroupUserData usergroup; //TODO use this in the constructor
@@ -27,13 +24,12 @@ public class AddUserToGroupEvent implements Event {
 	public AddUserToGroupEvent(StudyGroupSystem sgs, int userId, int groupId) {
 		status = new Status();
 		system = sgs;
-		this.userId = userId;
-		this.groupId = groupId;
+		usergroup = new GroupUserData(userId, groupId);
 	}
 	
 	@Override
 	public void execute() {
-		status = system.joinGroup(userId, groupId);
+		status = system.joinGroup(usergroup.getId(), usergroup.getGroupId());
 		system.refreshLoggedUser();
 	}
 
