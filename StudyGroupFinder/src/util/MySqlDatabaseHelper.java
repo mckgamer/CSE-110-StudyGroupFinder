@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 /**
  * This is critical functionality for the {@link database.MySqlDatabase} class
@@ -15,6 +15,14 @@ public class MySqlDatabaseHelper {
 	
 	/* This class uses the connection established by the MySqlDatabase class */
 	private Connection mySQLConnection;
+
+	/* Exception */
+    public class DuplicateDatabaseEntry extends Exception {
+		private static final long serialVersionUID = 1L;
+		DuplicateDatabaseEntry() {}
+		DuplicateDatabaseEntry(String msg) {super(msg);}    	
+    };
+
 	
 	/* Shortcut to print to console during debugging */
 	public static boolean showDebug = true;
@@ -87,45 +95,38 @@ public class MySqlDatabaseHelper {
 	/** 
 	 * Execute an insert command in the SQL database and return keys
 	 * @param sqlCommand - a {@link String} properly formatted SQL query
+	 * @throws {@link DuplicateDatabaseEntry} 
 	 */
-	public ArrayList<Integer> sqlInsert(String sqlCommand){
+	public int sqlInsert(String sqlCommand) throws DuplicateDatabaseEntry{
 	    Statement statement = null;
-	    ArrayList<Integer> keys = new ArrayList<Integer>();
+	    int id=0;
 	    
 		try {
 			statement = mySQLConnection.createStatement();
 		    statement.executeUpdate(sqlCommand);
 		    
+		    /* Get generated key, throw exception is <1 or >1 key */
 		    ResultSet res = statement.getGeneratedKeys();
-		    while (res.next());
-		    	keys.add(res.getInt(1));
+		    displayResultSet(res);
+		    if (res.next())
+		    	id = res.getInt(1);
+	    	if (res.next())
+	    		throw new RuntimeException("More than one id for INSERT statement");
 		    
 		    statement.close();
+		    
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			DuplicateDatabaseEntry dde = new DuplicateDatabaseEntry(e.getLocalizedMessage());
+			dde.initCause(e);
+			throw dde;
+			
 		} catch (SQLException e) {
 			print("Error in sqlInsert, sqlCommand=" + sqlCommand);
 			e.printStackTrace();
 		}
-		return keys;
+		return id;
 	}
 
-	/**
-	 * Return the maximum value of the 'id' field of a given table.
-	 * Used to determine the id of the last added User or Group. 
-	 * @param tableName - the {@link String} of the table to search
-	 * @return an {@link int} of the maximum value in the id field
-	 */
-	public int getMaxId(String tableName) {
-		int max_id = 0;
-		ResultSet res = sqlQuery("SELECT MAX(`id`) FROM `" + tableName + "`;");
-		try {
-			if (res.next()) { max_id = res.getInt(1); }
-			res.getStatement().close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}			
-		return max_id;		
-	}
-	
 	/**
 	 * Print user, group and membership data to console
 	 */
@@ -171,10 +172,10 @@ public class MySqlDatabaseHelper {
 				  "`id` INT NOT NULL AUTO_INCREMENT ," +
 				  "`name` VARCHAR(45) NOT NULL ," +
 				  "`password` VARCHAR(45) NOT NULL ," +
-				  "`courses` VARCHAR(255) NULL ," +
 				  "`last_login` DATETIME NULL ," +
+				  "`courses` VARCHAR(255) NULL ," +
 				  "PRIMARY KEY (`id`) ," +
-				  "UNIQUE INDEX `id_UNIQUE` (`id` ASC) ), " +
+				  "UNIQUE INDEX `id_UNIQUE` (`id` ASC) , " +
 				  "UNIQUE INDEX `name_UNIQUE` (`name` ASC) );"
 				  );
 		
@@ -224,7 +225,7 @@ public class MySqlDatabaseHelper {
 			
 		/** Add data for a user, group and membership **/
 		print("Adding user");
-		sqlExecute("INSERT INTO `users` (`name`, `password`) VALUES ('mike', 'pw');");
+		sqlExecute("INSERT INTO `users` (`name`, `password`, `courses`) VALUES ('mike', 'pw', 'cse110');");
 		print("Adding group");
 		sqlExecute("INSERT INTO `groups` (`name`, `course`) VALUES ('group1', 'cse110');");
 		print("Adding membership");

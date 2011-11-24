@@ -243,7 +243,7 @@ public class MapDatabase implements Database {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		int uniqueID = getUniqueUserId();
 		String uniqueStringID = Integer.toString(uniqueID);
-		users.put(uniqueID, addData(ud.getUName(), ud.getPW(), "~", "~", uniqueStringID));
+		users.put(uniqueID, addData(ud.name, ud.password, "~", "~", uniqueStringID));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}
@@ -257,7 +257,7 @@ public class MapDatabase implements Database {
 	public Status updateUser(UserData ud) {
 		Status tempStatus = new Status(StatusType.UNSUCCESSFUL);
 		String idString = Integer.toString(ud.getId());
-		users.put(ud.getId(), addData(ud.getUName(), ud.getPW(),StringParser.unParseArray(ud.getModOf()), StringParser.unParseArray(ud.getUserOf()), idString));
+		users.put(ud.getId(), addData(ud.name, ud.password,StringParser.unParseArray(ud.modof), StringParser.unParseArray(ud.userof), idString));
 		tempStatus.setStatus(StatusType.SUCCESS);
 		return tempStatus;
 	}

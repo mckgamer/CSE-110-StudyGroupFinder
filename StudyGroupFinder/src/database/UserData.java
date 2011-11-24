@@ -1,6 +1,7 @@
 package database;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import util.StringParser;
 
@@ -14,9 +15,10 @@ public class UserData implements Data {
 	
 	/* Properties of the user */
 	public int id;
-	public String uname;
-	public String pw;
+	public String name;
+	public String password;
 	public String courses;
+	public Date last_login;
 	
 	/* Memberships that are stored in the database */
 	public ArrayList<Integer> modof;
@@ -27,41 +29,41 @@ public class UserData implements Data {
 	 */
 	public UserData() {}
 	
-	/** Constructs a UserData object using all it needs
+	/** Constructor using Strings
 	 * 
 	 * @param id the id of the User, null if not a user yet.
-	 * @param uname the username of the user.
-	 * @param pw the password of the user.
+	 * @param name the username of the user.
+	 * @param password the password of the user.
 	 * @param mod a String of group IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
 	 */
-	public UserData(int id, String uname, String pw, String mod, String user) {   // I think we will need to have user id generated instead of having it as a parameter. -Bob F 10/22
+	public UserData(int id, String name, String password, String mod, String user) {   // I think we will need to have user id generated instead of having it as a parameter. -Bob F 10/22
 		this.id = id;
-		this.uname = uname;
-		this.pw = pw;
+		this.name = name;
+		this.password = password;
 		modof = StringParser.parseString(mod);
-		userof = StringParser.parseString(user); //TODO change to user parameter
+		userof = StringParser.parseString(user);
 	}
 	
-	/** Constructs a UserData object using all it needs
+	/** Constructor using ArraList for memberships
 	 * 
 	 * @param id the id of the User, null if not a user yet.
-	 * @param uname the username of the user.
-	 * @param pw the password of the user.
-	 * @param modof is an ArrayList of integers
-	 * @param userof is an ArrayList of integers
+	 * @param name the username of the user.
+	 * @param password the password of the user.
+	 * @param modof is an {@link ArrayList} of integers
+	 * @param userof is an {@link ArrayList} of integers
 	 */
-	public UserData(int id, String uname, String pw, ArrayList<Integer> modof, ArrayList<Integer> userof) {
+	public UserData(int id, String name, String password, ArrayList<Integer> modof, ArrayList<Integer> userof) {
 		this.id = id;
-		this.uname = uname;
-		this.pw = pw;
+		this.name = name;
+		this.password = password;
 		this.modof = modof;
 		this.userof = userof;
 	}
 	
 
-	@Override //TODO
+	@Override
 	public boolean validate() {
-		if (uname == null || pw == null) { // Will need to check for modOfGroup when it is finalized
+		if (name == null || password == null) {
 			return false;
 		}
 		return true;
@@ -72,37 +74,6 @@ public class UserData implements Data {
 		return id;
 	}
 	
-	/** Return the username String associated with this UserData.
-	 * 
-	 * @return the username String associated with this UserData.
-	 */
-	public String getUName() {
-		return uname;
-	}
-	
-	/** Return the password String associated with this UserData.
-	 * 
-	 * @return the password String associated with this UserData.
-	 */
-	public String getPW() {
-		return pw;
-	}
-	
-	/** Return the ArrayList of type Integer that represent the groups that this user is mod of.
-	 * 
-	 * @return the ArrayList of type Integer that represent the groups that this user is mod of.
-	 */
-	public ArrayList<Integer> getModOf() {
-		return modof;
-	}
-	
-	/** Return the ArrayList of type Integer that represent the groups that this user is user of.
-	 * 
-	 * @return the ArrayList of type Integer that represent the groups that this user is user of.
-	 */
-	public ArrayList<Integer> getUserOf() {
-		return userof;
-	}
 	public void setMod(int id){
 		modof.add(id);
 	}
@@ -139,8 +110,9 @@ public class UserData implements Data {
 		String s = "";
 		/** Produce name and password */
 		s = 	"User: " +
-				"Name=" + this.uname + ", " +
-				"PW=" + this.pw + ", ";
+				"Name=" + this.name + ", " +
+				"password=" + this.password + ", " +
+				"courses=" + this.courses + ", ";
 
 		/** Groups as user */
 		s = s + "UserOf(";

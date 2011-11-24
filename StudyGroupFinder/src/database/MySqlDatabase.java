@@ -5,6 +5,7 @@ import domainlogic.StatusType;
 import domainlogic.User;
 import domainlogic.User.Logged;
 import util.MySqlDatabaseHelper;
+import util.MySqlDatabaseHelper.DuplicateDatabaseEntry;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,12 +33,12 @@ public class MySqlDatabase implements Database {
     /* database helper */
     private MySqlDatabaseHelper dbh;
     
-    /* Exception */
+    /* Exceptions */
     public class InvalidDatabaseID extends Exception {
 		private static final long serialVersionUID = 1L;
 		InvalidDatabaseID() {}
     	InvalidDatabaseID(String msg) {super(msg);}    	
-    };
+    };    
     
 	/* Initialize the driver */
 	static {
@@ -69,6 +70,9 @@ public class MySqlDatabase implements Database {
 		db.dbh.buildDatabase();
 		db.dbh.populateDatabase();
 		
+		db.dbh.printUsers();
+		
+		
 		print("--Logging in");
 		User mike = db.login("mike", "pw");
 		int mike_id = mike.getUserData().getId();
@@ -84,19 +88,23 @@ public class MySqlDatabase implements Database {
 		print(mikeData.toString());
 		
 		print("--Updating user: mike to michael");
-		UserData michaelData = new UserData(
-				mikeData.getId(), "michael", mikeData.getPW(), mikeData.getModOf(), mikeData.getUserOf());
-		st = db.updateUser(michaelData);
+		mikeData.name = "michael";
+		st = db.updateUser(mikeData);
 		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
 		
 		print("--Creating new user: bob, a member of group 1");
 		UserData bob = new UserData(0, "bob", "pw", "", "");
+		bob.courses = "cse110, bio2";
 		st = db.addUser(bob);
 		int bob_id = 2;
 		db.setMembershipUser(bob_id, 1);
 		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
+		
+		print("--Try creating duplicate user name");
+		st = db.addUser(bob);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		
 		print("--Creating new group: group2 with no members");
 		GroupData gp2 = new GroupData(0, "group2", "cse111", "~", "~");
@@ -133,6 +141,11 @@ public class MySqlDatabase implements Database {
 		
 		print("--Searching groups for cse");
 		sd.setTerms("cse");
+		sd.setResults(db.searchGroups(sd));
+		print(sd.toString());
+		
+		print("--Searching groups for michael");
+		sd.setTerms(mikeData.courses);
 		sd.setResults(db.searchGroups(sd));
 		print(sd.toString());
 		
@@ -211,6 +224,12 @@ public class MySqlDatabase implements Database {
         return st;
 	}
 
+	/**
+	 * Delete all current data and build tables for database
+	 */
+	public void buildDatabase() {
+		this.dbh.buildDatabase();		
+	}
     
     @Override
     public String toString() {
@@ -218,19 +237,28 @@ public class MySqlDatabase implements Database {
     }
     
 	@Override
-	public User login(String uname, String pw) {
+	public User login(String name, String password) {
 		User user = new User(Logged.LOGGEDOFF, null);
 		
 		/* Attempt to locate user record */
-		ResultSet res = loginGetResults(uname, pw);
-		
-		
+		ResultSet res = dbh.sqlUpdatable("SELECT * FROM `users` " +
+				 "WHERE (" +
+				 "`name`='" + name + "'" +
+				 " AND " +
+				 "`password`='" + password + "'" +
+				 ");");
 		
 		/* Get user data */
 		try {
 			if (res.next()) {
 				user.setUserData(rowToUserData(res));
 				user.setStatus(Logged.USER);		
+				
+				/* Update login time */
+				java.sql.Date now_time = new java.sql.Date(new java.util.Date().getTime());
+				res.updateDate("last_login", now_time);
+				res.updateRow();
+				
 			} else {
 				user.setStatus(Logged.INVALID);			
 			}
@@ -240,31 +268,7 @@ public class MySqlDatabase implements Database {
 		return user;		
 	}
 
-	/**
-	 * Delete all current data and build tables for database
-	 */
-	public void buildDatabase() {
-		this.dbh.buildDatabase();		
-	}
-
-	
-	/**
-	 * A helper function for login() that finds the user id based on username
-	 * and password. 
-	 * @param uname - the {@link String} of the username
-	 * @param password - the {@link String} of the password
-	 * @return user_id - the int id of matching user. Returns 0 if no match.  
-	 */
-	private ResultSet loginGetResults(String uname, String password) {
-		/* Query for matching user */
-		return dbh.sqlQuery("SELECT * FROM `users` " +
-								 "WHERE (" +
-								 "`name`='" + uname + "'" +
-								 " AND " +
-								 "`password`='" + password + "'" +
-								 ");");
-	}
-	
+		
 	/**
 	 * @throws InvalidDatabaseID 
 	 * @see database.Database#getUserData(int)
@@ -304,8 +308,9 @@ public class MySqlDatabase implements Database {
 		
 		try {
 			ud.id = res.getInt("id");
-			ud.uname = res.getString("name");
-			ud.pw = res.getString("password");
+			ud.name = res.getString("name");
+			ud.password = res.getString("password");
+			ud.courses = res.getString("courses");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -421,11 +426,14 @@ public class MySqlDatabase implements Database {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
 		/* Add place holder row in user table */
-		dbh.sqlExecute("INSERT INTO `users` (`name`, `password`) " +
-				  "VALUES ('" + ud.getUName() + "', '" + ud.getPW() + "');");
-		
-		/* Get user id */
-		ud.id = dbh.getMaxId("users");
+		try {
+			ud.id = dbh.sqlInsert("INSERT INTO `users` (`name`, `password`) " +
+					  "VALUES ('" + ud.name + "', '" + ud.password + "');");
+		} catch (DuplicateDatabaseEntry e) {
+			st.setStatus(StatusType.INVALID);
+			st.setMessage("Duplicate user already exists in database");
+			return st;
+		}
 		
 		/* Add user properties */
 		updateUser(ud);
@@ -450,8 +458,9 @@ public class MySqlDatabase implements Database {
 		/* Update the user fields */
 		try {
 			if (res.next()) {
-				res.updateString("name", ud.getUName());
-				res.updateString("password", ud.getPW());
+				res.updateString("name", ud.name);
+				res.updateString("password", ud.password);
+				res.updateString("courses", ud.courses);
 				res.updateRow();
 			}
 			
@@ -522,6 +531,7 @@ public class MySqlDatabase implements Database {
 	
 	
 	/**
+	 * @throws DuplicateDatabaseEntry 
 	 * @see database.Database#addGroup(database.GroupData)
 	 */
 	@Override
@@ -529,19 +539,20 @@ public class MySqlDatabase implements Database {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
 		/* Create place holder row in groups table */
-		dbh.sqlExecute("INSERT INTO `groups` (`name`) " +
-				  "VALUES ('" + gd.getName() + "');");		
+		try {
+			gd.id = dbh.sqlInsert("INSERT INTO `groups` (`name`) " +
+					  "VALUES ('" + gd.getName() + "');");
+		} catch (DuplicateDatabaseEntry e) {
+			st.setStatus(StatusType.INVALID);
+			st.setMessage("Duplicate group already exists in database");
+			return st;
+		}
 
-		/* Get group id */
-		gd.id = dbh.getMaxId("groups");
-				
 		/* Update group properties */
 		updateGroup(gd);
 		
 		/* Add moderator */
-		ArrayList<Integer> mods = gd.getMods();
-		for (int mod: mods)
-			setMembershipMod(mod, gd.id);
+		for (int mod: gd.getMods()) setMembershipMod(mod, gd.id);
 		
 		/** return status **/
 		st.setStatus(StatusType.SUCCESS);
@@ -672,8 +683,6 @@ public class MySqlDatabase implements Database {
 		fieldnames.add("name");
 		fieldnames.add("course");
 		String sqlWhere = criteria.getSql(fieldnames);
-
-		print("SELECT * from `groups` WHERE " + sqlWhere + ";");
 
 		try {
 			/* Run query */
