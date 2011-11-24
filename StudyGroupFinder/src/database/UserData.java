@@ -73,11 +73,6 @@ public class UserData implements Data {
 		return true;
 	}
 
-	@Override
-	public int getId() {
-		return id;
-	}
-	
 	public void setMod(int id){
 		modof.add(id);
 	}
@@ -129,6 +124,59 @@ public class UserData implements Data {
 		s = s + ")";
 				
 		return s;
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+	
+	public String getUName() {
+		return name;
+	}
+
+	public void setUName(String name) {
+		this.name = name;
+	}
+
+	public String getPW() {
+		return password;
+	}
+
+	public void setPW(String password) {
+		this.password = password;
+	}
+
+	public String getCourses() {
+		return courses;
+	}
+
+	public void setCourses(String courses) {
+		this.courses = courses;
+	}
+
+	public ArrayList<Integer> getModOf() {
+		return modof;
+	}
+
+	public void setModOf(ArrayList<Integer> modof) {
+		this.modof = modof;
+	}
+
+	public ArrayList<Integer> getUserOf() {
+		return userof;
+	}
+
+	public void setUserOf(ArrayList<Integer> userof) {
+		this.userof = userof;
+	}
+
+	public Date getLast_login() {
+		return last_login;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

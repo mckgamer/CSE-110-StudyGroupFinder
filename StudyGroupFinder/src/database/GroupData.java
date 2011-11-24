@@ -69,6 +69,15 @@ public class GroupData implements Data {
 		return false;
 	}
 
+	/**
+	 * Set user to the group
+	 * @param id
+	 */
+	
+	public void setUser(int id){
+		users.add(id);
+	}
+
 	public void unsetUser(int userid){
 		for(int i = 0; i<users.size(); i++){
 			if(users.get(i)==userid){
@@ -77,34 +86,7 @@ public class GroupData implements Data {
 		}
 	}
 
-	@Override
-	public int getId() {
-		return id;
-	}
 
-	/** Returns the Name of this GroupData.
-	 * 
-	 * @return the name of this GroupData.
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/** Returns the course of this GroupData.
-	 * 
-	 * @return the course of this GroupData.
-	 */
-	public String getCourse() {
-		return course;
-	}
-
-	/** Return an ArrayList<Integer> of the id of the users who are mods.
-	 * 
-	 * @return an ArrayList<Integer> of the id of the users who are mods.
-	 */
-	public ArrayList<Integer> getMods() {
-		return mods;
-	}
 	/**
 	 * Add a mod to the Group
 	 * @param id
@@ -112,28 +94,14 @@ public class GroupData implements Data {
 	public void setMod(int id){
 		mods.add(id);
 	}
-	/**
-	 * Set user to the group
-	 * @param id
-	 */
-	public void setUser(int id){
-		users.add(id);
-	}
-	/** Return an ArrayList<Integer> of the id of the users who are user.
-	 * 
-	 * @return an ArrayList<Integer> of the id of the users who are users.
-	 */
-	public ArrayList<Integer> getUsers() {
-		return users;
-	}
-
+	
 	public String toString() {
 		String s = "";
 		/** Produce name and course */
 		s = 	"Group: " +
 				"Name=" + this.name + ", " +
 				"Course=" + this.course + ", ";
-
+	
 		/** Users */
 		s = s + "Users(";
 		for (int i: users) { s = s + i + ", "; }
@@ -146,6 +114,78 @@ public class GroupData implements Data {
 				
 		return s;
 		
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/** Returns the Name of this GroupData.
+	 * 
+	 * @return the name of this GroupData.
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/** Returns the course of this GroupData.
+	 * 
+	 * @return the course of this GroupData.
+	 */
+	public String getCourse() {
+		return course;
+	}
+
+	/**
+	 * @param course the course to set
+	 */
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	/** Return an ArrayList<Integer> of the id of the users who are user.
+	 * 
+	 * @return an ArrayList<Integer> of the id of the users who are users.
+	 */
+	public ArrayList<Integer> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(ArrayList<Integer> users) {
+		this.users = users;
+	}
+
+	/** Return an ArrayList<Integer> of the id of the users who are mods.
+	 * 
+	 * @return an ArrayList<Integer> of the id of the users who are mods.
+	 */
+	public ArrayList<Integer> getMods() {
+		return mods;
+	}	
+	
+	/**
+	 * @param mods the mods to set
+	 */
+	public void setMods(ArrayList<Integer> mods) {
+		this.mods = mods;
 	}
 	
 }

@@ -21,7 +21,7 @@ public class SearchData implements Data {
 	private ArrayList<? extends Data> results;
 
 	/* Constructors */
-	SearchData() {}
+	public SearchData() {}
 	SearchData(String terms) {this.terms = terms;}
 	
 	@Override
