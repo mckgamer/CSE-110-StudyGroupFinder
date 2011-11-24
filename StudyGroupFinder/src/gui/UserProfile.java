@@ -74,11 +74,10 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
-        meetControlPanel.setLayout(new GridLayout(1,2));
-        meetControlPanel.add(new JLabel("ModButtons here?"));
+        meetControlPanel.setLayout(new GridLayout(1,1));
         
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(0,1,5,4));
+        buttons.setLayout(new GridLayout(0,2,5,4));
         
          //TODO Admin buttons here
         	

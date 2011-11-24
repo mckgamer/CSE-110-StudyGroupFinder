@@ -1,7 +1,10 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -49,19 +52,31 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 		}
 		search.setData(oldsearch);
 		
-		setLayout(new GridLayout(5,1));
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
 		
 		// Display the Users Current Groups
-		add(new JLabel("Current Groups"));
+		c.gridx = 0;
+		c.gridy = 0;
+		c.ipady = 20;
+		c.ipadx = 160;
+		add(new JLabel("Current Groups"),c);
 		ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().getLoggedUser().getModOf());
 		temp.addAll(parent.getSGS().getLoggedUser().getUserOf());
 		currGroup = new GroupList(parent, this, temp.toArray());
 		JScrollPane mg = new JScrollPane(currGroup);
-		mg.setPreferredSize(new Dimension(40,40));
-		add(mg);
+		mg.setPreferredSize(new Dimension(100,40));
+	    c.gridy = 1;
+	    c.ipady = 80;
+	    c.insets = new Insets(0, 0, 30, 0);
+		add(mg,c);
 		
 		//Display the Groups Suggested to the User
-		add(new JLabel("Suggested Groups"));
+	    c.gridy = 2;
+	    c.ipady = 20;
+	    c.insets = new Insets(0, 0, 0, 0);
+		add(new JLabel("Suggested Groups"),c);
 		JPanel filt = new JPanel(new GridLayout(1,2));
 		filtsg = new JTextField(oldsearch.getTerms());
 		filt.add(filtsg);
@@ -69,7 +84,10 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
         filter.setActionCommand("filter");
         filter.addActionListener(this);
         filt.add(filter);
-		add(filt);
+        c.gridy = 3;
+        c.ipady = 0;
+	    c.insets = new Insets(0, 0, 10, 0);
+		add(filt,c);
 		
 		//Update the search event if it has yet to be executed
 		if (((SearchData)search.getData()).getResults() == null) {
@@ -80,7 +98,9 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 		//suggGroup = new GroupList(parent, this, empty.toArray());
 		JScrollPane sg = new JScrollPane(suggGroup);
 		sg.setPreferredSize(new Dimension(40,50));
-		add(sg);
+	    c.gridy = 4;
+	    c.ipady = 80;
+		add(sg,c);
 	}
 
 	@Override

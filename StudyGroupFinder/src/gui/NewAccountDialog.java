@@ -34,6 +34,9 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 	/** The JTextField for the password. */
 	JTextField pwField;
 	
+	/** The JTextField for the courses*/
+	JTextField courseField;
+	
 	/** Constructs this NewAccountDialog using its GUIFrame parent
 	 * 
 	 * @param parent the GUIFrame of the program.
@@ -49,11 +52,13 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		
 		unameField = new JTextField(10);
 		pwField = new JTextField(10);
+		courseField = new JTextField(10);
 		
 		//Create an array of the text and components to be displayed.
 		String msgString1 = "Username: ";
 		String msgString2 = "Password: ";
-		Object[] array = {msgString1, unameField, msgString2, pwField};
+		String msgString3 = "My Courses: (seperated by comma)";
+		Object[] array = {msgString1, unameField, msgString2, pwField, msgString3, courseField};
 
 		//Create an array specifying the number of dialog buttons
 		//and their text.

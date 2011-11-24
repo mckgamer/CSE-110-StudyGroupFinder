@@ -33,7 +33,7 @@ public class StatusDialog extends JDialog implements ActionListener {
 		this.parent = parent;
 		this.status = status;
 		setTitle("Result");
-		setSize(250,150);
+		setSize(350,150);
 		setLocationRelativeTo(null);
 		String message;
 		

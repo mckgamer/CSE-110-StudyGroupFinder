@@ -47,8 +47,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 		description = new JLabel("<html>We like to study " + gd.getCourse() +". We are a really cool group and we<br> hope you join us.</html>");
 		description.setFont(new Font("Dialog", Font.PLAIN, 12));
 		
-        setLayout(new GridLayout(4,1));
-        //add(new JLabel("1"));
+        setLayout(new GridLayout(4,1,0,6));
         
         JPanel namePan = new JPanel();
         namePan.setLayout(new GridLayout(1,2));
@@ -89,11 +88,10 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
-        meetControlPanel.setLayout(new GridLayout(1,2));
-        meetControlPanel.add(new JLabel("ModButtons here?"));
+        meetControlPanel.setLayout(new GridLayout(1,1));
         
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(0,1,5,4));
+        buttons.setLayout(new GridLayout(0,2,5,4));
         
         if (parent.getSGS().getLoggedUser().isModOf(gd.getId()) || parent.getSGS().getUserStatus() == Logged.ADMIN) {
          //TODO Moderator buttons here

@@ -34,6 +34,9 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 	/** The JTextField for the password */
 	JTextField pwField;
 	
+	/** The JTextField for the courses*/
+	JTextField courseField;
+	
 	/** Since this is an update, this is the UserData as it was originally for prepopulating. */
 	UserData prepop;
 	
@@ -56,15 +59,18 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		
 		unameField = new JTextField(10);
 		pwField = new JTextField(10);
+		courseField = new JTextField(10);
 
 		prepop = parent.getSGS().getUser(user);
 		unameField.setText(prepop.getUName());
 		pwField.setText(prepop.getPW());
+		//TODO courseField.setText(prepop.getCourses());
 		
 		//Create an array of the text and components to be displayed.
 		String msgString1 = "Username: ";
 		String msgString2 = "Password: ";
-		Object[] array = {msgString1, unameField, msgString2, pwField};
+		String msgString3 = "My Courses: (seperated by comma)";
+		Object[] array = {msgString1, unameField, msgString2, pwField, msgString3, courseField};
 
 		//Create an array specifying the number of dialog buttons
 		//and their text.
@@ -98,7 +104,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		if ("submit".equals(e.getActionCommand())) { //TODO this needs to update the User object for the session
 			event.setData(new UserData(prepop.getId(),unameField.getText(),pwField.getText(), StringParser.unParseArray(prepop.getModOf()),StringParser.unParseArray(prepop.getUserOf())));
 			event.validate();
-			event.execute();
+			event.execute(); //TODO ADD courses also
 			Status result = event.getStatus();
 			if (result.getStatus() == StatusType.SUCCESS) {
 				System.out.println("Worked");
