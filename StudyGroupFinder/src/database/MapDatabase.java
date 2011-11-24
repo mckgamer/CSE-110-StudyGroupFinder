@@ -262,4 +262,34 @@ public class MapDatabase implements Database {
 		return tempStatus;
 	}
 
+	@Override
+	public Status setMembershipUser(int userid, int groupid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status setMembershipMod(int userid, int groupid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status setMembershipNone(int userid, int groupid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<UserData> searchUsers(SearchData criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<GroupData> searchGroups(SearchData criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

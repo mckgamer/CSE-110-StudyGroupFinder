@@ -171,8 +171,11 @@ public class MySqlDatabaseHelper {
 				  "`id` INT NOT NULL AUTO_INCREMENT ," +
 				  "`name` VARCHAR(45) NOT NULL ," +
 				  "`password` VARCHAR(45) NOT NULL ," +
+				  "`courses` VARCHAR(255) NULL ," +
+				  "`last_login` DATETIME NULL ," +
 				  "PRIMARY KEY (`id`) ," +
-				  "UNIQUE INDEX `id_UNIQUE` (`id` ASC) );"
+				  "UNIQUE INDEX `id_UNIQUE` (`id` ASC) ), " +
+				  "UNIQUE INDEX `name_UNIQUE` (`name` ASC) );"
 				  );
 		
 		print("Creating group table");

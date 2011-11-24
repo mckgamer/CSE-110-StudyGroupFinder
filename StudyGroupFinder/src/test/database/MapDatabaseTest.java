@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import database.MySqlDatabase.InvalidDatabaseID;
 import domainlogic.Status;
 import domainlogic.StatusType;
 import domainlogic.User;
@@ -38,7 +39,7 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 	}
 
 	@Test
-	public void testGetGroup() {
+	public void testGetGroup() throws InvalidDatabaseID {
 		GroupData gd = database.getGroup(1);
 		ArrayList<Integer> arl = new ArrayList<Integer>();
 		arl.add(1);
@@ -128,9 +129,8 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 	}
 	
 	@Test
-	public void joinGroup(){
-		Status tempStatus = new Status();
-		tempStatus = database.addUserToGroup(2, 1);
+	public void joinGroup() throws InvalidDatabaseID{
+		database.setMembershipUser(2, 1);
 		GroupData tempGD = database.getGroup(1);
 		ArrayList<Integer> intArrList = new ArrayList<Integer>();
 		intArrList = tempGD.getUsers();
@@ -138,17 +138,59 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 	}
 	
 	@Test
-	public void deleteGroup(){
+	public void deleteGroup() throws InvalidDatabaseID{
 		
 		database.deleteGroup(1);
 		GroupData tempGroup = database.getGroup(2);
 		System.out.println(tempGroup.getName());
-		UserData tempUserData = database.getUserData(1);	
+		database.getUser(1);	
 		//Add Group  then delete it
 		GroupData newGroup = new GroupData(1,"HEYBOB", "CES 110","1~", "1~");
 		database.addGroup(newGroup);
 		
 		
+		
+	}
+
+	@Override
+	public void testDeleteUser() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Void testDeleteGroup() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void testGetUser() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void testUpdateGroup() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void testSetMembershipUser() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void testSetMembershipMod() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void testSetMembershipNone() {
+		// TODO Auto-generated method stub
 		
 	}
 }
