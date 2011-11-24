@@ -33,7 +33,7 @@ public class MySqlDatabase implements Database {
     private MySqlDatabaseHelper dbh;
     
     /* Exception */
-    class InvalidDatabaseID extends Exception {
+    public class InvalidDatabaseID extends Exception {
 		private static final long serialVersionUID = 1L;
 		InvalidDatabaseID() {}
     	InvalidDatabaseID(String msg) {super(msg);}    	

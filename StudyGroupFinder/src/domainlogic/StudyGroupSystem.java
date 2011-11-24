@@ -6,6 +6,7 @@ import java.util.Vector;
 import database.Database;
 import database.GroupData;
 import database.MapDatabase;
+import database.MySqlDatabase.InvalidDatabaseID;
 import database.SearchData;
 import database.UserData;
 import domainlogic.User;
@@ -102,7 +103,12 @@ public class StudyGroupSystem {
 	 * 
 	 */
 	public void refreshLoggedUser() {
-		sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
+		try {
+			sgfUser.setUserData(database.getUser(sgfUser.getUserData().getId()));
+		} catch (InvalidDatabaseID e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/** Updates User Profile
@@ -148,7 +154,13 @@ public class StudyGroupSystem {
 	 * @return UserData Object
 	 */
 	public UserData getUser(int id){
-		return database.getUser(id);
+		try {
+			return database.getUser(id);
+		} catch (InvalidDatabaseID e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new UserData();
+		}
 	}
 	
 	/** Create a new group
@@ -171,8 +183,13 @@ public class StudyGroupSystem {
 	 * @return GroupData Object
 	 */
 	public GroupData getGroup(int id){
-		GroupData tempData = database.getGroup(id);
-		return tempData;
+		try {
+			return database.getGroup(id);
+		} catch (InvalidDatabaseID e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new GroupData();
+		}
 	}
 	
 	/** Update GroupData

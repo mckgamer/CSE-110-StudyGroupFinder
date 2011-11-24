@@ -22,7 +22,7 @@ public class GroupData implements Data {
 	/** 
 	 * Empty constructor
 	 */
-	GroupData() {}
+	public GroupData() {}
 	
 	/** Constructs a GroupData object using all it needs
 	 * 
