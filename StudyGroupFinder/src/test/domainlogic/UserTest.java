@@ -15,7 +15,7 @@ public class UserTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		user = new User(Logged.USER, new UserData(1,"Mike", "pw", "1~2~3~", "4~5~6~"));
+		user = new User(Logged.USER, new UserData(1,"Mike", "pw", "1~2~3~", "4~5~6~",""));
 	}
 	
 	@Test

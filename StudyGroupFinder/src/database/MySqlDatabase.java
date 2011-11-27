@@ -91,7 +91,7 @@ public class MySqlDatabase implements Database {
 		db.dbh.printUsers();
 		
 		print("--Creating new user: bob, a member of group 1");
-		UserData bob = new UserData(0, "bob", "pw", "", "");
+		UserData bob = new UserData(0, "bob", "pw", "", "","");
 		bob.courses = "cse110, bio2";
 		st = db.addUser(bob);
 		int bob_id = 2;
@@ -131,7 +131,7 @@ public class MySqlDatabase implements Database {
 		db.dbh.printMemberships();
 		
 		print("--Searching users for mich");
-		db.addUser(new UserData(0, "michelle", "password", "", ""));
+		db.addUser(new UserData(0, "michelle", "password", "", "",""));
 		SearchData sd = new SearchData("mich");
 		sd.setResultData(db.searchUsers(sd));
 		print(sd.toString());

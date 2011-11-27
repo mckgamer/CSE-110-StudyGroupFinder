@@ -91,7 +91,7 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("submit".equals(e.getActionCommand())) { //TODO this needs to update the User object for the session
-			event.setData(new UserData(0,unameField.getText(),pwField.getText(), "~", "~"));
+			event.setData(new UserData(0,unameField.getText(),pwField.getText(), "~", "~",courseField.getText()));
 			event.validate();
 			event.execute();
 			Status result = event.getStatus();

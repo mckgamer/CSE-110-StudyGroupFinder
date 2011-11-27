@@ -116,7 +116,7 @@ public class MapDatabaseTest extends AbstractDatabaseTest {
 		User temp = database.login("Bob", "pw");
 		assertTrue(temp.getStatus() == Logged.USER);
 		//Alter User Data & Update Database
-		UserData tempUserData= new UserData(2,"Roberto", "heybob", "~", "~");
+		UserData tempUserData= new UserData(2,"Roberto", "heybob", "~", "~","");
 		Status newStatus = database.updateUser(tempUserData);
 		assertTrue(newStatus.getStatus() == StatusType.SUCCESS);
 		// Check if database has been updated by logging in

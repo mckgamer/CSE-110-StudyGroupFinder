@@ -1,4 +1,4 @@
-+package domainlogic;
+package domainlogic;
 
 import database.Data;
 import database.GroupData;

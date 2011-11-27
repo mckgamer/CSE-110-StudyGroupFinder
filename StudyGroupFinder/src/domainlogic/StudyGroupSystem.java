@@ -241,6 +241,26 @@ public class StudyGroupSystem {
 		
 	}
 	
+	/** Make a user a mod of a group.
+	 * @param userID the Id of the user.
+	 * @param groupID the id of the group.
+	 * @return Status object that holds information on what happened.
+	 */
+	public Status makeModerator(int userID, int groupID) {
+		Status tempStatus = database.setMembershipMod(userID, groupID);
+		return tempStatus;
+	}
+	
+	/** Make a mod a user of a group.
+	 * @param userID the Id of the user.
+	 * @param groupID the id of the group.
+	 * @return Status object that holds information on what happened.
+	 */
+	public Status removeModerator(int userID, int groupID) {
+		Status tempStatus = database.setMembershipUser(userID, groupID);
+		return tempStatus;
+	}
+	
 	/** This method searches for groups in the database with the specified search data.
 	 * 
 	 * @param search the SearchData to use to search with.

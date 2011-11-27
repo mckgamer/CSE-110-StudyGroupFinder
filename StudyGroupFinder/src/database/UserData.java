@@ -40,12 +40,13 @@ public class UserData implements Data {
 	 * @param password the password of the user.
 	 * @param mod a String of group IDs separated by ~, (i.e. 1~4~9~  Make sure it ends in ~).
 	 */
-	public UserData(int id, String name, String password, String mod, String user) {   // I think we will need to have user id generated instead of having it as a parameter. -Bob F 10/22
+	public UserData(int id, String name, String password, String mod, String user, String courses) {   // I think we will need to have user id generated instead of having it as a parameter. -Bob F 10/22
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		modof = StringParser.parseString(mod);
 		userof = StringParser.parseString(user);
+		this.courses = courses;
 	}
 	
 	/** Constructor using ArraList for memberships
