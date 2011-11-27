@@ -78,6 +78,14 @@ public interface Database {
 	 */
 	public Status updateUser(UserData ud);
 	
+	/** Delete a user from the database
+	 * Precondition: The user id is an integer
+	 * Postcondition: The user associated with the id no longer exists
+	 * @param id the ID of the user to delete
+	 * @return {@link Status} object that holds information on delete success 
+	 */
+	public Status deleteUser(int id);
+
 	/** Deletes a Group
 	 * Preconditions: groupID is an integer
 	 * Postconditions: Deletes the group associated with groupID

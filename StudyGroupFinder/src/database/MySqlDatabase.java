@@ -132,6 +132,7 @@ public class MySqlDatabase implements Database {
 		
 		print("--Searching users for mich");
 		db.addUser(new UserData(0, "michelle", "password", "", "",""));
+		int michelle_id = 3;
 		SearchData sd = new SearchData("mich");
 		sd.setResultData(db.searchUsers(sd));
 		print(sd.toString());
@@ -145,6 +146,14 @@ public class MySqlDatabase implements Database {
 		sd.setTerms(mikeData.courses);
 		sd.setResultData(db.searchGroups(sd));
 		print(sd.toString());
+		
+		print("--Deleting user michelle");
+		st = db.deleteUser(michelle_id);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());		
+		
+		print("--Deleting group 2");
+		st = db.deleteGroup(2);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());		
 		
 		print("--Displaying final state of database");
 		db.dbh.printDatabase();
@@ -622,7 +631,19 @@ public class MySqlDatabase implements Database {
 		return st;
 	}	
 	
+	@Override
+	public Status deleteUser(int user_id) {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
+		/** Delete user **/
+		dbh.sqlExecute("DELETE users.* FROM users " +
+				  "WHERE (id=" + user_id + ");");
 
+		st.setStatus(StatusType.SUCCESS);
+		return st;		
+	}
+	
+	
 	/**
 	 * @see database.Database#deleteGroup(int)
 	 */
