@@ -80,16 +80,19 @@ public class MySqlDatabaseHelper {
 	/** 
 	 * Execute a non-query command in the SQL database
 	 * @param sqlCommand - a {@link String} properly formatted SQL query
+	 * @return int - result code returned by SQL engine, typically number of rows affected
 	 */
-	public void sqlExecute(String sqlCommand){
+	public int sqlExecute(String sqlCommand){
+		int sqlResult = -1;
 		try {
 			Statement statement = mySQLConnection.createStatement();
-		    statement.executeUpdate(sqlCommand);
+			sqlResult = statement.executeUpdate(sqlCommand);
 		    statement.close();
 		} catch (SQLException e) {
 			print("Error in sqlUpdate, sqlCommand=" + sqlCommand);
 			e.printStackTrace();
 		}
+		return sqlResult;
 	}
 
 	/** 
@@ -224,14 +227,19 @@ public class MySqlDatabaseHelper {
 	public void populateDatabase() {
 			
 		/** Add data for a user, group and membership **/
-		print("Adding user");
-		sqlExecute("INSERT INTO `users` (`name`, `password`, `courses`) VALUES ('mike', 'pw', 'cse110');");
+		print("Adding users");
+		sqlExecute("INSERT INTO `users` (`name`, `password`, `courses`) " +
+				"VALUES ('mike', 'pw', 'cse110');");
+		sqlExecute("INSERT INTO `users` (`name`, `password`, `last_login`) " +
+				"VALUES ('inactive', 'pw', '2001-01-01');");
 		print("Adding admin");
 		sqlExecute("INSERT INTO `users` (`name`, `password`, `is_admin`) VALUES ('admin', 'pw', TRUE);");
 		print("Adding group");
 		sqlExecute("INSERT INTO `groups` (`name`, `course`) VALUES ('group1', 'cse110');");
 		print("Adding membership");
 		sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) VALUES ('1', '1', TRUE);");
+		sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) VALUES ('2', '1', FALSE);");
+		sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) VALUES ('3', '1', FALSE);");
 	}	
 	
 	/**

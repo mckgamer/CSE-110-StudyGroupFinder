@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.mysql.jdbc.CommunicationsException;
 
@@ -98,7 +99,7 @@ public class MySqlDatabase implements Database {
 		UserData bob = new UserData(0, "bob", "pw", "", "","");
 		bob.courses = "cse110, bio2";
 		st = db.addUser(bob);
-		int bob_id = 3;
+		int bob_id = 4;
 		db.setMembershipUser(bob_id, 1);
 		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
@@ -136,7 +137,7 @@ public class MySqlDatabase implements Database {
 		
 		print("--Searching users for mich");
 		db.addUser(new UserData(0, "michelle", "password", "", "",""));
-		int michelle_id = 4;
+		int michelle_id = 5;
 		SearchData sd = new SearchData("mich");
 		sd.setResultData(db.searchUsers(sd));
 		print(sd.toString());
@@ -157,7 +158,17 @@ public class MySqlDatabase implements Database {
 		
 		print("--Deleting group 2");
 		st = db.deleteGroup(2);
-		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());		
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());	
+		
+		print("--Checking for inactive users");
+		// TODO fix date constructor
+		java.util.Date d = new java.util.Date("1/1/2009");
+		int inactiveCount = db.deleteInactiveUsersCount(d);
+		print("Inactive users: " + inactiveCount);
+		
+		print("--Deleting inactive users");
+		st = db.deleteInactiveUsers(d);
+		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());	
 		
 		print("--Displaying final state of database");
 		db.dbh.printDatabase();
@@ -645,14 +656,95 @@ public class MySqlDatabase implements Database {
 	public Status deleteUser(int user_id) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 		
+		/** Delete memberships **/
+		dbh.sqlExecute("DELETE memberships.* FROM memberships " +
+				  "WHERE (user_id=" + user_id + ");");
+
 		/** Delete user **/
 		dbh.sqlExecute("DELETE users.* FROM users " +
 				  "WHERE (id=" + user_id + ");");
 
 		st.setStatus(StatusType.SUCCESS);
-		st.setMessage("User deleted successfully");
+		st.setMessage("User and associated memberships deleted successfully");
 		return st;		
 	}
+	
+	/**
+	 * Delete inactive users from database
+	 * <p>Selects users with a last_login date older than the specified data parameter
+	 * or whose last_login is NULL. Also deletes associated memberships.</p>
+	 * @param d - the login cutoff {@link Date} before which users are considered inactive
+	 * @return {@link Status} indicating whether delete was successful
+	 * @see {@link #deleteInactiveUsersCount}, {@link #deleteInactiveGroups}
+	 */
+	public Status deleteInactiveUsers(Date d) {
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		java.sql.Date sqlDate = new java.sql.Date(d.getTime()); 
+		
+		// TODO: Don't delete users that are sole moderator of groups
+		
+		/* Delete memberships */
+		dbh.sqlExecute("DELETE memberships.* " + 	 
+				"FROM memberships " + 
+				"JOIN users  " +
+				"ON memberships.user_id=users.id " +
+				"WHERE last_login < '" + sqlDate + "' " + 
+				"OR last_login IS NULL;");
+		
+		/* Delete users */
+		int rowCount = dbh.sqlExecute("DELETE users.* FROM users " +
+				"WHERE last_login < '" + sqlDate + "' " + 
+				"OR last_login IS NULL;");
+		
+		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("" + rowCount + " users and their associated memberships deleted successfully");
+		return st;		
+	}
+	
+	/**
+	 * Count the number of inactive users in the database
+	 * <p>Selects users with a last_login date older than the specified data parameter
+	 * or whose last_login is NULL. Also deletes associated memberships.</p>
+	 * @param d - the login cutoff {@link Date} before which users are considered inactive
+	 * @return int indicating number of users that are inactive
+	 * @see {@link #deleteInactiveUsers}
+	 */
+	public int deleteInactiveUsersCount(Date d) {
+		int userCount = 0;
+		java.sql.Date sqlDate = new java.sql.Date(d.getTime()); 
+		ResultSet res = dbh.sqlQuery("SELECT COUNT(`id`) as 'user_count' " +
+				"FROM `users` WHERE last_login < '" + sqlDate + "' " + 
+				"OR last_login IS NULL;");
+		try {
+			if (res.next())
+				userCount = res.getInt("user_count");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userCount;
+	}
+	
+	/**
+	 * Delete groups that do not have any users
+	 * <strong>Not yet implemented</strong>
+	 * <p>Selects users with a last_login date older than the specified data parameter
+	 * or whose last_login is NULL. Also deletes associated memberships.</p>
+	 * @return {@link Status} indicating whether delete was successful
+	 * @see {@link #deleteInactiveUsers}
+	 */
+	public Status deleteInactiveGroups() {
+		// TODO
+		Status st = new Status(StatusType.UNSUCCESSFUL);
+		
+		/* Delete users */
+//		int rowCount = dbh.sqlExecute("DELETE groups.* FROM groups " +
+//				"WHERE ...");
+//		
+//		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("Not yet implemented");
+		return st;		
+	}
+
 	
 	
 	/**
