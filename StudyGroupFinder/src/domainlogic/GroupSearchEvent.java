@@ -52,6 +52,8 @@ public class GroupSearchEvent implements Event {
 		search = (SearchData) data;
 	}
 	
+	/** Removes the groups that the logged in user is currently a mod or user of.
+	 */
 	public void removeCurrent() {
 		search.removeResults(system.getLoggedUser().getUserOf());
 		search.removeResults(system.getLoggedUser().getModOf());

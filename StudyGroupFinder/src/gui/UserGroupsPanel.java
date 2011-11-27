@@ -54,6 +54,7 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 			search.removeCurrent();
 		} else {
 			search.setData(oldsearch);
+			search.removeCurrent();
 		}
 		
 		setLayout(new GridBagLayout());

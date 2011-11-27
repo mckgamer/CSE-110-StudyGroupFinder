@@ -37,7 +37,12 @@ public class DeModEvent implements Event {
 	@Override
 	public void validate() {
 		if (usergroup.validate()) {
-			status.setStatus(StatusType.VALID);
+			if (usergroup.getId() != system.getLoggedUser().getId()) {
+				status.setStatus(StatusType.VALID);
+			} else {
+				status.setStatus(StatusType.INVALID);
+				status.setMessage("You cannot remove your moderator privileges this way!");
+			}
 		} else {
 			status.setStatus(StatusType.INVALID);
 		}

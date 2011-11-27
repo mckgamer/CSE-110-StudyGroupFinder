@@ -498,6 +498,7 @@ public class MySqlDatabase implements Database {
 	public Status setMembershipUser(int user_id, int group_id) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 		
+		setMembershipNone(user_id, group_id);
 		dbh.sqlExecute("INSERT INTO `memberships` (`user_id`, `group_id`, `is_mod`) " +
 				  "VALUES ('" + user_id + "', '" + group_id + "', FALSE);");
 

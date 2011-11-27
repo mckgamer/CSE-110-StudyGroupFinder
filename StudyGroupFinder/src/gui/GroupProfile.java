@@ -21,6 +21,8 @@ import domainlogic.DeModEvent;
 import domainlogic.DeleteGroupEvent;
 import domainlogic.MakeModeratorEvent;
 import domainlogic.RemoveUserFromGroupEvent;
+import domainlogic.Status;
+import domainlogic.StatusType;
 import domainlogic.User.Logged;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */
@@ -113,7 +115,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
             edit.addActionListener(this);
             buttons.add(edit);
             if (parent.getSGS().getUserStatus() != Logged.ADMIN) {
-	            JButton resign = new JButton("Resign");
+	            JButton resign = new JButton("Leave");
 	            resign.setEnabled(false);
 	            resign.setActionCommand("resign");
 	            resign.addActionListener(this);
@@ -173,6 +175,8 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 				RemoveUserFromGroupEvent rufg = new RemoveUserFromGroupEvent(parent.getSGS(), userList.getSelectedData().getId(),gd.getId());//TODO what userid? is this
 				rufg.validate();
 				rufg.execute();
+				StatusDialog sd = new StatusDialog(rufg.getStatus(), parent);
+				sd.setVisible(true);
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
 			}
 		} else if ("makemod".equals(e.getActionCommand())) {
@@ -182,6 +186,8 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 				mme.setData(new GroupUserData(userList.getSelectedData().getId(),gd.getId()));
 				mme.validate();
 				mme.execute();
+				StatusDialog sd = new StatusDialog(mme.getStatus(), parent);
+				sd.setVisible(true);
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
 			}
 		} else if ("demod".equals(e.getActionCommand())) {
@@ -191,6 +197,8 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 				dme.setData(new GroupUserData(userList.getSelectedData().getId(),gd.getId()));
 				dme.validate();
 				dme.execute();
+				StatusDialog sd = new StatusDialog(dme.getStatus(), parent);
+				sd.setVisible(true);
 				parent.getGUI().setRight(new GroupProfile(parent, parent.getSGS().getGroup(gd.getId()))); //TODO is this efficient enough? Maybe hack it till next time loaded?
 			}
 		} else if ("delete".equals(e.getActionCommand())) {
@@ -199,6 +207,8 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			dg.setData(gd);
 			dg.validate();
 			dg.execute();
+			StatusDialog sd = new StatusDialog(dg.getStatus(), parent);
+			sd.setVisible(true);
 			parent.getSGS().refreshLoggedUser();
 			parent.getGUI().setRight(new JPanel());
 			parent.getGUI().refreshLeft();

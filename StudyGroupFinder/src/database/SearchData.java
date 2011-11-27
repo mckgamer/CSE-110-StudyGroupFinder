@@ -73,6 +73,10 @@ public class SearchData implements Data {
 		return resultIds;
 	}
 	
+	/** Is able to remove specified results from the result vector.
+	 * 
+	 * @param remove the ArrayList of integers of the results to remove.
+	 */
 	public void removeResults(ArrayList<Integer> remove) {
 		for (Integer i:remove) {
 			resultIds.remove(i);
