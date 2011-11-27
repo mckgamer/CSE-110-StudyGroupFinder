@@ -19,8 +19,10 @@ public class UserData implements Data {
 	public String name;
 	/** The login password of the user **/
 	public String password;
+	/** Boolean indicating if user has admin flag in database **/
+	public Boolean is_admin = false;
 	/** A comma delimited string of courses the user is interested in **/
-	public String courses;
+	public String courses = "";
 	/** The date of the last login, updated by database.login() method **/
 	public Date last_login;
 	/** ArrayList of group ids that the user is a moderator of **/
@@ -179,6 +181,20 @@ public class UserData implements Data {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the is_admin
+	 */
+	public Boolean getIs_admin() {
+		return is_admin;
+	}
+
+	/**
+	 * @param is_admin the is_admin to set
+	 */
+	public void setIs_admin(Boolean is_admin) {
+		this.is_admin = is_admin;
 	}
 
 }

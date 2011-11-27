@@ -171,6 +171,7 @@ public class MySqlDatabaseHelper {
 				  "`id` INT NOT NULL AUTO_INCREMENT ," +
 				  "`name` VARCHAR(45) NOT NULL ," +
 				  "`password` VARCHAR(45) NOT NULL ," +
+				  "`is_admin` BINARY NULL ," +
 				  "`last_login` DATETIME NULL ," +
 				  "`courses` VARCHAR(255) NULL ," +
 				  "PRIMARY KEY (`id`) ," +
@@ -225,6 +226,8 @@ public class MySqlDatabaseHelper {
 		/** Add data for a user, group and membership **/
 		print("Adding user");
 		sqlExecute("INSERT INTO `users` (`name`, `password`, `courses`) VALUES ('mike', 'pw', 'cse110');");
+		print("Adding admin");
+		sqlExecute("INSERT INTO `users` (`name`, `password`, `is_admin`) VALUES ('admin', 'pw', TRUE);");
 		print("Adding group");
 		sqlExecute("INSERT INTO `groups` (`name`, `course`) VALUES ('group1', 'cse110');");
 		print("Adding membership");

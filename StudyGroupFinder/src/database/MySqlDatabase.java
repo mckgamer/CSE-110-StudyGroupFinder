@@ -70,7 +70,11 @@ public class MySqlDatabase implements Database {
 		db.dbh.buildDatabase();
 		db.dbh.populateDatabase();
 		
-		print("--Logging in");
+		print("--Logging in as admin");
+		User admin = db.login("admin", "pw");
+		print("Log in status: " + admin.getStatus());
+		
+		print("--Logging in as user mike");
 		User mike = db.login("mike", "pw");
 		int mike_id = mike.getUserData().getId();
 		print("Log in status: " + mike.getStatus());
@@ -94,7 +98,7 @@ public class MySqlDatabase implements Database {
 		UserData bob = new UserData(0, "bob", "pw", "", "","");
 		bob.courses = "cse110, bio2";
 		st = db.addUser(bob);
-		int bob_id = 2;
+		int bob_id = 3;
 		db.setMembershipUser(bob_id, 1);
 		print("Status: " + st.getStatus() + " - Message: " + st.getMessage());
 		db.dbh.printUsers();
@@ -132,7 +136,7 @@ public class MySqlDatabase implements Database {
 		
 		print("--Searching users for mich");
 		db.addUser(new UserData(0, "michelle", "password", "", "",""));
-		int michelle_id = 3;
+		int michelle_id = 4;
 		SearchData sd = new SearchData("mich");
 		sd.setResultData(db.searchUsers(sd));
 		print(sd.toString());
@@ -257,8 +261,12 @@ public class MySqlDatabase implements Database {
 		/* Get user data */
 		try {
 			if (res.next()) {
-				user.setUserData(rowToUserData(res));
-				user.setStatus(Logged.USER);		
+				UserData ud = rowToUserData(res);
+				user.setUserData(ud);
+				if (ud.is_admin)
+					user.setStatus(Logged.ADMIN);
+				else
+					user.setStatus(Logged.USER);
 				
 				/* Update login time */
 				java.sql.Date now_time = new java.sql.Date(new java.util.Date().getTime());
@@ -317,6 +325,7 @@ public class MySqlDatabase implements Database {
 			ud.name = res.getString("name");
 			ud.password = res.getString("password");
 			ud.courses = res.getString("courses");
+			ud.is_admin = res.getBoolean("is_admin");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -467,6 +476,7 @@ public class MySqlDatabase implements Database {
 				res.updateString("name", ud.name);
 				res.updateString("password", ud.password);
 				res.updateString("courses", ud.courses);
+				res.updateBoolean("is_admin", ud.is_admin);
 				res.updateRow();
 			}
 			
@@ -640,6 +650,7 @@ public class MySqlDatabase implements Database {
 				  "WHERE (id=" + user_id + ");");
 
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("User deleted successfully");
 		return st;		
 	}
 	
@@ -660,6 +671,7 @@ public class MySqlDatabase implements Database {
 				  "WHERE (id=" + groupID + ");");
 
 		st.setStatus(StatusType.SUCCESS);
+		st.setMessage("Group and related memberships deleted successfully");
 		return st;
 	}
 	
