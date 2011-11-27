@@ -8,7 +8,6 @@ import javax.swing.JPanel;
  *  everything that an admin can do.
  * 
  * @author Michael Kirby
- *
  */
 public class AdminGUI extends JPanel implements GUIPanel {
 

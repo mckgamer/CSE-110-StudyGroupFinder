@@ -21,8 +21,6 @@ import domainlogic.DeModEvent;
 import domainlogic.DeleteGroupEvent;
 import domainlogic.MakeModeratorEvent;
 import domainlogic.RemoveUserFromGroupEvent;
-import domainlogic.Status;
-import domainlogic.StatusType;
 import domainlogic.User.Logged;
 
 /** GroupProfile is a JPanel that is able to display a study groups data using a {@link GroupData} object. */

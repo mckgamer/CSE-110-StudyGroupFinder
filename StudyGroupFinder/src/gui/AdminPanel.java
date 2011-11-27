@@ -26,7 +26,7 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 	/** The GUIFrame of the program */
 	GUIFrame parent;
 	
-	/** This GroupList displays the all groups. */
+	/** This GroupList displays all groups. */
 	GroupList groups;
 	
 	/** This UserList displays all users. */
@@ -44,21 +44,31 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 	/** The UserSearchEvent used for the UserList */
 	UserSearchEvent usersearch;
 	
-	
+	/** Constructs this AdminPanel.
+	 * @param parent the {@link GUIFrame} parent of this AdmninPanel.
+	 * @param gsearch the SearchData of a group search to construct this with.
+	 * @param usearch the SearchData of a user search to construct this with.
+	 */
 	public AdminPanel(GUIFrame parent, SearchData gsearch, SearchData usearch) {
 		this.parent = parent;
 		
 		groupsearch = new GroupSearchEvent(parent.getSGS());
 		if (gsearch == null) {
 			gsearch = new SearchData();
+			groupsearch.setData(gsearch);
+			groupsearch.execute();
+		} else {
+			groupsearch.setData(gsearch);
 		}
-		groupsearch.setData(gsearch);
 		
 		usersearch = new UserSearchEvent(parent.getSGS());
 		if (usearch == null) {
 			usearch = new SearchData();
+			usersearch.setData(usearch);
+			usersearch.execute();
+		} else {
+			usersearch.setData(usearch);
 		}
-		usersearch.setData(usearch);
 		
 		//Update the search event if it has yet to be executed
 		if (((SearchData)groupsearch.getData()).getResults() == null) {

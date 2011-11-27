@@ -27,7 +27,7 @@ public class GUIFrame extends JFrame {
 	 */
 	public GUIFrame(StudyGroupSystem sgs) {
 		this.sgs = sgs;
-		setTitle("Study Group Finder 0.7");
+		setTitle("Study Group Finder 0.85");
         setMinimumSize(new Dimension(740,500));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

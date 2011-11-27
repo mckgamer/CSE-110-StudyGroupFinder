@@ -26,7 +26,7 @@ public class AboutSGFDialog extends JDialog implements ActionListener {
 		setTitle("About Study Group Finder");
 		setSize(400,350);
 		setLocationRelativeTo(null);
-		String message = "<html><h2>Study Group Finder</h2><b>Version 0.7</b><br/><br/>Developed by:<ul><li>Michael Kirby</li><li>Bob Filiczkowski</li><li>Mike Claffey</li><li>Robert Jang</li></ul><p>Developed for UCSD's CSE 110 class of Fall 2011 taught by Professor William Howden.</p><br/>&copy; 2011 - All Rights Reserved</html>";
+		String message = "<html><h2>Study Group Finder</h2><b>Version 0.85</b><br/><br/>Developed by:<ul><li>Michael Kirby</li><li>Bob Filiczkowski</li><li>Mike Claffey</li><li>Robert Jang</li></ul><p>Developed for UCSD's CSE 110 class of Fall 2011 taught by Professor William Howden.</p><br/>&copy; 2011 - All Rights Reserved</html>";
 		
 		
 		//Create the JOptionPane.

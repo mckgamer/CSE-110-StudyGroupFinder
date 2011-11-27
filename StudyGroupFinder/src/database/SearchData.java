@@ -21,8 +21,12 @@ public class SearchData implements Data {
 	/** The data objects found from search execution */
 	private ArrayList<? extends Data> resultData = new ArrayList<Data>();
 
-	/* Constructors */
-	public SearchData() {}
+	/** Default constructor. */
+	public SearchData() { terms = null; privateterms = null;}
+	
+	/** Construct with terms.
+	 * @param terms the terms to use.
+	 */
 	SearchData(String terms) {this.terms = terms;}
 	
 	@Override
@@ -48,21 +52,30 @@ public class SearchData implements Data {
 	 * @return the terms searched for.
 	 */
 	public String getAllTerms() {
-		return terms + ", " + privateterms;
+		if (terms != null && !terms.isEmpty()) {
+			if (privateterms != null && !privateterms.isEmpty()) {
+				return terms + ", " + privateterms;
+			} else {
+				return terms;
+			}
+		} else {
+			return privateterms;
+		}
+
 	}
 	
 	/** Sets the terms string.
+	 * @param terms the string to set terms to.
 	 */
-	public SearchData setTerms(String terms) {
+	public void setTerms(String terms) {
 		this.terms = terms;
-		return this;
 	}
 	
 	/** Sets the private terms string.
+	 * @param terms the string to set private terms to.
 	 */
-	public SearchData setPrivateTerms(String terms) {
+	public void setPrivateTerms(String terms) {
 		this.privateterms = terms;
-		return this;
 	}
 	
 	/** Returns the result vector.
