@@ -285,8 +285,9 @@ public class StudyGroupSystem {
 	 * @return the filter string.
 	 */
 	public String getSuggestedTerms() {
-		//TODO getLoggedUser().getCourses() this should just add some terms that the user applys to
-		return "cse";
+		String temp = getLoggedUser().getCourses();
+		
+		return temp;
 	}
 	
 	/** This method returns the Logged status of the currently logged in user.

@@ -51,5 +51,10 @@ public class GroupSearchEvent implements Event {
 	public void setData(Data data) {
 		search = (SearchData) data;
 	}
+	
+	public void removeCurrent() {
+		search.removeResults(system.getLoggedUser().getUserOf());
+		search.removeResults(system.getLoggedUser().getModOf());
+	}
 
 }

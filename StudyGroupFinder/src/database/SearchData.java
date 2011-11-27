@@ -43,6 +43,14 @@ public class SearchData implements Data {
 		return terms;
 	}
 	
+	/** Returns the terms string with the private terms string.
+	 * 
+	 * @return the terms searched for.
+	 */
+	public String getAllTerms() {
+		return terms + ", " + privateterms;
+	}
+	
 	/** Sets the terms string.
 	 */
 	public SearchData setTerms(String terms) {
@@ -64,6 +72,13 @@ public class SearchData implements Data {
 	public Vector<Integer> getResults() {
 		return resultIds;
 	}
+	
+	public void removeResults(ArrayList<Integer> remove) {
+		for (Integer i:remove) {
+			resultIds.remove(i);
+		}
+	}
+	
 	/**
 	 * Sets the results results
 	 * @param results - and {@link Vector} of int object ids
@@ -110,7 +125,7 @@ public class SearchData implements Data {
 	 */
 	public String getSql(String fieldname) {
 		String sql = "";
-		String terms = getTerms();
+		String terms = getAllTerms();
 		
 		/* Return empty result if terms is empty/null terms,  */
 		if (terms == null || terms.isEmpty())
@@ -121,7 +136,7 @@ public class SearchData implements Data {
 			throw new RuntimeException();
 				
 		/* Address each term */
-		StringTokenizer st = new StringTokenizer(getTerms(), ",");
+		StringTokenizer st = new StringTokenizer(getAllTerms(), ",");
 		while (st.hasMoreTokens()) {
 			if (! sql.isEmpty()) sql = sql + " OR "; 
 			sql = sql + "`" + fieldname + "` like '%" + st.nextToken().trim() + "%'";

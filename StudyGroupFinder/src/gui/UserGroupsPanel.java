@@ -49,8 +49,12 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 		if (oldsearch == null) {
 			oldsearch = new SearchData();
 			oldsearch.setPrivateTerms(parent.getSGS().getSuggestedTerms());
+			search.setData(oldsearch);
+			search.execute();
+			search.removeCurrent();
+		} else {
+			search.setData(oldsearch);
 		}
-		search.setData(oldsearch);
 		
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -125,6 +129,7 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 		if ("filter".equals(e.getActionCommand())) {
 			((SearchData)search.getData()).setTerms(filtsg.getText());
 			search.execute();
+			search.removeCurrent();
 			parent.getGUI().refreshLeft();
 		}
 	}

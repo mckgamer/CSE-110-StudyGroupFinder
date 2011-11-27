@@ -64,7 +64,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		prepop = parent.getSGS().getUser(user);
 		unameField.setText(prepop.getUName());
 		pwField.setText(prepop.getPW());
-		//TODO courseField.setText(prepop.getCourses());
+		courseField.setText(prepop.getCourses());
 		
 		//Create an array of the text and components to be displayed.
 		String msgString1 = "Username: ";
