@@ -28,9 +28,30 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 		
 		//Create the Menu
 		JMenu menu = new JMenu("Admin");
-	    JMenuItem menuItem = new JMenuItem("New Study Group");
+		JMenuItem menuItem = new JMenuItem("New Study Group");
 	    menuItem.setActionCommand("New Group");
 	    menuItem.addActionListener(this);
+	    menu.add(menuItem);
+	    menuItem = new JMenuItem("New User");
+	    menuItem.setActionCommand("New User");
+	    menuItem.addActionListener(this);
+	    menuItem.setEnabled(false);
+	    menu.add(menuItem);
+	    menuItem = new JMenuItem("New Admin");
+	    menuItem.setActionCommand("New Admin");
+	    menuItem.addActionListener(this);
+	    menuItem.setEnabled(false);
+	    menu.add(menuItem);
+	    menu.addSeparator();
+	    menuItem = new JMenuItem("Delete Inactive Groups");
+	    menuItem.setActionCommand("Clear Groups");
+	    menuItem.addActionListener(this);
+	    menuItem.setEnabled(false);
+	    menu.add(menuItem);
+	    menuItem = new JMenuItem("Delete Inactive Users");
+	    menuItem.setActionCommand("Clear Users");
+	    menuItem.addActionListener(this);
+	    menuItem.setEnabled(false);
 	    menu.add(menuItem);
 	    add(menu);
 	    
