@@ -1,9 +1,15 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,7 +27,7 @@ import domainlogic.UserSearchEvent;
  * @author Michael Kirby
  *
  */
-public class AdminPanel extends JPanel implements ListSelectionListener {
+public class AdminPanel extends JPanel implements ActionListener, ListSelectionListener {
 	
 	/** The GUIFrame of the program */
 	GUIFrame parent;
@@ -81,26 +87,65 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 			usersearch.execute();
 		} 
 		users = new UserList(parent, this, ((SearchData)usersearch.getData()).getResults().toArray());
-
 		
-		setLayout(new GridLayout(4,1));
+		// Set Layout Manager for Panel
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
 		
-		add(new JLabel("Groups"));
-		//ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().searchGroups());
-		ArrayList<Integer> temp = new ArrayList<Integer>();
-		temp.add(1);
-		//groups = new GroupList(parent, this, temp.toArray());
+		// Place Groups Label
+		c.gridx = 0;
+		c.gridy = 0;
+		c.ipady = 20;
+		c.ipadx = 160;
+		add(new JLabel("Groups"),c);
+		
+		// Place Groups Filter
+		JPanel filt = new JPanel(new GridLayout(1,2));
+		filtsg = new JTextField(gsearch.getTerms());
+		filt.add(filtsg);
+		JButton filter = new JButton("Filter");
+        filter.setActionCommand("gfilter");
+        filter.addActionListener(this);
+        filt.add(filter);
+        c.gridy = 1;
+        c.ipady = 0;
+	    c.insets = new Insets(0, 0, 10, 0);
+		add(filt,c);
+		
+		// Place GroupList
 		JScrollPane mg = new JScrollPane(groups);
 		mg.setPreferredSize(new Dimension(40,40));
-		add(mg);
-		add(new JLabel("Users"));
-		//ArrayList<Integer> temp2 = new ArrayList<Integer>(parent.getSGS().searchUsers());
-		ArrayList<Integer> temp2 = new ArrayList<Integer>();
-		temp2.add(1);
-		//users = new UserList(parent, this, temp2.toArray());
+		c.gridy = 2;
+	    c.ipady = 80;
+	    c.insets = new Insets(0, 0, 30, 0);
+		add(mg,c);
+		
+		// Place Users Label
+		c.gridy = 3;
+	    c.ipady = 20;
+	    c.insets = new Insets(0, 0, 0, 0);
+		add(new JLabel("Users"),c);
+		
+		// Place Users Filter
+		JPanel ufilt = new JPanel(new GridLayout(1,2));
+		filtuser = new JTextField(usearch.getTerms());
+		ufilt.add(filtuser);
+		JButton ufilter = new JButton("Filter");
+        ufilter.setActionCommand("ufilter");
+        ufilter.addActionListener(this);
+        ufilt.add(ufilter);
+        c.gridy = 4;
+        c.ipady = 0;
+	    c.insets = new Insets(0, 0, 10, 0);
+		add(ufilt,c);
+		
+		// Place UserList
 		JScrollPane sg = new JScrollPane(users);
 		sg.setPreferredSize(new Dimension(40,50));
-		add(sg);
+		c.gridy = 5;
+	    c.ipady = 80;
+		add(sg,c);
 	}
 
 	@Override
@@ -132,6 +177,20 @@ public class AdminPanel extends JPanel implements ListSelectionListener {
 	
 	public SearchData getUserSearch() {
 		return (SearchData) usersearch.getData();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ("gfilter".equals(e.getActionCommand())) {
+			((SearchData)groupsearch.getData()).setTerms(filtsg.getText());
+			groupsearch.execute();
+			parent.getGUI().refreshLeft();
+		} else if ("ufilter".equals(e.getActionCommand())) {
+			((SearchData)usersearch.getData()).setTerms(filtuser.getText());
+			usersearch.execute();
+			parent.getGUI().refreshLeft();
+		}
+		
 	}
 
 }

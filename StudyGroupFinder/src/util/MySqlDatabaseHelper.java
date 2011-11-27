@@ -174,7 +174,7 @@ public class MySqlDatabaseHelper {
 				  "`id` INT NOT NULL AUTO_INCREMENT ," +
 				  "`name` VARCHAR(45) NOT NULL ," +
 				  "`password` VARCHAR(45) NOT NULL ," +
-				  "`is_admin` BINARY NULL ," +
+				  "`is_admin` BINARY NULL," +
 				  "`last_login` DATETIME NULL ," +
 				  "`courses` VARCHAR(255) NULL ," +
 				  "PRIMARY KEY (`id`) ," +

@@ -203,6 +203,7 @@ public class StudyGroupSystem {
 		tempStatus = database.updateGroup(gd);
 		return tempStatus;
 	}
+	
 	/** Delete Group
 	 * Preconditions: groupID is an integer
 	 * Postconditions: Deletes the group associated with groupID from the database
@@ -212,6 +213,18 @@ public class StudyGroupSystem {
 	public Status deleteGroup(int groupID){
 		Status tempStatus = new Status();
 		tempStatus = database.deleteGroup(groupID);
+		return tempStatus;
+	}
+	
+	/** Delete User
+	 * Preconditions: userID is an integer
+	 * Postconditions: Deletes the user associated with userID from the database
+	 * @param userID is the userID to delete
+	 * @return Status object that holds information on what happened
+	 */
+	public Status deleteUser(int userID){
+		Status tempStatus = new Status();
+		tempStatus = database.deleteUser(userID);
 		return tempStatus;
 	}
 	

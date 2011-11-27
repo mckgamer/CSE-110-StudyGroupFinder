@@ -49,6 +49,7 @@ public class UserData implements Data {
 		modof = StringParser.parseString(mod);
 		userof = StringParser.parseString(user);
 		this.courses = courses;
+		this.is_admin = false;
 	}
 	
 	/** Constructor using ArraList for memberships
@@ -65,6 +66,7 @@ public class UserData implements Data {
 		this.password = password;
 		this.modof = modof;
 		this.userof = userof;
+		this.is_admin = false;
 	}
 	
 
