@@ -186,8 +186,10 @@ public class MapDatabase implements Database {
 	 * @return {@link UserData} object containing the user data associated with the user id.
 	 */
 	public UserData getUser(int id) {
-		Vector<String> temp = users.get(id);
-		UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2), temp.get(3));
+		// TODO fix UserData constructor to include courses
+		//Vector<String> temp = users.get(id);
+		//UserData tempUD = new UserData(id,temp.get(0), temp.get(1), temp.get(2), temp.get(3));
+		UserData tempUD = new UserData();
 		return tempUD;
 	}
 
@@ -224,7 +226,8 @@ public class MapDatabase implements Database {
 		User user = new User(Logged.LOGGEDOFF, null);
 		for(int i=1; i<=users.size();i++) {
 			if (users.get(i).get(0).equals(uname) && users.get(i).get(1).equals(pw)) {
-				user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2),users.get(i).get(3)));
+				// Fix UserData constructor to include courses
+				// user.setUserData(new UserData(i,users.get(i).get(0),users.get(i).get(1),users.get(i).get(2),users.get(i).get(3)));
 				user.setStatus(Logged.USER);
 				return user;
 			}
@@ -288,6 +291,12 @@ public class MapDatabase implements Database {
 
 	@Override
 	public ArrayList<GroupData> searchGroups(SearchData criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status deleteUser(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
