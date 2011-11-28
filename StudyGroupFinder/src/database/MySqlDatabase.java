@@ -336,7 +336,7 @@ public class MySqlDatabase implements Database {
 			ud.name = res.getString("name");
 			ud.password = res.getString("password");
 			ud.courses = res.getString("courses");
-			ud.is_admin = res.getBoolean("is_admin");
+			ud.is_admin = (res.getInt("is_admin") == 1); //Dumb mysql bug fix
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

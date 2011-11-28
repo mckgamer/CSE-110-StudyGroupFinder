@@ -1,7 +1,6 @@
 package domainlogic;
 
 import database.Data;
-import database.GroupData;
 import database.UserData;
 import domainlogic.User.Logged;
 

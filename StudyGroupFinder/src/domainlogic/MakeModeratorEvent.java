@@ -3,7 +3,6 @@ package domainlogic;
 import database.Data;
 import database.GroupData;
 import database.GroupUserData;
-import database.UserData;
 
 /** This Event is created by a {@link gui.GroupProfile} when a Moderator or Admin makes a User a moderator
  * for the Group.
