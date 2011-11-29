@@ -53,8 +53,8 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 		
 		event = new CreateStudyGroupEvent(parent.getSGS());
 		
-		nameField = new JTextField(27);
-		courseField = new JTextField(27);
+		nameField = new JTextField(25);
+		courseField = new JTextField(25);
 		
 		//Create an array of the text and components to be displayed.
 		JLabel msgString1 = new JLabel("Group Name: ");
@@ -80,7 +80,7 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
 		      JOptionPane.YES_NO_OPTION,
-		      null,
+		      parent.getTheme().getIcon(),
 		      options,
 		      options[0]);
 		

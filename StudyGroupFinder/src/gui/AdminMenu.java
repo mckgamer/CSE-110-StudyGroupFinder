@@ -7,6 +7,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import domainlogic.Status;
+
 /** This JMenuBar is used by the AdminGUI to update the frames menubar appropriately. 
  * 
  * @author Michael Kirby
@@ -35,7 +37,6 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 	    menuItem = new JMenuItem("New User");
 	    menuItem.setActionCommand("New User");
 	    menuItem.addActionListener(this);
-	    menuItem.setEnabled(false);
 	    menu.add(menuItem);
 	    menuItem = new JMenuItem("New Admin");
 	    menuItem.setActionCommand("New Admin");
@@ -46,12 +47,10 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 	    menuItem = new JMenuItem("Delete Inactive Groups");
 	    menuItem.setActionCommand("Clear Groups");
 	    menuItem.addActionListener(this);
-	    menuItem.setEnabled(false);
 	    menu.add(menuItem);
 	    menuItem = new JMenuItem("Delete Inactive Users");
 	    menuItem.setActionCommand("Clear Users");
 	    menuItem.addActionListener(this);
-	    menuItem.setEnabled(false);
 	    menu.add(menuItem);
 	    add(menu);
 	    
@@ -81,9 +80,20 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 		} else if("New Group".equals(e.getActionCommand())) {
 			NewGroupDialog ngd = new NewGroupDialog(parent);
 	        ngd.setVisible(true);
+		} else if("New User".equals(e.getActionCommand())) {
+			NewAccountDialog nad = new NewAccountDialog(parent);
+	        nad.setVisible(true);
 		} else if("about".equals(e.getActionCommand())) {
 			AboutSGFDialog asd = new AboutSGFDialog(parent);
 	        asd.setVisible(true);
+		} else if("Clear Groups".equals(e.getActionCommand())) {
+			Status temp = parent.getSGS().deleteInactiveGroups();
+			StatusDialog sd = new StatusDialog(temp, parent);
+			sd.setVisible(true);
+		} else if("Clear Users".equals(e.getActionCommand())) {
+			Status temp = parent.getSGS().deleteInactiveUsers();
+			StatusDialog sd = new StatusDialog(temp, parent);
+			sd.setVisible(true);
 		}
 	}
     

@@ -61,9 +61,9 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		
 		event = new UpdateUserProfileEvent(parent.getSGS());
 		
-		unameField = new JTextField(27);
-		pwField = new JTextField(27);
-		courseField = new JTextField(27);
+		unameField = new JTextField(25);
+		pwField = new JTextField(25);
+		courseField = new JTextField(25);
 
 		prepop = parent.getSGS().getUser(user);
 		unameField.setText(prepop.getUName());
@@ -96,7 +96,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
 		      JOptionPane.YES_NO_OPTION,
-		      null,
+		      parent.getTheme().getIcon(),
 		      options,
 		      options[0]);
 		

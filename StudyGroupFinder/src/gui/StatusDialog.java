@@ -36,18 +36,19 @@ public class StatusDialog extends JDialog implements ActionListener {
 		this.parent = parent;
 		this.status = status;
 		setTitle("Result");
-		setSize(350,150);
+		setSize(400,150);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		String message;
+		String message = "<html><p width='220px'>";
 		
 		if (status.getStatus() == StatusType.SUCCESS) {
-			message = "Success! " + status.getMessage();
+			message += "Success! " + status.getMessage();
 		} else if (status.getStatus() == StatusType.INVALID){
-			message = "Invalid data entered! " + status.getMessage();
+			message += "Invalid data entered! " + status.getMessage();
 		} else {
-			message = "Failure! " + status.getMessage();
+			message += "Failure! " + status.getMessage();
 		}
+		message += "</p></html>";
 		
 		UIManager.put("OptionPane.background", new Color(0,0,0,0));
 	    UIManager.put("Panel.background", new Color(0,0,0,0));
@@ -60,7 +61,7 @@ public class StatusDialog extends JDialog implements ActionListener {
 		stat.setForeground(parent.getTheme().textColor());
 		JOptionPane optionPane = new JOptionPane(stat,
 		      JOptionPane.INFORMATION_MESSAGE,
-		      JOptionPane.DEFAULT_OPTION, null, options);
+		      JOptionPane.DEFAULT_OPTION, parent.getTheme().getIcon(), options);
 		
 		//Make this dialog display it.
 		BGPanel panel = new BGPanel(parent.getTheme());

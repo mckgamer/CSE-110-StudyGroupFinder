@@ -1,5 +1,10 @@
 package domainlogic;
 
+
+
+import java.util.Calendar;
+import java.util.Date;
+
 import database.Database;
 import database.GroupData;
 import database.MapDatabase;
@@ -309,6 +314,32 @@ public class StudyGroupSystem {
 	 */
 	public Logged getUserStatus() {
 		return sgfUser.getStatus();
+	}
+	
+	/** Delete Group
+	 * Preconditions: groupID is an integer
+	 * Postconditions: Deletes the group associated with groupID from the database
+	 * @param groupID is the groupID to delete
+	 * @return Status object that holds information on what happened
+	 */
+	public Status deleteInactiveGroups(){
+		Status tempStatus = new Status();
+		tempStatus = database.deleteInactiveGroups();
+		return tempStatus;
+	}
+	
+	/** Delete User
+	 * Preconditions: userID is an integer
+	 * Postconditions: Deletes the user associated with userID from the database
+	 * @param userID is the userID to delete
+	 * @return Status object that holds information on what happened
+	 */
+	public Status deleteInactiveUsers(){
+		Status tempStatus = new Status();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, -14);
+		tempStatus = database.deleteInactiveUsers(cal.getTime());
+		return tempStatus;
 	}
 	
 	/** 

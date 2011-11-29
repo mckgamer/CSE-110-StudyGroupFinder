@@ -60,8 +60,8 @@ public class UpdateGroupDialog extends JDialog implements ActionListener, Proper
 		
 		event = new UpdateGroupProfileEvent(parent.getSGS());
 		
-		nameField = new JTextField(27);
-		courseField = new JTextField(27);
+		nameField = new JTextField(25);
+		courseField = new JTextField(25);
 
 		prepop = parent.getSGS().getGroup(groupid);
 		nameField.setText(prepop.getName());
@@ -92,7 +92,7 @@ public class UpdateGroupDialog extends JDialog implements ActionListener, Proper
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
 		      JOptionPane.YES_NO_OPTION,
-		      null,
+		      parent.getTheme().getIcon(),
 		      options,
 		      options[0]);
 		

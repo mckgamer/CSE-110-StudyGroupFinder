@@ -31,7 +31,7 @@ public class GUIFrame extends JFrame {
 	 */
 	public GUIFrame(StudyGroupSystem sgs) {
 		this.sgs = sgs;
-		setTitle("Study Group Finder 0.9");
+		setTitle("Study Group Finder 0.95");
 		setMinimumSize(new Dimension(740,500));
 		this.setResizable(false);
         setLocationRelativeTo(null);
@@ -40,7 +40,7 @@ public class GUIFrame extends JFrame {
         gui = new JPanel();
         
         // Set the theme for the program
-        theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255));
+        theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255), "background.jpeg", "icon.png");
 	}
 	
 	/** Controls Logging in and makes sure this GUIFrame is displaying its current JPanel (gui) */

@@ -61,8 +61,8 @@ this.gframe = gframe;
 setTitle("Login");
  this.setSize(400,200);
  setLocationRelativeTo(null);
-textField = new JTextField(27);
-textField2 = new JTextField(27);
+textField = new JTextField(25);
+textField2 = new JTextField(25);
 
 //Create an array of the text and components to be displayed.
 JLabel msgString1 = new JLabel("Username: ");
@@ -87,7 +87,7 @@ UIManager.put("Panel.background", new Color(0,0,0,0));
 optionPane = new JOptionPane(array,
       JOptionPane.QUESTION_MESSAGE,
       JOptionPane.YES_NO_OPTION,
-      null,
+      gframe.getTheme().getIcon(),
       options,
       options[0]);
 

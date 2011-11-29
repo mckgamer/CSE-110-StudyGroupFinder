@@ -54,9 +54,9 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		
 		event = new CreateUserEvent(parent.getSGS());
 		
-		unameField = new JTextField(27);
-		pwField = new JTextField(27);
-		courseField = new JTextField(27);
+		unameField = new JTextField(25);
+		pwField = new JTextField(25);
+		courseField = new JTextField(25);
 		
 		//Create an array of the text and components to be displayed.
 		JLabel msgString1 = new JLabel("Username: ");
@@ -84,7 +84,7 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
 		      JOptionPane.YES_NO_OPTION,
-		      null,
+		      parent.getTheme().getIcon(),
 		      options,
 		      options[0]);
 		

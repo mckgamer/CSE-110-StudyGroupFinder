@@ -1,6 +1,7 @@
 package database;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import database.MySqlDatabase.InvalidDatabaseID;
 import domainlogic.Status;
@@ -123,6 +124,10 @@ public interface Database {
 	 * @return an {@link ArrayList} of {@link GroupData} objects for matching groups
 	 */
 	public ArrayList<GroupData> searchGroups(SearchData criteria);
+	
+	public Status deleteInactiveUsers(Date d);
+	
+	public Status deleteInactiveGroups();
 	
 	/** Provide basic description of data implementation/connection
 	 */

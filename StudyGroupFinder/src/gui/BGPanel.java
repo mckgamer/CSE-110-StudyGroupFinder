@@ -18,7 +18,7 @@ public class BGPanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-	    g.drawImage(theme.background(), 0, 0, null);
+	    g.drawImage(theme.dialogBG(), 0, 0, null);
 	  }
 
 }
