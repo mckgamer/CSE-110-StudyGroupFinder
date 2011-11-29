@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -7,8 +8,10 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import database.GroupData;
 import domainlogic.CreateStudyGroupEvent;
@@ -44,17 +47,20 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 		
 		//Set the size, position, and title of this dialog
 		setTitle("New Study Group");
-		setSize(400,300);
+		setSize(400,200);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		
 		event = new CreateStudyGroupEvent(parent.getSGS());
 		
-		nameField = new JTextField(10);
-		courseField = new JTextField(10);
+		nameField = new JTextField(27);
+		courseField = new JTextField(27);
 		
 		//Create an array of the text and components to be displayed.
-		String msgString1 = "Group Name: ";
-		String msgString2 = "Course Studied: ";
+		JLabel msgString1 = new JLabel("Group Name: ");
+		JLabel msgString2 = new JLabel("Course: ");
+		msgString1.setForeground(parent.getTheme().headColor());
+		msgString2.setForeground(parent.getTheme().headColor());
 		Object[] array = {msgString1, nameField, msgString2, courseField};
 
 		//Create an array specifying the number of dialog buttons
@@ -67,6 +73,9 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 		cancel.addActionListener(this);
 		Object[] options = {submit, cancel};
 
+		UIManager.put("OptionPane.background", new Color(0,0,0,0));
+	    UIManager.put("Panel.background", new Color(0,0,0,0));
+	    
 		//Create the JOptionPane.
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
@@ -76,7 +85,9 @@ public class NewGroupDialog extends JDialog implements ActionListener, PropertyC
 		      options[0]);
 		
 		//Make this dialog display it.
-		setContentPane(optionPane);
+		BGPanel panel = new BGPanel(parent.getTheme());
+		panel.add(optionPane);
+		setContentPane(panel);
 	}
 	
 	@Override

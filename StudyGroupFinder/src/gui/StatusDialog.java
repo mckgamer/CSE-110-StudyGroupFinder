@@ -1,11 +1,14 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import domainlogic.Status;
 import domainlogic.StatusType;
@@ -34,6 +37,7 @@ public class StatusDialog extends JDialog implements ActionListener {
 		this.status = status;
 		setTitle("Result");
 		setSize(350,150);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		String message;
 		
@@ -45,16 +49,23 @@ public class StatusDialog extends JDialog implements ActionListener {
 			message = "Failure! " + status.getMessage();
 		}
 		
+		UIManager.put("OptionPane.background", new Color(0,0,0,0));
+	    UIManager.put("Panel.background", new Color(0,0,0,0));
+	    
 		//Create the JOptionPane.
 		JButton ok = new JButton("Ok");
 		ok.addActionListener(this);
 		Object options[] = {ok};
-		JOptionPane optionPane = new JOptionPane(message,
+		JLabel stat = new JLabel(message);
+		stat.setForeground(parent.getTheme().textColor());
+		JOptionPane optionPane = new JOptionPane(stat,
 		      JOptionPane.INFORMATION_MESSAGE,
 		      JOptionPane.DEFAULT_OPTION, null, options);
 		
 		//Make this dialog display it.
-		setContentPane(optionPane);
+		BGPanel panel = new BGPanel(parent.getTheme());
+		panel.add(optionPane);
+		setContentPane(panel);
 	}
 
 	@Override

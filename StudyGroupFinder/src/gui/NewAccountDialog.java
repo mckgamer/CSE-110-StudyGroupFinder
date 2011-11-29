@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -7,8 +8,10 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import database.UserData;
 import domainlogic.CreateUserEvent;
@@ -45,19 +48,23 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		super(parent, true);
 		this.parent = parent;
 		setTitle("Create New Account");
-		setSize(400,300);
+		setSize(400,225);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		
 		event = new CreateUserEvent(parent.getSGS());
 		
-		unameField = new JTextField(10);
-		pwField = new JTextField(10);
-		courseField = new JTextField(10);
+		unameField = new JTextField(27);
+		pwField = new JTextField(27);
+		courseField = new JTextField(27);
 		
 		//Create an array of the text and components to be displayed.
-		String msgString1 = "Username: ";
-		String msgString2 = "Password: ";
-		String msgString3 = "My Courses: (seperated by comma)";
+		JLabel msgString1 = new JLabel("Username: ");
+		JLabel msgString2 = new JLabel("Password: ");
+		JLabel msgString3 = new JLabel("My Courses: (seperated by comma)");
+		msgString1.setForeground(parent.getTheme().headColor());
+		msgString2.setForeground(parent.getTheme().headColor());
+		msgString3.setForeground(parent.getTheme().headColor());
 		Object[] array = {msgString1, unameField, msgString2, pwField, msgString3, courseField};
 
 		//Create an array specifying the number of dialog buttons
@@ -70,6 +77,9 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		cancel.addActionListener(this);
 		Object[] options = {submit, cancel};
 
+		UIManager.put("OptionPane.background", new Color(0,0,0,0));
+	    UIManager.put("Panel.background", new Color(0,0,0,0));
+	    
 		//Create the JOptionPane.
 		JOptionPane optionPane = new JOptionPane(array,
 		      JOptionPane.QUESTION_MESSAGE,
@@ -79,7 +89,9 @@ public class NewAccountDialog extends JDialog implements ActionListener, Propert
 		      options[0]);
 		
 		//Make this dialog display it.
-		setContentPane(optionPane);
+		BGPanel panel = new BGPanel(parent.getTheme());
+		panel.add(optionPane);
+		setContentPane(panel);
 	}
 	
 	@Override
