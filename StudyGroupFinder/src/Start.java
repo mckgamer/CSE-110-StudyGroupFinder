@@ -27,6 +27,12 @@ public class Start extends JPanel {
 			System.out.print("Attempting to run on local MySql...");
 			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
 			System.out.println("Connected");
+			
+		/* Added for use on Bob's Dev Machine */
+		} else if (databaseMode.equalsIgnoreCase("local-bob")) {				
+			System.out.print("Attempting to run on local MySql...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/study_prod", "studydb", "studydb");
+			System.out.println("Connected");
 
 		/* local-new */
 		} else if (databaseMode.equalsIgnoreCase("local-new")) {
