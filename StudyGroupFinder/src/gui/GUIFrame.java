@@ -39,6 +39,7 @@ public class GUIFrame extends JFrame {
 
         gui = new JPanel();
         
+        // Set the theme for the program
         theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255));
 	}
 	

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,6 +39,9 @@ public class AboutSGFDialog extends JDialog implements ActionListener {
 		      JOptionPane.DEFAULT_OPTION, null, options);
 		
 		//Make this dialog display it.
+		optionPane.setOpaque(false);
+		//BGPanel panel = new BGPanel(parent.getTheme());
+		//panel.add(optionPane);
 		setContentPane(optionPane);
 	}
 
