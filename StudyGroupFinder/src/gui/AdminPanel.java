@@ -56,7 +56,12 @@ public class AdminPanel extends JPanel implements ActionListener, ListSelectionL
 	 * @param usearch the SearchData of a user search to construct this with.
 	 */
 	public AdminPanel(GUIFrame parent, SearchData gsearch, SearchData usearch) {
+		
+		setOpaque(false);
+		
 		this.parent = parent;
+		
+		JLabel heading;
 		
 		groupsearch = new GroupSearchEvent(parent.getSGS());
 		if (gsearch == null) {
@@ -98,7 +103,9 @@ public class AdminPanel extends JPanel implements ActionListener, ListSelectionL
 		c.gridy = 0;
 		c.ipady = 20;
 		c.ipadx = 160;
-		add(new JLabel("Groups"),c);
+		heading = new JLabel("Groups");
+		heading.setForeground(parent.getTheme().headColor());
+		add(heading,c);
 		
 		// Place Groups Filter
 		JPanel filt = new JPanel(new GridLayout(1,2));
@@ -125,7 +132,9 @@ public class AdminPanel extends JPanel implements ActionListener, ListSelectionL
 		c.gridy = 3;
 	    c.ipady = 20;
 	    c.insets = new Insets(0, 0, 0, 0);
-		add(new JLabel("Users"),c);
+	    heading = new JLabel("Users");
+	    heading.setForeground(parent.getTheme().headColor());
+		add(heading,c);
 		
 		// Place Users Filter
 		JPanel ufilt = new JPanel(new GridLayout(1,2));

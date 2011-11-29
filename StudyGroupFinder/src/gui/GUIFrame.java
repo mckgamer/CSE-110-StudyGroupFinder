@@ -1,6 +1,7 @@
 package gui;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -21,6 +22,9 @@ public class GUIFrame extends JFrame {
 	/** The Current panel that this frame is displaying i.e {@link UserGUI}, {@link AdminGUI}, etc*/
 	private JPanel gui;
 	
+	/** The theme of the Program */
+	private GUITheme theme;
+	
 	/** Constructs this GUIFrame. Sets the default size and Title
 	 * 
 	 * @param sgs the {@link StudyGroupSystem} to use with this GUIFrame.
@@ -33,6 +37,8 @@ public class GUIFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gui = new JPanel();
+        
+        theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255));
 	}
 	
 	/** Controls Logging in and makes sure this GUIFrame is displaying its current JPanel (gui) */
@@ -41,9 +47,9 @@ public class GUIFrame extends JFrame {
 			LogInDialog ld = new LogInDialog(this);
 	        ld.setVisible(true);
 	        if (ld.getStatus() == Logged.USER) {
-				gui = new UserGUI(this);
+				gui = new UserGUI(this, theme);
 			} else if (ld.getStatus() == Logged.ADMIN) {
-				gui = new AdminGUI(this);
+				gui = new AdminGUI(this, theme);
 			}
 		}
 		setContentPane(gui);
@@ -60,5 +66,9 @@ public class GUIFrame extends JFrame {
 	
 	public GUIPanel getGUI() {
 		return (GUIPanel) gui;
+	}
+	
+	public GUITheme getTheme() {
+		return theme;
 	}
 }

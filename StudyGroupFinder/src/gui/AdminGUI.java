@@ -1,7 +1,11 @@
 package gui;
 
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /** AdminGUI is a JPanel and implementation of {@link GUIPanel} that manages 
@@ -20,11 +24,19 @@ public class AdminGUI extends JPanel implements GUIPanel {
 	/** The {@link GUIFrame} that is displaying this UserGUI */
 	private GUIFrame parent;
 	
+	private GUITheme theme;
+	
+	public void paintComponent(Graphics g) {
+	    g.drawImage(theme.background(), 0, 0, null);
+	  }
+	
 	/** Constructs this AdminGUI object using the {@link GUIFrame} that will display it.
 	 * 
 	 * @param parent the {@link GUIFrame} that will display this AdminGUI.
 	 */
-	public AdminGUI(GUIFrame parent) {
+	public AdminGUI(GUIFrame parent, GUITheme theme) {
+		
+		this.theme = theme;
 		
 		//Give this GUI a reference to its GUIFrame parent
 		this.parent = parent;
@@ -41,6 +53,7 @@ public class AdminGUI extends JPanel implements GUIPanel {
 		left = new AdminPanel(parent, null, null);
 		
 		right = new JPanel();
+		right.setOpaque(false);
 		
 		//Apply this GUI's left and right JPanels
 		add(left);

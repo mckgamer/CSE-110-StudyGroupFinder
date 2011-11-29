@@ -39,18 +39,25 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 	 * @param gd the GroupData object to use for this Profile.
 	 */
 	public GroupProfile(GUIFrame parent, GroupData gd) {
+		
+		setOpaque(false);
+		
 		this.parent = parent;
 		this.gd = gd;
 		name = new JLabel(gd.getName());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));
+		name.setForeground(parent.getTheme().headColor());
 		course = new JLabel("Course: " + gd.getCourse());
+		course.setForeground(parent.getTheme().textColor());
 		description = new JLabel("<html>We like to study " + gd.getCourse() +". We are a really cool group and we<br> hope you join us.</html>");
 		description.setFont(new Font("Dialog", Font.PLAIN, 12));
+		description.setForeground(parent.getTheme().textColor());
 		
         setLayout(new GridLayout(4,1,0,6));
         
         JPanel namePan = new JPanel();
-        namePan.setLayout(new GridLayout(1,2));
+        namePan.setOpaque(false);
+        namePan.setLayout(new GridLayout(2,1));
         namePan.add(name);
         namePan.add(course);
         
@@ -61,13 +68,24 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         
         
         JPanel submembPan = new JPanel();
+        submembPan.setOpaque(false);
         submembPan.setLayout(new GridLayout(2,2,5,0));
-        JLabel mem = new JLabel("Members");
-        mem.setFont(new Font("Dialog", Font.BOLD, 14));
-        submembPan.add(mem);
+    
         JLabel meet = new JLabel("Meetings");
+        meet.setForeground(parent.getTheme().headColor());
         meet.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(meet);
+        
+        JLabel mem = new JLabel("Members");
+        mem.setForeground(parent.getTheme().headColor());
+        mem.setFont(new Font("Dialog", Font.BOLD, 14));
+        submembPan.add(mem);
+        
+        JLabel meets = new JLabel("We meet every 2 days.");
+        meets.setForeground(parent.getTheme().textColor());
+        meets.setFont(new Font("Dialog", Font.PLAIN, 12));
+        submembPan.add(meets);
+        
         
         ArrayList<Integer> temp = new ArrayList<Integer>(gd.getMods());
 		temp.addAll(gd.getUsers());
@@ -80,17 +98,16 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
         JScrollPane membersList = new JScrollPane(userList);
         membersList.setPreferredSize(new Dimension(40,50));
         submembPan.add(membersList);
-        JLabel meets = new JLabel("We meet every 2 days.");
-        meets.setFont(new Font("Dialog", Font.PLAIN, 12));
-        submembPan.add(meets);
         
         
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
+        meetControlPanel.setOpaque(false);
         meetControlPanel.setLayout(new GridLayout(1,1));
         
         JPanel buttons = new JPanel();
+        buttons.setOpaque(false);
         buttons.setLayout(new GridLayout(0,2,5,4));
         
         if (parent.getSGS().getLoggedUser().isModOf(gd.getId()) || parent.getSGS().getUserStatus() == Logged.ADMIN) {

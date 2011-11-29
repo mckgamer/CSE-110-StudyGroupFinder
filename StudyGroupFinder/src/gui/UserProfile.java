@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,15 +32,19 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
 	 * @param ud the UserData object to use for this Profile.
 	 */
 	public UserProfile(GUIFrame parent, UserData ud) {
+		
+		setOpaque(false);
+		
 		this.parent = parent;
 		this.ud = ud;
 		name = new JLabel(ud.getUName());
+		name.setForeground(parent.getTheme().headColor());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));
 		
         setLayout(new GridLayout(4,1));
-        //add(new JLabel("1"));
         
         JPanel namePan = new JPanel();
+        namePan.setOpaque(false);
         namePan.setLayout(new GridLayout(1,2));
         namePan.add(name);
         namePan.add(new JLabel());
@@ -51,11 +56,14 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
         
         
         JPanel submembPan = new JPanel();
+        submembPan.setOpaque(false);
         submembPan.setLayout(new GridLayout(2,2,5,0));
         JLabel mem = new JLabel("Groups");
+        mem.setForeground(parent.getTheme().headColor());
         mem.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(mem);
         JLabel meet = new JLabel("Meetings");
+        meet.setForeground(parent.getTheme().headColor());
         meet.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(meet);
         
@@ -74,9 +82,11 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
         add(submembPan);
         
         JPanel meetControlPanel = new JPanel();
+        meetControlPanel.setOpaque(false);
         meetControlPanel.setLayout(new GridLayout(1,1));
         
         JPanel buttons = new JPanel();
+        buttons.setOpaque(false);
         buttons.setLayout(new GridLayout(0,2,5,4));
         
          //TODO Admin buttons here

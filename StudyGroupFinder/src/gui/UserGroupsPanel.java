@@ -43,6 +43,8 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 	
 	public UserGroupsPanel(GUIFrame parent, SearchData oldsearch) {
 		
+		setOpaque(false);
+		
 		this.parent = parent;
 		
 		search = new GroupSearchEvent(parent.getSGS());
@@ -66,7 +68,9 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 		c.gridy = 0;
 		c.ipady = 20;
 		c.ipadx = 160;
-		add(new JLabel("Current Groups"),c);
+		JLabel heading = new JLabel("Current Groups");
+		heading.setForeground(parent.getTheme().headColor());
+		add(heading,c);
 		ArrayList<Integer> temp = new ArrayList<Integer>(parent.getSGS().getLoggedUser().getModOf());
 		temp.addAll(parent.getSGS().getLoggedUser().getUserOf());
 		currGroup = new GroupList(parent, this, temp.toArray());
@@ -81,7 +85,9 @@ public class UserGroupsPanel extends JPanel implements ActionListener, ListSelec
 	    c.gridy = 2;
 	    c.ipady = 20;
 	    c.insets = new Insets(0, 0, 0, 0);
-		add(new JLabel("Suggested Groups"),c);
+		heading = new JLabel("Suggested Groups");
+		heading.setForeground(parent.getTheme().headColor());
+		add(heading,c);
 		JPanel filt = new JPanel(new GridLayout(1,2));
 		filtsg = new JTextField(oldsearch.getTerms());
 		filt.add(filtsg);
