@@ -36,10 +36,10 @@ public class StatusDialog extends JDialog implements ActionListener {
 		this.parent = parent;
 		this.status = status;
 		setTitle("Result");
-		setSize(400,150);
+		setSize(400,180);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		String message = "<html><p width='220px'>";
+		String message = "<html><p width='215px'>";
 		
 		if (status.getStatus() == StatusType.SUCCESS) {
 			message += "Success! " + status.getMessage();

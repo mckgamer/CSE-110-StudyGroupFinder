@@ -227,6 +227,7 @@ public class GroupProfile extends JPanel implements ActionListener, ListSelectio
 			parent.getSGS().refreshLoggedUser();
 			parent.getGUI().setRight(new JPanel());
 			parent.getGUI().refreshLeft();
+			parent.update(parent.getGraphics());
 		}
 	}
 
