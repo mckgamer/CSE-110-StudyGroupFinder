@@ -3,6 +3,7 @@ import domainlogic.Status;
 import domainlogic.StatusType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -297,6 +298,18 @@ public class MapDatabase implements Database {
 
 	@Override
 	public Status deleteUser(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status deleteInactiveUsers(Date d) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status deleteInactiveGroups() {
 		// TODO Auto-generated method stub
 		return null;
 	}

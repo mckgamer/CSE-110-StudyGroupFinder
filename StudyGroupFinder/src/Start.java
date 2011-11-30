@@ -28,29 +28,42 @@ public class Start extends JPanel {
 			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
 			System.out.println("Connected");
 			
-		/* Added for use on Bob's Dev Machine */
+		/* local-bob: Added for use on Bob's Dev Machine */
 		} else if (databaseMode.equalsIgnoreCase("local-bob")) {				
 			System.out.print("Attempting to run on local MySql...");
 			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/study_prod", "studydb", "studydb");
 			System.out.println("Connected");
 
-		/* local-new */
+		/* local-new: create new local database */
 		} else if (databaseMode.equalsIgnoreCase("local-new")) {
 			System.out.print("Attempting to create new local instance of MySql...");
 			((MySqlDatabase)db).openConnection("jdbc:mysql://localhost:3306/testdb", "root", "");
 			System.out.println("Connected...");
 			((MySqlDatabase) db).buildDatabase();
 			
-		/* remote-new */
-		} else if (databaseMode.equalsIgnoreCase("remote-new")) {
-			System.out.print("Attempting to create new remote instance of MySql...");
-			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
+		/* test-new : create remote test database */
+		} else if (databaseMode.equalsIgnoreCase("test-new")) {
+			System.out.print("Attempting to create new remote instance of MySql test...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
 			System.out.println("Connected...");
 			((MySqlDatabase) db).buildDatabase();
 				
-		/* remote (any other, default) */
+		/* test: use remote test database */
+		} else if (databaseMode.equalsIgnoreCase("test")) {
+			System.out.print("Attempting to create new remote instance of MySql production...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_test", "studydb", "studydb");
+			System.out.println("Connected");
+					
+		/* prod-new: create remote production database */
+		} else if (databaseMode.equalsIgnoreCase("prod-new")) {
+			System.out.print("Attempting to create new remote instance of MySql production...");
+			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
+			System.out.println("Connected...");
+			((MySqlDatabase) db).buildDatabase();
+					
+		/* prod: use remote production database (default) */
 		} else { // includes "" or "remote" 
-			System.out.print("Attempting to run on remote instance of MySql...");
+			System.out.print("Attempting to run on remote instance of MySql production...");
 			((MySqlDatabase)db).openConnection("jdbc:mysql://afiend.selfip.net:3306/study_prod", "studydb", "studydb");
 			System.out.println("Connected");
 		}
