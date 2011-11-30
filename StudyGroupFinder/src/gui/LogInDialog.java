@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -61,8 +62,8 @@ this.gframe = gframe;
 setTitle("Login");
  this.setSize(400,200);
  setLocationRelativeTo(null);
-textField = new JTextField(24);
-textField2 = new JTextField(24);
+textField = new JTextField(20);
+textField2 = new JTextField(20);
 
 //Create an array of the text and components to be displayed.
 JLabel msgString1 = new JLabel("Username: ");
