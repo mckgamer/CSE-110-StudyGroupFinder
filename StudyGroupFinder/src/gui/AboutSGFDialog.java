@@ -34,7 +34,7 @@ public class AboutSGFDialog extends JDialog implements ActionListener {
 		setLocationRelativeTo(null);
 		String colo = parent.getTheme().headColor().getRed() + "," + parent.getTheme().headColor().getGreen() + "," + parent.getTheme().headColor().getBlue();
 		String colo2 = parent.getTheme().textColor().getRed() + "," + parent.getTheme().textColor().getGreen() + "," + parent.getTheme().textColor().getBlue();
-		String message = "<html><body style='color:rgb(" + colo2 + ");'><h2 style='color:rgb(" + colo + ");'>Study Group Finder</h2><b>Version 0.95</b><br/><br/>Developed by:<ul><li>Michael Kirby</li><li>Bob Filiczkowski</li><li>Mike Claffey</li><li>Robert Jang</li></ul><p width='220px'>Developed for UCSD's CSE 110 class of Fall 2011 taught by Professor William Howden.</p><br/>&copy; 2011 - All Rights Reserved</body></html>";
+		String message = "<html><body style='color:rgb(" + colo2 + ");'><h2 style='color:rgb(" + colo + ");'>Study Group Finder</h2><b>Version 0.95</b><br/><br/>Developed by:<ul><li>Michael Kirby</li><li>Bob Filiczkowski</li><li>Mike Claffey</li><li>Robert Jang</li></ul><p width='215px'>Developed for UCSD's CSE 110 class of Fall 2011 taught by Professor William Howden.</p><br/>&copy; 2011 - All Rights Reserved</body></html>";
 
 	    UIManager.put("OptionPane.background", new Color(0,0,0,0));
 	    UIManager.put("Panel.background", new Color(0,0,0,0));

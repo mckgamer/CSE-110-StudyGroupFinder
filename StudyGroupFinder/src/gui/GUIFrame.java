@@ -40,7 +40,7 @@ public class GUIFrame extends JFrame {
         gui = new JPanel();
         
         // Set the theme for the program
-        theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255), "background.jpeg", "icon.png");
+        theme = new GUITheme("background.jpeg", new Color(246, 180, 86), new Color(255,255,255), "dialog_bkg.jpg", "sgfLogo.png");
 	}
 	
 	/** Controls Logging in and makes sure this GUIFrame is displaying its current JPanel (gui) */

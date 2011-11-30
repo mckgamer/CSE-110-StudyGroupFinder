@@ -23,7 +23,6 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
 	
 	private GUIFrame parent;
 	private UserData ud;
-	private JLabel name;
 	
 	private GroupList groupList;
 	
@@ -37,35 +36,28 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
 		
 		this.parent = parent;
 		this.ud = ud;
-		name = new JLabel(ud.getUName());
+		
+		setLayout(new GridLayout(4,1,8,8));
+		
+		// Show the Users Username
+		JLabel name = new JLabel(ud.getUName());
 		name.setForeground(parent.getTheme().headColor());
 		name.setFont(new Font("Dialog", Font.BOLD, 24));
-		
-        setLayout(new GridLayout(4,1));
-        
-        JPanel namePan = new JPanel();
-        namePan.setOpaque(false);
-        namePan.setLayout(new GridLayout(1,2));
-        namePan.add(name);
-        namePan.add(new JLabel());
-        
-        add(namePan);
+		add(name);
   
+        // Show the Users Courses
+        JLabel courses = new JLabel("My Courses: " + ud.getCourses());
+        courses.setForeground(parent.getTheme().textColor());
+        add(courses);
         
-        add(new JLabel());
-        
-        
+        // Show the Users Current Groups
         JPanel submembPan = new JPanel();
         submembPan.setOpaque(false);
-        submembPan.setLayout(new GridLayout(2,2,5,0));
+        submembPan.setLayout(new GridLayout(2,1,5,0));
         JLabel mem = new JLabel("Groups");
         mem.setForeground(parent.getTheme().headColor());
         mem.setFont(new Font("Dialog", Font.BOLD, 14));
         submembPan.add(mem);
-        JLabel meet = new JLabel("Meetings");
-        meet.setForeground(parent.getTheme().headColor());
-        meet.setFont(new Font("Dialog", Font.BOLD, 14));
-        submembPan.add(meet);
         
         ArrayList<Integer> temp = new ArrayList<Integer>(ud.getModOf());
 		temp.addAll(ud.getUserOf());
@@ -74,38 +66,39 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
         JScrollPane membersList = new JScrollPane(groupList);
         membersList.setPreferredSize(new Dimension(40,50));
         submembPan.add(membersList);
-        JLabel meets = new JLabel("We meet every 2 days.");
-        meets.setFont(new Font("Dialog", Font.PLAIN, 12));
-        submembPan.add(meets);
         
         
         add(submembPan);
         
+        // Show control panel
         JPanel meetControlPanel = new JPanel();
         meetControlPanel.setOpaque(false);
         meetControlPanel.setLayout(new GridLayout(1,1));
         
+        // Create Panel for Buttons
         JPanel buttons = new JPanel();
         buttons.setOpaque(false);
         buttons.setLayout(new GridLayout(0,2,5,4));
         
-         //TODO Admin buttons here
-        	
-            JButton edit = new JButton("Edit User");
-            edit.setActionCommand("edit");
-            edit.addActionListener(this);
-            buttons.add(edit);
-            
-            JButton delete = new JButton("Delete User");
-            delete.setActionCommand("delete");
-            delete.addActionListener(this);
-            buttons.add(delete);
+        // Edit user button	
+        JButton edit = new JButton("Edit User");
+        edit.setActionCommand("edit");
+        edit.addActionListener(this);
+        buttons.add(edit);
         
+        // Delete User button
+        JButton delete = new JButton("Delete User");
+        delete.setActionCommand("delete");
+        delete.addActionListener(this);
+        buttons.add(delete);
         
-        
-        
+        buttons.add(new JLabel());
+        buttons.add(new JLabel());
+        buttons.add(new JLabel());
+        // Add buttons to Control Panel
         meetControlPanel.add(buttons);
        
+        // Show Control Panel
         add(meetControlPanel);
 	}
 
