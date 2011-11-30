@@ -124,6 +124,7 @@ public class UpdateUserDialog extends JDialog implements ActionListener, Propert
 			StatusDialog sd = new StatusDialog(result, parent);
 			sd.setVisible(true);
 			setVisible(false);
+			parent.getSGS().refreshLoggedUser();
 			parent.getGUI().refreshLeft();
 		} else if ("cancel".equals(e.getActionCommand())) {
 			setVisible(false);

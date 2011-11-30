@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 
 import database.UserData;
 import domainlogic.DeleteUserEvent;
+import domainlogic.User.Logged;
 
 /** UserProfile is a JPanel that is able to display user data using a {@link UserData} object. */
 public class UserProfile extends JPanel implements ActionListener, ListSelectionListener {
@@ -116,6 +117,11 @@ public class UserProfile extends JPanel implements ActionListener, ListSelection
 			du.execute();
 			parent.getGUI().setRight(new JPanel());
 			parent.getGUI().refreshLeft();
+			if (parent.getSGS().getUserStatus() == Logged.ADMIN) {
+				((AdminGUI)parent.getGUI()).fullRefresh();
+			}
+			parent.update(parent.getGraphics());
+			
 		}
 	}
 
