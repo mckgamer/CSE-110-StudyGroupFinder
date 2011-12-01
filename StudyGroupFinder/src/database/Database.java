@@ -63,6 +63,16 @@ public interface Database {
 	 */
 	public User login(String uname, String pw);
 	
+	/**
+	 * Adds a user to a database and returns the new user id
+	 * @param username - the {@link String} of a unique username to add to database
+	 * @return int for the id of the new user record
+	 * <p> int will be -1 if the username already exists in database and no record
+	 *     will be added</p>
+	 * @see #addUser
+	 */
+	public int createUser(String username);
+		
 	/** Adds a User to the database 
 	 * Preconditions: ud is a valid UserData object.
 	 * Postconditions: Adds the user associated with ud to database

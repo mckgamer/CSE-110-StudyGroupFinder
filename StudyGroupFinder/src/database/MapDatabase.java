@@ -314,4 +314,10 @@ public class MapDatabase implements Database {
 		return null;
 	}
 
+	@Override
+	public int createUser(String username) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

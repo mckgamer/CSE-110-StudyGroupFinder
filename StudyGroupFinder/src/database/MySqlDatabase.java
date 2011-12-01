@@ -116,8 +116,13 @@ public class MySqlDatabase implements Database {
 		db.dbh.printGroups();
 		
 		print("--Getting group data of group2");
-		GroupData gp3 = db.getGroup(grp2_id);
-		print(gp3.toString());
+		GroupData gp3;
+		try {
+			gp3 = db.getGroup(grp2_id);
+			print(gp3.toString());
+		} catch (InvalidDatabaseID e) {
+			e.printStackTrace();
+		}
 		
 		print("--Update group2 to cse222");
 		gp2.course = "cse222";
@@ -179,7 +184,7 @@ public class MySqlDatabase implements Database {
 	}    
 
 	/* Shortcut to print to console during debugging */
-    private static boolean showDebug = false;
+    private static boolean showDebug = true;
     /**
      * Print is a shortcut to System.out.println that can be turned
      * off by setting the boolean showDebug
@@ -250,6 +255,15 @@ public class MySqlDatabase implements Database {
 	 */
 	public void buildDatabase() {
 		this.dbh.buildDatabase();		
+	}
+    
+	/**
+	 * Delete all current data, build tables and re-populate
+	 */
+	public void buildDatabase(boolean repopulate) {
+		this.dbh.buildDatabase();		
+		if (repopulate)
+			this.dbh.populateDatabase();
 	}
     
     @Override
@@ -451,23 +465,36 @@ public class MySqlDatabase implements Database {
 	public Status addUser(UserData ud) {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
-		/* Add place holder row in user table */
-		try {
-			ud.id = dbh.sqlInsert("INSERT INTO `users` (`name`, `password`) " +
-					  "VALUES ('" + ud.name + "', '" + ud.password + "');");
-		} catch (DuplicateDatabaseEntry e) {
-			st.setStatus(StatusType.INVALID);
-			st.setMessage("Duplicate user already exists in database");
-			return st;
+		/* Create record in database */
+		int new_id = createUser(ud.getUName());
+
+		/* If successful, add other properties */
+		if (new_id > 0) {
+			/* Add user properties */
+			ud.setId(new_id);
+			updateUser(ud);	
+
+			st.setStatus(StatusType.SUCCESS);
+			st.setMessage("User successfully added");
 		}
 		
-		/* Add user properties */
-		updateUser(ud);
-		
 		/* return status */
-		st.setStatus(StatusType.SUCCESS);
-		st.setMessage("User successfully added");
 		return st;
+	}
+	
+	@Override
+	public int createUser(String username) {
+		int new_id = 0;
+		
+		try {
+			/* Add to table */
+			new_id = dbh.sqlInsert("INSERT INTO `users` (`name`, `password`) " +
+					  "VALUES ('" + username + "', '');");
+		} catch (DuplicateDatabaseEntry e) {
+			if (showDebug) e.printStackTrace();
+			new_id = -1;
+		}
+		return new_id;
 	}
 	
 	/**
@@ -571,6 +598,7 @@ public class MySqlDatabase implements Database {
 			gd.id = dbh.sqlInsert("INSERT INTO `groups` (`name`) " +
 					  "VALUES ('" + gd.getName() + "');");
 		} catch (DuplicateDatabaseEntry e) {
+			e.printStackTrace();
 			st.setStatus(StatusType.INVALID);
 			st.setMessage("Duplicate group already exists in database");
 			return st;
@@ -589,10 +617,11 @@ public class MySqlDatabase implements Database {
 	}
 
 	/**
+	 * @throws InvalidDatabaseID 
 	 * @see database.Database#getGroup(int)
 	 */
 	@Override
-	public GroupData getGroup(int id) {
+	public GroupData getGroup(int id) throws InvalidDatabaseID {
 		GroupData gd = null;
 		String name = "", course = "";
 		
@@ -605,6 +634,8 @@ public class MySqlDatabase implements Database {
 			if (res.next()) {
 				name = res.getString("name");
 				course = res.getString("course");
+			} else {
+				throw new InvalidDatabaseID("No group with id="+id);
 			}
 			
 			/* Close statement and result set */

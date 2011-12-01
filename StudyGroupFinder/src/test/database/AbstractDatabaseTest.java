@@ -1,55 +1,182 @@
 package database;
 
-import database.MySqlDatabase.InvalidDatabaseID;
+import java.util.ArrayList;
 
-/** When You test a database implementation, you need to extend this */
+import org.junit.*;
+
+import static org.junit.Assert.*;
+
+import database.MySqlDatabase.InvalidDatabaseID;
+import domainlogic.Status;
+import domainlogic.StatusType;
+import domainlogic.User;
+import domainlogic.User.Logged;
+
+/* This class can not be run directly as a JUnit test. Other classes 
+ * such as MySqlDatabaseTest implement this class and must be used to
+ * initiate the JUnit test, which will include all the methods below
+ *  */
+
 public abstract class AbstractDatabaseTest {
 	
-	protected Database database;
+	protected Database db;
 	
-	/** Test Add Group
-	 */
-	public abstract void testAddGroup();
+	private void assertSuccess(Status st) {
+		assertEquals(StatusType.SUCCESS, st.getStatus());
+	}
 	
-	/** Test Get Group
-	 * @throws InvalidDatabaseID 
-	 */
-	public abstract void testGetGroup() throws InvalidDatabaseID;
+	private UserData createTempUser() {
+		UserData u = new UserData();
+		String randomSuffix = Long.toHexString(Double.doubleToLongBits(Math.random()));
+		u.setUName("JunitUser" + randomSuffix);
+		u.setPW("pw");
+		u.setCourses("CSE 110");
+		return u;
+	}
+
+	private GroupData createTempGroup() {
+		GroupData g = new GroupData();
+		String randomSuffix = Long.toHexString(Double.doubleToLongBits(Math.random()));
+		g.setName("JunitGroup" + randomSuffix);
+		g.setCourse("CSE 110, Bio 1");
+		return g;
+	}
+
 	
-	/** Test Add User
-	 */
-	public abstract void testSetMembershipUser();
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public final void testLoginAdmin() {
+		User admin = db.login("admin", "pw");
+		assertEquals(admin.getStatus(), Logged.ADMIN);		
+	}
+
+	@Test
+	public final void testLoginUser() {
+		User admin = db.login("mike", "pw");
+		assertEquals(admin.getStatus(), Logged.USER);		
+	}
+
+	@Test
+	public final void testGetUser() throws InvalidDatabaseID {
+		UserData u = db.getUser(1);
+		assertEquals(1, u.getId());
+	}
+
+	@Test(expected=InvalidDatabaseID.class)
+	public final void testGetInvalidUser() throws InvalidDatabaseID  {
+		db.getUser(0);
+	}
+
+	@Test
+	public final void testCreateUser() {
+		UserData u = createTempUser();
+		int new_id = db.createUser(u.getUName());
+		assert(new_id > 0);
+	}
 	
-	/** Test Add Moderator
-	 */
-	public abstract void testSetMembershipMod();
-	
-	/** Test Remove User From Group
-	 */
-	public abstract void testSetMembershipNone();
-	
-	/** Test Add User 
-	 */
-	public abstract void testAddUser();
-	
-	/** Delete User
-	 */
-	public abstract void testDeleteUser();
-	
-	/** Test Update User
-	 */
-	public abstract void testUpdateUser();
-	
-	/** Test Delete Group
-	 */
-	public abstract Void testDeleteGroup();
-	
-	/** Test Get User
-	 */
-	public abstract void testGetUser() throws InvalidDatabaseID;
-	
-	/** Updates Group Data in Database
-	 */
-	public abstract void testUpdateGroup();
+	@Test
+	public final void testAddUser() {
+		assertSuccess(db.addUser(createTempUser()));
+	}
+
+	@Test
+	public final void testUpdateUser() throws InvalidDatabaseID {
+		UserData u = db.getUser(1);
+		String coureName = "Bio1";
+		u.setCourses(coureName);
+		/* Confirm success of update */
+		assertSuccess(db.updateUser(u));
+		UserData u2 = db.getUser(1);
+		/* Confirm data is retrievable from database */
+		assertEquals(coureName, u2.getCourses());		
+	}
+
+	@Test
+	public final void testDeleteUser() {
+		int new_id = db.createUser(createTempUser().getUName());
+		assertSuccess(db.deleteUser(new_id));
+	}
+
+	@Test
+	public final void testSearchUsers() {
+		db.addUser(createTempUser());
+		SearchData sd = new SearchData();
+		sd.setTerms("JunitUser");
+		ArrayList<UserData> res = db.searchUsers(sd);
+		assert(res.size() > 0);
+	}
+
+	@Test
+	public final void testSetMembershipUser() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSetMembershipMod() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSetMembershipNone() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testGetGroup() throws InvalidDatabaseID {
+		GroupData u = db.getGroup(1);
+		assertEquals(1, u.getId());
+	}
+
+	@Test(expected=InvalidDatabaseID.class)
+	public final void testGetInvalidGroup() throws InvalidDatabaseID  {
+		db.getGroup(0);
+	}
+
+	@Test
+	public final void testAddGroup() {
+		assertSuccess(db.addGroup(createTempGroup()));
+	}
+
+	@Test
+	public final void testUpdateGroup() throws InvalidDatabaseID {
+		String courseList = "Bio1, CSE12, Physics1";
+		GroupData g = db.getGroup(1);
+		g.setCourse(courseList);
+		assertSuccess(db.updateGroup(g));
+		GroupData g2 = db.getGroup(1);
+		assertEquals(courseList, g2.getCourse());
+	}
+
+	@Test
+	public final void testDeleteGroup() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSearchGroups() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testDeleteInactiveUsers() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testDeleteInactiveGroups() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testToString() {
+		fail("Not yet implemented"); // TODO
+	}
 	
 }
