@@ -80,9 +80,11 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 		} else if("New Group".equals(e.getActionCommand())) {
 			NewGroupDialog ngd = new NewGroupDialog(parent);
 	        ngd.setVisible(true);
+	        ((AdminGUI)parent.getGUI()).fullRefresh();
 		} else if("New User".equals(e.getActionCommand())) {
 			NewAccountDialog nad = new NewAccountDialog(parent);
 	        nad.setVisible(true);
+	        ((AdminGUI)parent.getGUI()).fullRefresh();
 		} else if("about".equals(e.getActionCommand())) {
 			AboutSGFDialog asd = new AboutSGFDialog(parent);
 	        asd.setVisible(true);
@@ -90,10 +92,12 @@ public class AdminMenu extends JMenuBar implements ActionListener {
 			Status temp = parent.getSGS().deleteInactiveGroups();
 			StatusDialog sd = new StatusDialog(temp, parent);
 			sd.setVisible(true);
+			((AdminGUI)parent.getGUI()).fullRefresh();
 		} else if("Clear Users".equals(e.getActionCommand())) {
 			Status temp = parent.getSGS().deleteInactiveUsers();
 			StatusDialog sd = new StatusDialog(temp, parent);
 			sd.setVisible(true);
+			((AdminGUI)parent.getGUI()).fullRefresh();
 		}
 	}
     

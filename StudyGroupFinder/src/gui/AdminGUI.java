@@ -4,9 +4,12 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import database.SearchData;
 
 /** AdminGUI is a JPanel and implementation of {@link GUIPanel} that manages 
  *  everything that an admin can do.
@@ -76,6 +79,19 @@ public class AdminGUI extends JPanel implements GUIPanel {
 		add(right);
 		getRootPane().revalidate();
 		
+	}
+	
+	public void fullRefresh() {
+		removeAll();
+		SearchData temp = ((AdminPanel)left).getGroupSearch();
+		temp.setResults(null);
+		SearchData temp2 = ((AdminPanel)left).getUserSearch();
+		temp2.setResults(null);
+		left = new AdminPanel(parent, temp, temp2);
+		right = new JPanel();
+		add(left);
+		add(right);
+		getRootPane().revalidate();
 	}
 
 }

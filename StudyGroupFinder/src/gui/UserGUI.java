@@ -11,6 +11,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import database.SearchData;
+
 /** UserGUI is a JPanel and implementation of {@link GUIPanel} that manages 
  *  everything that a user can do.
  * 
@@ -78,6 +80,17 @@ public class UserGUI extends JPanel implements GUIPanel  {
 	public void refreshLeft() {
 		removeAll();
 		left = new UserGroupsPanel(parent, ((UserGroupsPanel)left).getFilter());
+		add(left);
+		add(right);
+		getRootPane().revalidate();
+	}
+	
+	public void fullRefresh() {
+		removeAll();
+		SearchData temp = ((UserGroupsPanel)left).getFilter();
+		temp.setResults(null);
+		left = new UserGroupsPanel(parent, null);
+		right = new JPanel();
 		add(left);
 		add(right);
 		getRootPane().revalidate();
