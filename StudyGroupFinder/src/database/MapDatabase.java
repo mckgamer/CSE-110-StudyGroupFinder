@@ -320,4 +320,10 @@ public class MapDatabase implements Database {
 		return 0;
 	}
 
+	@Override
+	public int createGroup(String groupname) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

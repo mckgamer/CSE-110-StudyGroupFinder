@@ -594,28 +594,40 @@ public class MySqlDatabase implements Database {
 		Status st = new Status(StatusType.UNSUCCESSFUL);
 
 		/* Create place holder row in groups table */
-		try {
-			gd.id = dbh.sqlInsert("INSERT INTO `groups` (`name`) " +
-					  "VALUES ('" + gd.getName() + "');");
-		} catch (DuplicateDatabaseEntry e) {
-			e.printStackTrace();
-			st.setStatus(StatusType.INVALID);
-			st.setMessage("Duplicate group already exists in database");
-			return st;
-		}
-
+		int new_id = createGroup(gd.getName());
+		
+		/* Exit if error */
+		if (new_id <= 0) { return st; }
+		
 		/* Update group properties */
 		updateGroup(gd);
 		
 		/* Add moderator */
 		for (int mod: gd.getMods()) setMembershipMod(mod, gd.id);
 		
-		/** return status **/
+		/* Update status */
 		st.setStatus(StatusType.SUCCESS);
 		st.setMessage("Group added successfully");
+
+		/* return status */
 		return st;
 	}
 
+	@Override
+	public int createGroup(String groupname) {
+		int new_id = 0;
+		
+		try {
+			/* Add to table */
+			new_id = dbh.sqlInsert("INSERT INTO `groups` (`name`) " +
+					  "VALUES ('" + groupname + "');");
+		} catch (DuplicateDatabaseEntry e) {
+			if (showDebug) e.printStackTrace();
+			new_id = -1;
+		}
+		return new_id;
+	}
+	
 	/**
 	 * @throws InvalidDatabaseID 
 	 * @see database.Database#getGroup(int)

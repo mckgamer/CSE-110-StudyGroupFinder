@@ -19,9 +19,9 @@ public class GroupData implements Data {
 	/** Course to which the group belongs **/
 	public String course;
 	/** ArrayList of user ids that are moderators of the group **/
-	public ArrayList<Integer> mods;
+	public ArrayList<Integer> mods = new ArrayList<Integer>(); 
 	/** ArrayList of user ids that are members (non-moderators) of the group **/
-	public ArrayList<Integer> users;
+	public ArrayList<Integer> users = new ArrayList<Integer>();
 
 	/** 
 	 * Empty constructor

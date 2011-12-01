@@ -107,25 +107,50 @@ public abstract class AbstractDatabaseTest {
 	@Test
 	public final void testSearchUsers() {
 		db.addUser(createTempUser());
-		SearchData sd = new SearchData();
+		SearchData sd = new SearchData(); 
 		sd.setTerms("JunitUser");
-		ArrayList<UserData> res = db.searchUsers(sd);
-		assert(res.size() > 0);
+		sd.setResultData(db.searchUsers(sd));
+		assert(sd.getResultData().size() > 0);
 	}
 
 	@Test
-	public final void testSetMembershipUser() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetMembershipUser() throws InvalidDatabaseID {
+		int user_id = db.createUser(createTempUser().getUName());
+		int group_id = db.createGroup(createTempGroup().getName());
+		/* Assert that the method returns success */
+		assertSuccess(db.setMembershipUser(user_id, group_id));
+		/* Now assert the data can be retrieved */
+		GroupData g = db.getGroup(group_id);
+		assertEquals(user_id, ((int) g.getUsers().get(0)));
 	}
 
 	@Test
-	public final void testSetMembershipMod() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetMembershipMod() throws InvalidDatabaseID {
+		int user_id = db.createUser(createTempUser().getUName());
+		int group_id = db.createGroup(createTempGroup().getName());
+		/* Assert that the method returns success */
+		assertSuccess(db.setMembershipMod(user_id, group_id));
+		/* Now assert the data can be retrieved */
+		GroupData g = db.getGroup(group_id);
+		assertEquals(user_id, ((int) g.getMods().get(0)));
 	}
 
 	@Test
-	public final void testSetMembershipNone() {
-		fail("Not yet implemented"); // TODO
+	public final void testSetMembershipNone() throws InvalidDatabaseID {
+		/* First add the user */
+		int user_id = db.createUser(createTempUser().getUName());
+		int group_id = db.createGroup(createTempGroup().getName());
+		/* Assert that the method returns success */
+		assertSuccess(db.setMembershipUser(user_id, group_id));
+		/* Now assert the data can be retrieved */
+		GroupData g = db.getGroup(group_id);
+		assertEquals(user_id, ((int) g.getUsers().get(0)));
+		
+		/* Now remove the user */
+		/* Assert that the method returns success */
+		assertSuccess(db.setMembershipNone(user_id, group_id));
+		GroupData g2 = db.getGroup(group_id);
+		assert(g2.getUsers().size() == 0);
 	}
 
 	@Test
@@ -141,7 +166,9 @@ public abstract class AbstractDatabaseTest {
 
 	@Test
 	public final void testAddGroup() {
-		assertSuccess(db.addGroup(createTempGroup()));
+		GroupData g = createTempGroup();
+		Status st = db.addGroup(g);
+		assertSuccess(st);
 	}
 
 	@Test
@@ -156,27 +183,27 @@ public abstract class AbstractDatabaseTest {
 
 	@Test
 	public final void testDeleteGroup() {
-		fail("Not yet implemented"); // TODO
+		int new_id = db.createGroup(createTempGroup().getName());
+		assertSuccess(db.deleteUser(new_id));
 	}
 
 	@Test
 	public final void testSearchGroups() {
-		fail("Not yet implemented"); // TODO
+		SearchData sd = new SearchData();
+		sd.setTerms("JunitGroup");
+		sd.setResultData(db.searchGroups(sd));
+		assert(sd.getResultData().size() > 0);
 	}
 
 	@Test
 	public final void testDeleteInactiveUsers() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public final void testDeleteInactiveGroups() {
-		fail("Not yet implemented"); // TODO
+		java.util.Date d = new java.util.Date("1/1/2010");
+		assertSuccess(db.deleteInactiveUsers(d));
 	}
 
 	@Test
 	public final void testToString() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(db.toString());
 	}
 	
 }

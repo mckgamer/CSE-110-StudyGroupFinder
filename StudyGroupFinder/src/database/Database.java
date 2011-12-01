@@ -10,6 +10,16 @@ import domainlogic.User;
 /** The database interface for the Study Group System. */
 public interface Database {
 
+	/**
+	 * Adds a group to a database and returns the new group id
+	 * @param groupname - the {@link String} of a unique groupname to add to database
+	 * @return int for the id of the new group record
+	 * <p> int will be -1 if the groupname already exists in database and no record
+	 *     will be added</p>
+	 * @see #addGroup
+	 */
+	public int createGroup(String groupname);
+		
 	/** Adds a Group to the database 
 	 * Precondition: GroupData object is valid. All data object variables have been validated.
 	 * Postcondition: The group will be added to the database
